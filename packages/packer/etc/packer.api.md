@@ -250,7 +250,7 @@ export interface UserAppConfig {
     // (undocumented)
     name: string;
     // (undocumented)
-    packages: ((packages: string[]) => string[]) | string[];
+    packages: ((packages: PkgNode[]) => string[]) | string[];
     // (undocumented)
     predicate?: (pathname: string) => boolean;
     // (undocumented)
