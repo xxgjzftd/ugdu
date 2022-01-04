@@ -170,10 +170,10 @@ const getAlias = (localPkgs: PkgNode[]) => {
   return alias
 }
 
-export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap) => {
+export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
   const localPkgs = [...localPkgToDepsMap.keys()]
   const pkgs = [...localPkgs]
-  const traverse = (deps: PackageNode[], dependent: PkgNode) => {
+  const traverse = (deps: PackageNode[], dependent: PkgNode, pp: string) => {
     deps.forEach(
       (dep) => {
         let pkg = findPkgFromDep(dep)
@@ -181,13 +181,13 @@ export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap) => {
           pkg = {
             name: dep.name,
             version: dep.version,
-            path: dep.path,
+            path: dep.path.replace(pp, cwd),
             local: false,
             dependencies: [],
             dependents: []
           }
           pkgs.push(pkg)
-          dep.dependencies && traverse(dep.dependencies, pkg)
+          dep.dependencies && traverse(dep.dependencies, pkg, pp)
         }
         pkg.dependents.push(dependent)
         dependent.dependencies.push(pkg)
@@ -198,14 +198,14 @@ export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap) => {
     pkgs.find((pkg) => pkg.name === dep.name && (isLocalPkg(pkg) || pkg.version === dep.version))
   const isLocalPkg = (n: PkgNode) => localPkgs.find((lp) => lp.name === n.name)
   for (const localPkg of localPkgToDepsMap.keys()) {
-    traverse(localPkgToDepsMap.get(localPkg)!, localPkg)
+    traverse(localPkgToDepsMap.get(localPkg)!, localPkg, localPkg.path)
   }
   return pkgs
 }
 
 const getAllPkgs = async (localPkgs: PkgNode[], cwd: string) => {
   const localPkgToDepsMap = await getLocalPkgToDepsMap(localPkgs, cwd)
-  const pkgs = getPkgs(localPkgToDepsMap)
+  const pkgs = getPkgs(localPkgToDepsMap, cwd)
   return pkgs
 }
 
