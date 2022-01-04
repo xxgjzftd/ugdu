@@ -1,0 +1,29 @@
+{
+  "name": "@ugdu/processor",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "a tool for micro frontend dev and build",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "run-s build-bundle build-types",
+    "build-bundle": "node ./build.js",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.17.0"
+  },
+  "author": "xxgjzftd <xxgjzftd@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "type-fest": "^2.0.0"
+  }
+}

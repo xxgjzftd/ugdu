@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+    "lib": ["esnext"],
+    "types": ["node"],
+    "isolatedModules": true
+  },
+  "include": ["src"]
+}

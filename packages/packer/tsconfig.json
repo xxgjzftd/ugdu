@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+    "lib": ["esnext"],
+    "types": ["./global", "jest"],
+    "isolatedModules": true
+  }
+}

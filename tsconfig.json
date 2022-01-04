@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "declaration": true,
+    "declarationMap": true,
+
+    "sourceMap": true,
+
+    "esModuleInterop": true,
+
+    "target": "esnext"
+  }
+}

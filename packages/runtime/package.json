@@ -1,0 +1,25 @@
+{
+  "name": "@ugdu/runtime",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "a client side tool set for micro frontend",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "run-s build-bundle build-types",
+    "build-bundle": "node ./build.js",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "xxgjzftd <xxgjzftd@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "es-module-shims": "^1.1.0"
+  }
+}

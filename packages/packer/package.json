@@ -1,0 +1,45 @@
+{
+  "name": "@ugdu/packer",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "a tool for micro frontend dev and build",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "run-s build-bundle build-types",
+    "build-bundle": "node ./build.js",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.17.0"
+  },
+  "author": "xxgjzftd <xxgjzftd@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.6.1",
+    "@ugdu/runtime": "workspace:^0.1.1",
+    "rollup": "^2.61.1",
+    "type-fest": "^2.0.0"
+  },
+  "dependencies": {
+    "@pnpm/find-workspace-packages": "^3.1.23",
+    "@pnpm/logger": "^4.0.0",
+    "@ugdu/processor": "workspace:^0.1.0",
+    "axios": "^0.21.4",
+    "cac": "^6.7.3",
+    "dependencies-hierarchy": "^10.0.13",
+    "es-module-lexer": "^0.7.1",
+    "execa": "^6.0.0",
+    "fast-glob": "^3.2.7",
+    "magic-string": "^0.25.7",
+    "vite": "^2.6.14"
+  }
+}
