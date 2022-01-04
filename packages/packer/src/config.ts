@@ -54,12 +54,6 @@ export interface BaseRoute {
 
 export type Config = Merge<Required<UserConfig>, { apps: Required<UserAppConfig>[] }>
 
-declare module '@ugdu/processor' {
-  interface Context {
-    config: Config
-  }
-}
-
 export interface SetConfigHooks {
   'get-config'(): UserConfig | void
 }

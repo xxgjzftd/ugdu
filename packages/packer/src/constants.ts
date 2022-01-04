@@ -1,12 +1,6 @@
 import { TaskOptions } from '@ugdu/processor'
 import { resolve } from 'path/posix'
 
-declare module '@ugdu/processor' {
-  interface Context {
-    CONSTANTS: typeof CONSTANTS
-  }
-}
-
 export const CONSTANTS = {
   META_JSON: 'meta.json',
   PACKAGE_JSON: 'package.json',
@@ -24,3 +18,5 @@ export const setConstants = new TaskOptions(
     this.manager.context.CONSTANTS = CONSTANTS
   }
 )
+
+export type CONSTANTS = typeof CONSTANTS

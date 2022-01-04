@@ -10,12 +10,6 @@ import { setProject, getPkgId } from './project'
 import type { Context } from '@ugdu/processor'
 import type { PkgNode } from './project'
 
-declare module '@ugdu/processor' {
-  interface Context {
-    utils: ReturnType<typeof getUtils>
-  }
-}
-
 /**
  * Returns a function that could cache the result of `fn` according to the first parameter of `fn`.
  *
@@ -343,3 +337,5 @@ export const setUtils = series(
     }
   )
 )
+
+export type Utils = ReturnType<typeof getUtils>

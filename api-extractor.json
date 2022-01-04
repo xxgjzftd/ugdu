@@ -14,6 +14,10 @@
     "untrimmedFilePath": "<projectFolder>/dist/index.d.ts"
   },
 
+  "tsdocMetadata": {
+    "enabled": false
+  },
+
   "newlineKind": "lf",
 
   "messages": {

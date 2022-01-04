@@ -1,3 +1,5 @@
+import './augmentation'
+
 export * from './constants'
 export * from './config'
 export * from './project'

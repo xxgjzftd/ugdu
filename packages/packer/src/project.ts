@@ -118,12 +118,6 @@ export interface ChangedSource {
 
 export type RoutesModuleNameToPathsMap = Record<string, string[]>
 
-declare module '@ugdu/processor' {
-  interface Context {
-    project: Project
-  }
-}
-
 const getLocalPkgs = async (cwd: string) =>
   (await fwp(cwd)).slice(1).map(
     (pkg) => {
