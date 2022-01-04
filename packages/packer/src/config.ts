@@ -6,6 +6,8 @@ import { mergeConfig } from 'vite'
 import type { InlineConfig } from 'vite'
 import type { Merge } from 'type-fest'
 
+import type { PkgNode } from './project'
+
 export interface UserConfig {
   extensions: string[]
   cwd?: string
@@ -31,7 +33,7 @@ export interface UserAppConfig {
   name: string
   predicate?: (pathname: string) => boolean
   vite?: InlineConfig
-  packages: ((packages: string[]) => string[]) | string[]
+  packages: ((packages: PkgNode[]) => string[]) | string[]
 }
 
 export interface RoutesOption {

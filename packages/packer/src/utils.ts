@@ -286,7 +286,7 @@ const getUtils = (context: Context) => {
   apps.forEach(
     (app) => {
       if (typeof app.packages === 'function') {
-        app.packages = app.packages(localPkgNames)
+        app.packages = app.packages(localPkgs)
       }
     }
   )
