@@ -4,6 +4,7 @@
   "type": "module",
   "description": "a client side tool set for micro frontend",
   "main": "src/index.ts",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "main": "dist/index.js",
     "types": "dist/index.d.ts"
