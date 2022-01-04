@@ -3,28 +3,13 @@ import { isAbsolute, resolve as originResolve } from 'path'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
+import { cached } from './shared'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 import { setProject, getPkgId } from './project'
 
 import type { Context } from '@ugdu/processor'
 import type { PkgNode } from './project'
-
-/**
- * Returns a function that could cache the result of `fn` according to the first parameter of `fn`.
- *
- * @remark
- * Calling this function repeatedly with the same first argument will return the same result even if the other arguments are different.
- *
- * @param fn - The origin function
- * @returns The cached version function
- */
-export const cached = <T extends (this: any, string: string, ...args: any[]) => any>(fn: T) => {
-  const cache: Record<string, ReturnType<T>> = Object.create(null)
-  return function (string, ...args) {
-    return cache[string] || (cache[string] = fn.call(this, string, ...args))
-  } as T
-}
 
 const getUtils = (context: Context) => {
   const {

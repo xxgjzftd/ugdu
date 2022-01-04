@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "description": "a tool for micro frontend dev and build",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "main": "dist/index.js",

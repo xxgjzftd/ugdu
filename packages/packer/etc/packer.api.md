@@ -71,9 +71,6 @@ export interface BuildVendorModulesHooks {
     'build-vendor-module'(rmn: string, task: Task<BuildVendorModulesHooks>): Promisable<void>;
 }
 
-// @public
-export const cached: <T extends (this: any, string: string, ...args: any[]) => any>(fn: T) => T;
-
 // @public (undocumented)
 export interface ChangedSource {
     // (undocumented)

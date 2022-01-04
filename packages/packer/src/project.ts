@@ -9,9 +9,9 @@ import { execa } from 'execa'
 import { resolveConfig } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
+import { cached } from './shared'
 import { setConstants } from './constants'
 import { setConfig } from './config'
-import { cached } from './utils'
 
 import type { Promisable } from 'type-fest'
 import type { PackageNode } from 'dependencies-hierarchy'

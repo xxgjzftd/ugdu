@@ -3,7 +3,7 @@ import { join } from 'path/posix'
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
-import { cached } from './utils'
+import { cached } from './shared'
 import { setContext } from './context'
 import { buildLocalModules } from './local'
 import { vendor } from './plugins/vendor'
