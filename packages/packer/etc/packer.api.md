@@ -110,7 +110,7 @@ export const getAliasKey: (this: any, lpn: string) => string;
 export const getPkgId: (this: any, lpn: string) => string;
 
 // @public (undocumented)
-export const getPkgs: (localPkgToDepsMap: LocalPkgToDepsMap) => PkgNode[];
+export const getPkgs: (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => PkgNode[];
 
 // @public (undocumented)
 export type LocalPkgToDepsMap = Map<PkgNode, PackageNode[]>;
