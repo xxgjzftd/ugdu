@@ -34,7 +34,7 @@ importers:
       '@pnpm/logger': ^4.0.0
       '@types/node': ^16.6.1
       '@ugdu/processor': workspace:^0.1.0
-      '@ugdu/runtime': workspace:^0.1.1
+      '@ugdu/runtime': workspace:^0.1.0
       axios: ^0.21.4
       cac: ^6.7.3
       dependencies-hierarchy: ^10.0.13
