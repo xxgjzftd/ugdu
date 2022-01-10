@@ -18,9 +18,6 @@ const getUtils = (context: Context) => {
     config: { cwd, apps },
     project: { pkgs, routes, meta }
   } = context
-  const localPkgs = pkgs.filter((pkg) => pkg.local)
-  const localPkgPaths = localPkgs.map((lp) => getNormalizedPath(lp.path))
-  const localPkgNames = localPkgs.map((lp) => getNormalizedPath(lp.name))
 
   const resolve = originResolve.bind(null, cwd)
 
@@ -267,6 +264,10 @@ const getUtils = (context: Context) => {
         return JSON.stringify(payload)
     }
   }
+
+  const localPkgs = pkgs.filter((pkg) => pkg.local)
+  const localPkgPaths = localPkgs.map((lp) => getNormalizedPath(lp.path))
+  const localPkgNames = localPkgs.map((lp) => getNormalizedPath(lp.name))
 
   apps.forEach(
     (app) => {

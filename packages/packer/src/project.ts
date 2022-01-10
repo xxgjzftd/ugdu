@@ -9,7 +9,7 @@ import { execa } from 'execa'
 import { resolveConfig } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { cached } from './shared'
+import { cached, getDefault } from './shared'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 
@@ -119,7 +119,7 @@ export interface ChangedSource {
 export type RoutesModuleNameToPathsMap = Record<string, string[]>
 
 const getLocalPkgs = async (cwd: string) =>
-  (await fwp(cwd)).slice(1).map(
+  (await getDefault(fwp)(cwd)).slice(1).map(
     (pkg) => {
       const {
         manifest: { name, main, version },
@@ -140,7 +140,7 @@ const getLocalPkgs = async (cwd: string) =>
   )
 
 const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
-  dh(
+  getDefault(dh)(
     localPkgs.map((lp) => lp.path),
     {
       depth: Infinity,
@@ -316,7 +316,7 @@ export const setProject = series(
           }
         }
       } = this
-      const project = {} as Project
+      const project = { meta: {} } as Project
       context.project = project
       const localPkgs = await this.call('get-local-packages', 'first', cwd)
       project.alias = await this.call('get-alias', 'first', localPkgs)
