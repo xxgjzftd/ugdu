@@ -6,7 +6,6 @@ import dh from 'dependencies-hierarchy'
 import fwp from '@pnpm/find-workspace-packages'
 import axios from 'axios'
 import { execa } from 'execa'
-import { resolveConfig } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
 import { cached, getDefault } from './shared'
@@ -211,12 +210,16 @@ const getAllPkgs = async (localPkgs: PkgNode[], cwd: string) => {
 
 const getPreMeta = async (context: Context) => {
   let meta: Meta
+  const {
+    CONSTANTS: { META_JSON },
+    config,
+    config: { cwd, dist }
+  } = context
   try {
-    if (context.config.meta === 'local') {
-      const rc = await resolveConfig(context.config.vite, 'build')
-      meta = JSON.parse(await readFile(resolve(rc.build.outDir, context.CONSTANTS.META_JSON), 'utf-8'))
+    if (config.meta === 'local') {
+      meta = JSON.parse(await readFile(resolve(cwd, dist, META_JSON), 'utf-8'))
     } else {
-      meta = await axios.get(`${context.config.meta}${context.CONSTANTS.META_JSON}`).then((res) => res.data)
+      meta = await axios.get(`${config.meta}${META_JSON}`).then((res) => res.data)
     }
   } catch (error) {
     meta = { modules: [] }
@@ -250,7 +253,7 @@ const getSources = async (context: Context) => {
     }
   } = context
   const all = await fg(
-    pkgs.filter((pkg) => pkg.local).map((lp) => lp.path),
+    pkgs.filter((pkg) => pkg.local).map((lp) => lp.path.replace(cwd + '/', '') + '/**'),
     {
       cwd,
       ignore: ['**/node_modules/**']

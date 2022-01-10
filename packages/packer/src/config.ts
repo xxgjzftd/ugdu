@@ -1,7 +1,7 @@
 import { cwd } from 'process'
 
 import { TaskOptions } from '@ugdu/processor'
-import { mergeConfig } from 'vite'
+import { mergeConfig, normalizePath } from 'vite'
 
 import type { InlineConfig } from 'vite'
 import type { Merge } from 'type-fest'
@@ -66,7 +66,7 @@ export const setConfig = new TaskOptions<SetConfigHooks>(
     if (!config) {
       throw new Error(`The 'get-config' hook should have at least one hook function which returns a config.`)
     }
-    config.cwd = config.cwd ?? cwd()
+    config.cwd = normalizePath(config.cwd ?? cwd())
     config.dist = config.dist ?? 'dist'
     config.assets = config.assets ?? 'assets'
     config.base = config.base ?? '/'

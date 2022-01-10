@@ -18,7 +18,7 @@ export const cached = <T extends (this: any, string: string, ...args: any[]) => 
  * Get default export of the CommonJS module.
  *
  * @remark
- * When importing CommonJS modules in esm world, the module.exports object is provided as the default export.
+ * When importing CommonJS modules from esm module, the module.exports object is provided as the default export.
  * While ts compiler consider the module.exports.default is the default export in some specific CommonJS modules.
  * So we need this helper.
  *
