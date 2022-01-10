@@ -122,11 +122,11 @@ const getUtils = (context: Context) => {
       const traverse = (pkg: PkgNode, dp: PkgNode[]) => {
         pkg.dependencies.forEach(
           (dep) => {
-            dp = [...dp, dep]
+            let paths = [...dp, dep]
             if (shouldExternal(dep)) {
-              externals.push(getPublicPkgName(dp))
+              externals.push(getPublicPkgName(paths))
             } else {
-              traverse(dep, dp)
+              traverse(dep, paths)
             }
           }
         )

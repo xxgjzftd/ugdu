@@ -85,7 +85,8 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>> {
     name: Name,
     type: T,
     ...args: Parameters<Hooks[Name]>
-  ): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void> {
+  ): // @ts-ignore
+  Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void> {
     const fns = this.allFns(name)
     switch (type) {
       case 'first':
@@ -101,8 +102,10 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>> {
         for (const fn of fns) {
           await fn.call(this, ...args)
         }
+        break
       case 'parallel':
         await Promise.all(fns.map((fn) => fn.call(this, ...args)))
+        break
       default:
         throw new Error(`Illegal hook type '${type}'. Only 'first', 'sequential' and 'parallel' are allowed.`)
     }
