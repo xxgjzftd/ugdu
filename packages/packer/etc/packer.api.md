@@ -10,7 +10,6 @@ import type { InlineConfig } from 'vite';
 import type { Merge } from 'type-fest';
 import type { PackageNode } from 'dependencies-hierarchy';
 import type { Promisable } from 'type-fest';
-import type { Task } from '@ugdu/processor';
 import { TaskOptions } from '@ugdu/processor';
 
 // @public (undocumented)
@@ -60,7 +59,7 @@ export interface BuildRoutesModulesHooks {
 }
 
 // @public (undocumented)
-export const buildVendorModule: (this: any, vvn: string, task: Task<BuildVendorModulesHooks>) => Promise<void>;
+export const buildVendorModule: (vvn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
 export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks>;
@@ -68,7 +67,7 @@ export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & 
 // @public (undocumented)
 export interface BuildVendorModulesHooks {
     // (undocumented)
-    'build-vendor-module'(rmn: string, task: Task<BuildVendorModulesHooks>): Promisable<void>;
+    'build-vendor-module'(rmn: string, task: Context): Promisable<void>;
 }
 
 // @public (undocumented)
