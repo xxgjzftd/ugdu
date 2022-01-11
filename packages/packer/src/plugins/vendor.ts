@@ -15,7 +15,7 @@ export const vendor = function (vvn: string, context: Context): Plugin {
       if (source === VENDOR_INPUT) {
         return VENDOR
       } else if (importer === VENDOR) {
-        return this.resolve(source, pkg.dependents[0].path, Object.assign({ skipSelf: true }, options))
+        return this.resolve(source, pkg.dependents[0].ap, Object.assign({ skipSelf: true }, options))
       } else {
         const dep = getPkgFromSourceAndImporter(source, importer!)
         if (dep && shouldExternal(dep)) {

@@ -85,8 +85,8 @@ export const setConfig = new TaskOptions<SetConfigHooks>(
     config.routes = config.routes ?? {}
     config.apps.forEach(
       (app) => {
-        app.predicate = () => true
-        app.vite = {}
+        app.predicate = app.predicate ?? (() => true)
+        app.vite = app.vite ?? {}
       }
     )
     this.manager.context.config = config as Config

@@ -142,6 +142,8 @@ export interface MetaModuleImport {
 // @public (undocumented)
 export interface PkgNode {
     // (undocumented)
+    ap: string;
+    // (undocumented)
     dependencies: PkgNode[];
     // (undocumented)
     dependents: PkgNode[];

@@ -42,11 +42,11 @@ const getUtils = (context: Context) => {
 
   const shouldExternal = (pkg: PkgNode) => pkg.dependents.length > 1 || !!pkg.dependents.find((dep) => dep.local)
 
-  const getNormalizedPath = cached((ap) => normalizePath(ap).slice(normalizePath(cwd).length + 1))
+  const getNormalizedPath = cached((ap) => normalizePath(ap).slice(cwd.length + 1))
 
   const getLocalPkgFromPath = cached(
     (path) => {
-      const lp = localPkgs.find((lp) => path.startsWith(appendSlash(getNormalizedPath(lp.path))))
+      const lp = localPkgs.find((lp) => path.startsWith(appendSlash(lp.path)))
       if (!lp) {
         throw new Error(
           `This method should only be called with a path that start with one of the ${localPkgPaths.toString()}.` +
@@ -74,9 +74,8 @@ const getUtils = (context: Context) => {
 
   const getLocalModuleName = cached(
     (path) => {
-      const localPkg = getLocalPkgFromPath(path)
-      const localPkgPath = getNormalizedPath(localPkg.path)
-      const { main, name } = localPkg
+      const lp = getLocalPkgFromPath(path)
+      const { main, name } = lp
       if (isPage(path) && main) {
         throw new Error(
           `A file in a package that has a main field cannot be specified as a page.` +
@@ -84,9 +83,9 @@ const getUtils = (context: Context) => {
         )
       }
       if (isPage(path) || (!main && config.extensions.includes(path.slice(path.lastIndexOf('.') + 1)))) {
-        return path.replace(localPkgPath, name)
+        return path.replace(lp.path, name)
       }
-      if (main && getNormalizedPath(resolve(localPkgPath, main)) === path) {
+      if (main && getNormalizedPath(resolve(lp.path, main)) === path) {
         return name
       }
       return null
@@ -95,11 +94,9 @@ const getUtils = (context: Context) => {
 
   const getLocalModulePath = cached(
     (lmn) =>
-      getNormalizedPath(
-        isLocalPkg(lmn)
-          ? resolve(getLocalPkgFromName(lmn).path, getLocalPkgFromName(lmn).main!)
-          : lmn.replace(getLocalPkgFromName(lmn).name, getLocalPkgFromName(lmn).path)
-      )
+      isLocalPkg(lmn)
+        ? getNormalizedPath(resolve(getLocalPkgFromName(lmn).path, getLocalPkgFromName(lmn).main!))
+        : lmn.replace(getLocalPkgFromName(lmn).name, getLocalPkgFromName(lmn).path)
   )
 
   /**
@@ -181,8 +178,8 @@ const getUtils = (context: Context) => {
   const getPkgFromModuleId = cached(
     (mi) => {
       const pkg = pkgs
-        .filter((pkg) => mi.startsWith(appendSlash(pkg.path)))
-        .sort((a, b) => b.path.length - a.path.length)[0]
+        .filter((pkg) => normalizePath(mi).startsWith(appendSlash(pkg.ap)))
+        .sort((a, b) => b.ap.length - a.ap.length)[0]
       if (!pkg) {
         throw new Error(
           `Can not find '${mi}' in context.project.pkgs. This maybe a bug of @ugdu/packer. Please issue a bug in github.`
@@ -266,8 +263,8 @@ const getUtils = (context: Context) => {
   }
 
   const localPkgs = pkgs.filter((pkg) => pkg.local)
-  const localPkgPaths = localPkgs.map((lp) => getNormalizedPath(lp.path))
-  const localPkgNames = localPkgs.map((lp) => getNormalizedPath(lp.name))
+  const localPkgPaths = localPkgs.map((lp) => lp.path)
+  const localPkgNames = localPkgs.map((lp) => lp.name)
 
   apps.forEach(
     (app) => {

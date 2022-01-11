@@ -6,6 +6,7 @@ import dh from 'dependencies-hierarchy'
 import fwp from '@pnpm/find-workspace-packages'
 import axios from 'axios'
 import { execa } from 'execa'
+import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
 import { cached, getDefault } from './shared'
@@ -32,6 +33,7 @@ export interface PkgNode {
   name: string
   version: string
   path: string
+  ap: string
   local: boolean
   main?: string
   dependents: PkgNode[]
@@ -126,10 +128,12 @@ const getLocalPkgs = async (cwd: string) =>
       } = pkg
       if (!name) throw new Error(`The package at '${pkg.dir}' doesn't specified the 'name' field.`)
       if (!version) throw new Error(`The package at '${pkg.dir}' doesn't specified the 'version' field.`)
+      const ap = normalizePath(dir)
       return {
         name,
         version,
-        path: dir,
+        path: ap.slice(cwd.length + 1),
+        ap,
         local: true,
         main,
         dependents: [],
@@ -140,7 +144,7 @@ const getLocalPkgs = async (cwd: string) =>
 
 const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
   getDefault(dh)(
-    localPkgs.map((lp) => lp.path),
+    localPkgs.map((lp) => lp.ap),
     {
       depth: Infinity,
       include: { dependencies: true, devDependencies: false, optionalDependencies: false },
@@ -150,7 +154,7 @@ const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
     (pd2dhm) => {
       const lp2dm: LocalPkgToDepsMap = new Map()
       for (const pd of Object.keys(pd2dhm)) {
-        lp2dm.set(localPkgs.find((lp) => lp.path === pd)!, pd2dhm[pd].dependencies!)
+        lp2dm.set(localPkgs.find((lp) => lp.ap === pd)!, pd2dhm[pd].dependencies!)
       }
       return lp2dm
     }
@@ -162,7 +166,7 @@ export const getAliasKey = cached((lpn) => `@${getPkgId(lpn)}`)
 
 const getAlias = (localPkgs: PkgNode[]) => {
   const alias: AliasOptions = {}
-  localPkgs.forEach((lp) => (alias[getAliasKey(lp.name)] = `${lp.path}/src`))
+  localPkgs.forEach((lp) => (alias[getAliasKey(lp.name)] = resolve(lp.ap, 'src')))
   if (Object.keys(alias).length < localPkgs.length) {
     throw new Error(`There are duplicate pkg id in local packages.`)
   }
@@ -177,10 +181,12 @@ export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
       (dep) => {
         let pkg = findPkgFromDep(dep)
         if (!pkg) {
+          const ap = normalizePath(dep.path).replace(pp, cwd)
           pkg = {
             name: dep.name,
             version: dep.version,
-            path: dep.path.replace(pp, cwd),
+            path: ap.slice(cwd.length + 1),
+            ap,
             local: false,
             dependencies: [],
             dependents: []
@@ -197,7 +203,7 @@ export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
     pkgs.find((pkg) => pkg.name === dep.name && (isLocalPkg(pkg) || pkg.version === dep.version))
   const isLocalPkg = (n: PkgNode) => localPkgs.find((lp) => lp.name === n.name)
   for (const localPkg of localPkgToDepsMap.keys()) {
-    traverse(localPkgToDepsMap.get(localPkg)!, localPkg, localPkg.path)
+    traverse(localPkgToDepsMap.get(localPkg)!, localPkg, localPkg.ap)
   }
   return pkgs
 }
@@ -253,7 +259,7 @@ const getSources = async (context: Context) => {
     }
   } = context
   const all = await fg(
-    pkgs.filter((pkg) => pkg.local).map((lp) => lp.path.replace(cwd + '/', '') + '/**'),
+    pkgs.filter((pkg) => pkg.local).map((lp) => lp.path + '/**'),
     {
       cwd,
       ignore: ['**/node_modules/**']
