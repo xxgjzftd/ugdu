@@ -47,7 +47,8 @@ export const buildVendorModule = async function (vvn: string, context: Context) 
                   format: 'es',
                   manualChunks: {}
                 },
-                preserveEntrySignatures: 'allow-extension'
+                preserveEntrySignatures: 'allow-extension',
+                external: cmm.externals
               }
             },
             plugins: [vendor(vvn, context), meta(vvn, context)]
@@ -126,7 +127,7 @@ export const buildVendorModules = series(
                 const dpkg = getPkgFromPublicPkgName(pkg, ppn)
                 const dvvn = getVersionedPkgName(dpkg)
                 const dvv = getVersionedVendor(dvvn)
-                dvv.dependents.push(vv)
+                !dvv.dependents.includes(vv) && dvv !== vv && dvv.dependents.push(vv)
               }
             )
           }

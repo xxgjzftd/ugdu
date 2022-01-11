@@ -1,3 +1,5 @@
+import { isAbsolute } from 'path/posix'
+
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 
@@ -15,8 +17,13 @@ export const vendor = function (vvn: string, context: Context): Plugin {
       if (source === VENDOR_INPUT) {
         return VENDOR
       } else if (importer === VENDOR) {
-        return this.resolve(source, pkg.dependents[0].ap, Object.assign({ skipSelf: true }, options))
-      } else {
+        const dependent = pkg.dependents[0]
+        return this.resolve(
+          source,
+          `${dependent.ap}${dependent.local ? '' : '/node_modules/' + dependent.name}/package.json`,
+          Object.assign({ skipSelf: true }, options)
+        )
+      } else if (isAbsolute(importer!)) {
         const dep = getPkgFromSourceAndImporter(source, importer!)
         if (dep && shouldExternal(dep)) {
           return {

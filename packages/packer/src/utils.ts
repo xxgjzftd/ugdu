@@ -215,6 +215,7 @@ const getUtils = (context: Context) => {
       const pre = map.get(pkg)!
       if (pkg === end) {
         path = pre
+        break
       } else {
         pkg.dependencies.forEach(
           (dep) => {
