@@ -4,11 +4,11 @@ import type { UgduModule } from '@ugdu/runtime'
 
 export const entry = function (context: Context): Plugin {
   const {
+    building,
     config: { apps, base },
     project,
     utils: { isVendorModule, getLocalModulePath, getPkgName, getMetaModule, stringify }
   } = context
-  const building = !!project.mn2bm
   return {
     name: 'ugdu:entry',
     transformIndexHtml (html) {

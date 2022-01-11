@@ -9,5 +9,6 @@ declare module '@ugdu/processor' {
     config: Config
     project: Project
     utils: Utils
+    building: boolean
   }
 }

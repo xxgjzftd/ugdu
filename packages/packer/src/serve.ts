@@ -11,6 +11,11 @@ import type { AddressInfo } from 'net'
 import type { Plugin } from 'vite'
 
 export const serve = series(
+  new TaskOptions(
+    function setBuilding () {
+      this.manager.context.building = false
+    }
+  ),
   setContext,
   new TaskOptions(
     async function () {

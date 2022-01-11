@@ -104,7 +104,7 @@ const getUtils = (context: Context) => {
    */
   const getLocalModuleExternal = cached(
     (lmn) => [
-      ...getLocalPkgFromName(lmn).dependencies.map((dep) => new RegExp('^' + dep + '(/.+)?$')),
+      ...getLocalPkgFromName(lmn).dependencies.map((dep) => new RegExp('^' + dep.name + '(/.+)?$')),
       new RegExp(`^${appendSlash(ROUTES)}`)
     ]
   )

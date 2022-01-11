@@ -4,6 +4,7 @@ import type { BaseRoute } from '../config'
 
 export const routes = function (rmn: string, context: Context): Plugin {
   const {
+    building,
     CONSTANTS: { ROUTES_INPUT },
     project,
     utils: { isRoutesModule, getRoutesOption, getLocalModuleName, getPkgName, getPkgId, stringify }
@@ -87,7 +88,6 @@ export const routes = function (rmn: string, context: Context): Plugin {
           }
         )
 
-        const building = !!project.mn2bm
         const code = stringify(
           rrs,
           (key, value) => {
