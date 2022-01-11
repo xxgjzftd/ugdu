@@ -39,7 +39,7 @@ export const buildVendorModule = async function (vvn: string, context: Context) 
             publicDir: false,
             build: {
               rollupOptions: {
-                VENDOR_INPUT,
+                input: VENDOR_INPUT,
                 output: {
                   entryFileNames: join(assets, vvn, '[hash].js'),
                   chunkFileNames: join(assets, vvn, '[hash].js'),

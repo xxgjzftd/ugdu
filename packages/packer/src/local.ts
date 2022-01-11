@@ -154,7 +154,7 @@ export const buildLocalModules = series(
         (m) => {
           if (m.exports) {
             const mn = m.id
-            const missing = mn2bm.cur[mn].find((b, index) => m.exports!.includes(b, index))
+            const missing = mn2bm.cur[mn]?.find((b, index) => !m.exports!.includes(b, index))
             if (missing) {
               const dependents = meta.cur.modules
                 .filter((m) => m.imports.find((i) => i.id === mn && i.bindings.includes(missing)))
