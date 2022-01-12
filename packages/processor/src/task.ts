@@ -3,20 +3,51 @@ import { HookDriver } from './hook-driver'
 import type { Promisable } from 'type-fest'
 import type { BaseHooks } from './hook-driver'
 
+/**
+ * Taskoptions can be seen as a definition of a task.
+ *
+ * @remarks
+ * It's instance is used to create {@link Task}.
+ * The reason why we need this class is we can organize tasks easily by it's props and methods.
+ *
+ * @public
+ */
 export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
   constructor (
     private readonly _action: (this: Task<Hooks>) => Promisable<void>,
     private _hooks: Partial<Hooks> = {}
   ) {}
 
+  /**
+   * Invoked when the corresponding task is running.
+   *
+   * @readonly
+   */
   get action () {
     return this._action
   }
 
+  /**
+   * The hooks of this task options.
+   *
+   * @remarks
+   * We can adjust the hooks by {@link TaskOptions.setHooks}.
+   * The hooks of task options actually is the default hooks of the corresponding task.
+   *
+   * @readonly
+   */
   get hooks () {
     return this._hooks
   }
 
+  /**
+   * The parent task options of this task options.
+   *
+   * @remarks
+   * When the corresponding task is running the hooks hooked on the task of the parent task options should be invoked.
+   *
+   * @internal @readonly
+   */
   parents: TaskOptions<Hooks>[] = []
 
   /**
@@ -47,6 +78,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
    * @param hooks - The hooks to be set
    * @returns The reference of `this`
    *
+   * @public
    */
   setHooks (hooks: Partial<Hooks>) {
     this._hooks = hooks
@@ -63,6 +95,8 @@ export interface TaskManager {
 }
 
 /**
+ * The context of all task instances.
+ *
  * @public
  */
 export interface Context {}
@@ -76,7 +110,10 @@ export interface Context {}
  * @public
  */
 export class Task<Hooks extends BaseHooks<Hooks> = {}> extends HookDriver<Hooks> {
-  private _result?: Promisable<void>
+  /**
+   * If this task has executed.
+   */
+  private _executed = false
 
   constructor (private readonly _to: TaskOptions<Hooks>, readonly manager: TaskManager) {
     super()
@@ -86,18 +123,37 @@ export class Task<Hooks extends BaseHooks<Hooks> = {}> extends HookDriver<Hooks>
     ;(Object.entries(_to.hooks) as [keyof Hooks, Hooks[keyof Hooks]][]).forEach(([name, fn]) => this.hook(name, fn))
   }
 
+  /**
+   * Invoked when this task is running.
+   *
+   * @readonly
+   */
   get action () {
     return this._to.action
   }
 
+  /**
+   * Check whether this task is created by the specified `to`.
+   *
+   * @param to - The task options to be test
+   * @returns true if it is
+   */
   isCreatedBy (to: TaskOptions<Hooks>): boolean {
     return this._to === to
   }
 
+  /**
+   * Executes this task.
+   *
+   * @remarks
+   * By default, invoke this method repeatly will not invoke the action repeatly unless the `force` is specified as true.
+   *
+   * @param force - Whether to force reruning
+   */
   async run (force = false) {
-    if (force || !this._result) {
-      this._result = this.action.call(this)
+    if (force || !this._executed) {
+      this._executed = true
+      this.action.call(this)
     }
-    return this._result
   }
 }
