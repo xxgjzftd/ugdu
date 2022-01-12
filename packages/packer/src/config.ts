@@ -76,8 +76,7 @@ export const setConfig = new TaskOptions<SetConfigHooks>(
         build: {
           outDir: config.dist,
           assetsDir: config.assets,
-          emptyOutDir: false,
-          commonjsOptions: { esmExternals: true }
+          emptyOutDir: false
         }
       },
       config.vite ?? {}
