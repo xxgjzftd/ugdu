@@ -4,6 +4,8 @@ import type { TaskOptions, TaskManager, Context } from './task'
 import type { BaseHooks } from './hook-driver'
 
 /**
+ * The processor maintain tasks.
+ *
  * @public
  */
 export class Processor implements TaskManager {
