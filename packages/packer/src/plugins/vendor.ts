@@ -43,7 +43,8 @@ export const vendor = function (vvn: string, context: Context): Plugin {
         return (
           (names.length
             ? names.includes('*')
-              ? `export * from "${pkg.name}";`
+              ? `export * from "${pkg.name}";` +
+                (names.includes('default') ? `export { default } from "${pkg.name}";` : '')
               : `export { ${names.toString()} } from "${pkg.name}";`
             : '') +
           subs
