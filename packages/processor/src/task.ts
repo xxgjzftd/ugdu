@@ -9,6 +9,7 @@ import type { BaseHooks } from './hook-driver'
  * @remarks
  * It's instance is used to create {@link Task}.
  * The reason why we need this class is we can organize tasks easily by it's props and methods.
+ * The {@link series} and {@link parallel} can help to compose task options.
  *
  * @public
  */
