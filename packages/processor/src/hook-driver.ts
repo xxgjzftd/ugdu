@@ -1,4 +1,10 @@
 /**
+ * The type of hooks.
+ *
+ * @remarks
+ * - `first` means the hook fns are run sequentially until a hook fn returns a value other than `null` or `undefined`.
+ * - `sequential` as same as the `first` except that all of the hook fns will be run.
+ * - `parallel` also run all of the hook fns but in parallel mode.
  * @public
  */
 export type HookType = 'first' | 'sequential' | 'parallel'
@@ -14,9 +20,14 @@ export type HookFn = (...args: any[]) => any
 export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
 
 /**
+ * The HookDriver class.
+ *
  * @public
  */
 export class HookDriver<Hooks extends BaseHooks<Hooks>> {
+  /**
+   * Hook name to hook fns map.
+   */
   private _hn2hfm: { [Name in keyof Hooks]?: Hooks[Name][] } = {}
 
   /**
