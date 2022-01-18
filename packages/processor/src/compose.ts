@@ -12,6 +12,8 @@ type ParentTaskOptions<T extends TaskOptions[]> = TaskOptions<SatisfyHooks<Paren
  *
  * @param children - The task options to be wrapped
  * @returns The composed task options
+ *
+ * @public
  */
 export const series = function <T extends TaskOptions[]>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(
@@ -31,6 +33,8 @@ export const series = function <T extends TaskOptions[]>(...children: T) {
  *
  * @param children - The task options to be wrapped
  * @returns The composed task options
+ *
+ * @public
  */
 export const parallel = function <T extends TaskOptions[]>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(

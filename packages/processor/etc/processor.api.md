@@ -7,73 +7,60 @@
 import type { Promisable } from 'type-fest';
 import type { UnionToIntersection } from 'type-fest';
 
-// @public (undocumented)
+// @public
 export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>;
 
-// @public (undocumented)
+// @public
 export interface Context {
 }
 
-// @public (undocumented)
-export class HookDriver<Hooks extends BaseHooks<Hooks>> {
+// @public
+export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> {
+    constructor(_hns?: HookNames);
     // (undocumented)
-    allFns<Name extends keyof Hooks>(name: Name): Hooks[Name][];
+    call<Name extends HookNames[number], T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
+    children: HookDriver<any, any>[];
     // (undocumented)
-    call<Name extends keyof Hooks, T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
-    // (undocumented)
-    fns<Name extends keyof Hooks>(name: Name): Hooks[Name][];
-    // (undocumented)
+    fns<Name extends keyof Hooks>(name: Name): { [Name_1 in HookNames[number]]: Hooks[Name_1][]; }[Name];
     hook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
-    // @internal (undocumented)
-    parents: HookDriver<Hooks>[];
-    // (undocumented)
     prepend<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
-    // (undocumented)
     unhook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
-    // (undocumented)
-    unhookAll<Name extends keyof Hooks>(name?: Name): this;
 }
 
-// @public (undocumented)
+// @public
 export type HookFn = (...args: any[]) => any;
 
-// @public (undocumented)
+// @public
 export type HookType = 'first' | 'sequential' | 'parallel';
 
 // Warning: (ae-forgotten-export) The symbol "ParentTaskOptions" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
-export const parallel: <T extends TaskOptions<{}>[]>(...children: T) => ParentTaskOptions<T>;
+// @public
+export const parallel: <T extends TaskOptions<{}, []>[]>(...children: T) => ParentTaskOptions<T>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Processor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
 //
-// @public (undocumented)
+// @public
 class Processor implements TaskManager {
     readonly context: Context;
-    task<Hooks extends BaseHooks<Hooks> = {}>(to: TaskOptions<Hooks>): Task<Hooks>;
+    task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
 }
 export { Processor }
 export default Processor;
 
-// @public (undocumented)
-export const rerun: <T extends TaskOptions<{}>>(child: T) => TaskOptions<{}>;
-
-// @public (undocumented)
-export const series: <T extends TaskOptions<{}>[]>(...children: T) => ParentTaskOptions<T>;
+// @public
+export const series: <T extends TaskOptions<{}, []>[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
-export class Task<Hooks extends BaseHooks<Hooks> = {}> extends HookDriver<Hooks> {
+export class Task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> extends HookDriver<Hooks, HookNames> {
     // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
-    constructor(_to: TaskOptions<Hooks>, manager: TaskManager);
-    // (undocumented)
-    get action(): (this: Task<Hooks>) => Promisable<void>;
-    // (undocumented)
-    isCreatedBy(to: TaskOptions<Hooks>): boolean;
+    constructor(_to: TaskOptions<Hooks, HookNames>, manager: TaskManager);
+    get action(): (this: Task<Hooks, HookNames>) => Promisable<void>;
+    isCreatedBy(to: TaskOptions<any, any>): boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "manager" is marked as @public, but its signature references "TaskManager" which is marked as @internal
     //
     // (undocumented)
     readonly manager: TaskManager;
-    // (undocumented)
     run(force?: boolean): Promise<void>;
 }
 
@@ -84,20 +71,19 @@ export interface TaskManager {
     // (undocumented)
     context: Context;
     // (undocumented)
-    task<Hooks extends BaseHooks<Hooks> = {}>(to: TaskOptions<Hooks>): Task<Hooks>;
+    task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
 }
 
-// @public (undocumented)
-export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
-    constructor(_action: (this: Task<Hooks>) => Promisable<void>, _hooks?: Partial<Hooks>);
-    // (undocumented)
-    get action(): (this: Task<Hooks>) => Promisable<void>;
+// @public
+export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> {
+    constructor(action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>);
+    readonly action: (this: Task<Hooks, HookNames>) => Promisable<void>;
     // @internal
-    addParent(parent: TaskOptions<Hooks>): this;
-    // (undocumented)
-    get hooks(): Partial<Hooks>;
-    // (undocumented)
-    parents: TaskOptions<Hooks>[];
+    addChild(child: TaskOptions<any, any>): this;
+    // @internal
+    children: TaskOptions<any, any>[];
+    readonly hns: Array<keyof Hooks>;
+    hooks: Partial<Hooks>;
     setHooks(hooks: Partial<Hooks>): this;
 }
 
