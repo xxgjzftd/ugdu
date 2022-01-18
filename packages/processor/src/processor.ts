@@ -12,7 +12,7 @@ export class Processor implements TaskManager {
   /**
    * Holds all tasks created by this processor.
    */
-  private readonly _tasks: Task<{}>[] = []
+  private readonly _tasks: Task<any, any>[] = []
 
   /**
    * The context of {@link Task.action}.
@@ -25,7 +25,9 @@ export class Processor implements TaskManager {
    * @param to - task options
    * @returns A task instance
    */
-  task <Hooks extends BaseHooks<Hooks> = {}>(to: TaskOptions<Hooks>): Task<Hooks> {
+  task <Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(
+    to: TaskOptions<Hooks, HookNames>
+  ): Task<Hooks, HookNames> {
     let task = this._tasks.find((task) => task.isCreatedBy(to))
     if (!task) {
       task = new Task(to, this)

@@ -13,54 +13,54 @@ import type { BaseHooks } from './hook-driver'
  *
  * @public
  */
-export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
-  constructor (
-    private readonly _action: (this: Task<Hooks>) => Promisable<void>,
-    private _hooks: Partial<Hooks> = {}
-  ) {}
+export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> {
+  constructor (action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>) {
+    this.action = action
+    this.hns = hns || []
+    this.hooks = hooks || {}
+  }
 
   /**
    * Invoked when the corresponding task is running.
    *
    * @readonly
    */
-  get action () {
-    return this._action
-  }
+  readonly action: (this: Task<Hooks, HookNames>) => Promisable<void>
+
+  /**
+   * Hook names this corresponding task could call with.
+   *
+   * @readonly
+   */
+  readonly hns: Array<keyof Hooks>
 
   /**
    * The hooks of this task options.
    *
    * @remarks
-   * We can adjust the hooks by {@link TaskOptions.setHooks}.
+   * We can adjust the hooks by invoking {@link TaskOptions.setHooks}.
    * The hooks of task options actually is the default hooks of the corresponding task.
    *
-   * @readonly
    */
-  get hooks () {
-    return this._hooks
-  }
+  hooks: Partial<Hooks>
 
   /**
-   * The parent task options of this task options.
-   *
-   * @remarks
-   * When the corresponding task is running the hooks hooked on the task of the parent task options should be invoked.
+   * The children task options of this task options.
    *
    * @internal @readonly
    */
-  parents: TaskOptions<Hooks>[] = []
+  children: TaskOptions<any, any>[] = []
 
   /**
-   * Add parent to this task options.
+   * Add child to this task options.
    *
-   * @param parent - The parent task options
+   * @param child - The child task options
    * @returns The reference of `this`
    *
    * @internal
    */
-  addParent (parent: TaskOptions<Hooks>) {
-    this.parents.push(parent)
+  addChild (child: TaskOptions<any, any>) {
+    this.children.push(child)
     return this
   }
 
@@ -82,7 +82,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
    * @public
    */
   setHooks (hooks: Partial<Hooks>) {
-    this._hooks = hooks
+    this.hooks = hooks
     return this
   }
 }
@@ -92,7 +92,9 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}> {
  */
 export interface TaskManager {
   context: Context
-  task<Hooks extends BaseHooks<Hooks> = {}>(to: TaskOptions<Hooks>): Task<Hooks>
+  task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(
+    to: TaskOptions<Hooks, HookNames>
+  ): Task<Hooks, HookNames>
 }
 
 /**
@@ -110,19 +112,22 @@ export interface Context {}
  *
  * @public
  */
-export class Task<Hooks extends BaseHooks<Hooks> = {}> extends HookDriver<Hooks> {
+export class Task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> extends HookDriver<
+  Hooks,
+  HookNames
+> {
+  constructor (private readonly _to: TaskOptions<Hooks, HookNames>, readonly manager: TaskManager) {
+    super(_to.hns as HookNames)
+    this._to = _to
+    this.manager = manager
+    _to.children.forEach((child) => this.children.push(manager.task(child)))
+    ;(Object.entries(_to.hooks) as [keyof Hooks, Hooks[keyof Hooks]][]).forEach(([name, fn]) => this.hook(name, fn))
+  }
+
   /**
    * If this task has executed.
    */
   private _executed = false
-
-  constructor (private readonly _to: TaskOptions<Hooks>, readonly manager: TaskManager) {
-    super()
-    this._to = _to
-    this.manager = manager
-    _to.parents.forEach((p) => this.parents.push(manager.task(p)))
-    ;(Object.entries(_to.hooks) as [keyof Hooks, Hooks[keyof Hooks]][]).forEach(([name, fn]) => this.hook(name, fn))
-  }
 
   /**
    * Invoked when this task is running.
@@ -139,7 +144,7 @@ export class Task<Hooks extends BaseHooks<Hooks> = {}> extends HookDriver<Hooks>
    * @param to - The task options to be test
    * @returns true if it is
    */
-  isCreatedBy (to: TaskOptions<Hooks>): boolean {
+  isCreatedBy (to: TaskOptions<any, any>): boolean {
     return this._to === to
   }
 

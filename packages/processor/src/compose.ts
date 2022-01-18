@@ -22,7 +22,7 @@ export const series = function <T extends TaskOptions[]>(...children: T) {
       }
     }
   )
-  children.forEach((child) => child.addParent(parent))
+  children.forEach((child) => parent.addChild(child))
   return parent
 }
 
@@ -39,6 +39,6 @@ export const parallel = function <T extends TaskOptions[]>(...children: T) {
       await Promise.all(children.map((child) => manager.task(child).run()))
     }
   )
-  children.forEach((child) => child.addParent(parent))
+  children.forEach((child) => parent.addChild(child))
   return parent
 }
