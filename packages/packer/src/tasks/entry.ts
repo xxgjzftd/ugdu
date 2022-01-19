@@ -2,7 +2,7 @@ import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
 import { setContext } from './context'
-import { entry } from './plugins/entry'
+import { entry } from '../plugins/entry'
 
 export const buildEntryModule = series(
   setContext,

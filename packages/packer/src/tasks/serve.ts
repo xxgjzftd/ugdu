@@ -4,8 +4,8 @@ import { mergeConfig, createServer } from 'vite'
 import { series, TaskOptions } from '@ugdu/processor'
 
 import { setContext } from './context'
-import { entry } from './plugins/entry'
-import { routes } from './plugins/routes'
+import { entry } from '../plugins/entry'
+import { routes } from '../plugins/routes'
 
 import type { AddressInfo } from 'net'
 import type { Plugin } from 'vite'

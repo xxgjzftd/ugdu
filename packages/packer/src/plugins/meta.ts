@@ -4,7 +4,7 @@ import { init, parse } from 'es-module-lexer'
 import type { OutputChunk } from 'rollup'
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
-import type { PkgNode } from '../project'
+import type { PkgNode } from '../tasks/project'
 
 export const meta = function (mn: string, context: Context): Plugin {
   const {

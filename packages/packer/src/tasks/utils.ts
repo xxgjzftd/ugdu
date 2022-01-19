@@ -3,7 +3,7 @@ import { isAbsolute, resolve as originResolve } from 'path'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { cached } from './shared'
+import { cached } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 import { setProject, getPkgId } from './project'

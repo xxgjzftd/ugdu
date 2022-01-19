@@ -3,10 +3,10 @@ import { join } from 'path/posix'
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
-import { cached } from './shared'
+import { cached } from '../shared/utils'
 import { setContext } from './context'
-import { routes } from './plugins/routes'
-import { meta } from './plugins/meta'
+import { routes } from '../plugins/routes'
+import { meta } from '../plugins/meta'
 
 import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'

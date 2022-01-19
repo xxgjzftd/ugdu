@@ -9,7 +9,7 @@ import { execa } from 'execa'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { cached, getDefault } from './shared'
+import { cached, getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 

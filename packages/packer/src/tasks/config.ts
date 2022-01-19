@@ -89,5 +89,6 @@ export const setConfig = new TaskOptions<SetConfigHooks>(
       }
     )
     this.manager.context.config = config as Config
-  }
+  },
+  ['get-config']
 )
