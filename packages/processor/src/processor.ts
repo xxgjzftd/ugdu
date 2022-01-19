@@ -25,9 +25,9 @@ export class Processor implements TaskManager {
    * @param to - task options
    * @returns A task instance
    */
-  task <Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(
-    to: TaskOptions<Hooks, HookNames>
-  ): Task<Hooks, HookNames> {
+  task <Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(
+    to: TaskOptions<Hooks, HookName>
+  ): Task<Hooks, HookName> {
     let task = this._tasks.find((task) => task.isCreatedBy(to))
     if (!task) {
       task = new Task(to, this)

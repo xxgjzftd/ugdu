@@ -15,13 +15,15 @@ export interface Context {
 }
 
 // @public
-export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
-    constructor(_hns?: HookNames);
+export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks = keyof Hooks> {
+    constructor(_hns?: HookName[]);
     // (undocumented)
-    call<Name extends HookNames[number], T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
+    call<Name extends HookName, T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
     children: HookDriver<any, any>[];
     // (undocumented)
-    fns<Name extends keyof Hooks>(name: Name): { [Name_1 in HookNames[number]]: Hooks[Name_1][]; }[Name];
+    fns<Name extends keyof Hooks>(name: Name): {
+        [x: string]: any[];
+    }[Name];
     hook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
     prepend<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
     unhook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
@@ -43,7 +45,7 @@ export const parallel: <T extends TaskOptions<any, any>[]>(...children: T) => Pa
 // @public
 class Processor implements TaskManager {
     readonly context: Context;
-    task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
+    task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(to: TaskOptions<Hooks, HookName>): Task<Hooks, HookName>;
 }
 export { Processor }
 export default Processor;
@@ -52,10 +54,10 @@ export default Processor;
 export const series: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
-export class Task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> extends HookDriver<Hooks, HookNames> {
+export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> extends HookDriver<Hooks, HookName> {
     // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
-    constructor(_to: TaskOptions<Hooks, HookNames>, manager: TaskManager);
-    get action(): (this: Task<Hooks, HookNames>) => Promisable<void>;
+    constructor(_to: TaskOptions<Hooks, HookName>, manager: TaskManager);
+    get action(): (this: Task<Hooks, HookName>) => Promisable<void>;
     isCreatedBy(to: TaskOptions<any, any>): boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "manager" is marked as @public, but its signature references "TaskManager" which is marked as @internal
     //
@@ -71,18 +73,18 @@ export interface TaskManager {
     // (undocumented)
     context: Context;
     // (undocumented)
-    task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
+    task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(to: TaskOptions<Hooks, HookName>): Task<Hooks, HookName>;
 }
 
 // @public
-export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
-    constructor(action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>);
-    readonly action: (this: Task<Hooks, HookNames>) => Promisable<void>;
+export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends keyof Hooks = keyof Hooks> {
+    constructor(action: (this: Task<Hooks, HookName>) => Promisable<void>, hns?: HookName[], hooks?: Partial<Hooks>);
+    readonly action: (this: Task<Hooks, HookName>) => Promisable<void>;
     // @internal
     addChild(child: TaskOptions<any, any>): this;
     // @internal
     children: TaskOptions<any, any>[];
-    readonly hns: Array<keyof Hooks>;
+    readonly hns: HookName[];
     hooks: Partial<Hooks>;
     setHooks(hooks: Partial<Hooks>): this;
 }

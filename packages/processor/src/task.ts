@@ -13,11 +13,8 @@ import type { BaseHooks } from './hook-driver'
  *
  * @public
  */
-export class TaskOptions<
-  Hooks extends BaseHooks<Hooks> = {},
-  HookNames extends Array<keyof Hooks> = Array<keyof Hooks>
-> {
-  constructor (action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>) {
+export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends keyof Hooks = keyof Hooks> {
+  constructor (action: (this: Task<Hooks, HookName>) => Promisable<void>, hns?: HookName[], hooks?: Partial<Hooks>) {
     this.action = action
     this.hns = hns || []
     this.hooks = hooks || {}
@@ -28,14 +25,14 @@ export class TaskOptions<
    *
    * @readonly
    */
-  readonly action: (this: Task<Hooks, HookNames>) => Promisable<void>
+  readonly action: (this: Task<Hooks, HookName>) => Promisable<void>
 
   /**
    * Hook names this corresponding task could call with.
    *
    * @readonly
    */
-  readonly hns: Array<keyof Hooks>
+  readonly hns: HookName[]
 
   /**
    * The hooks of this task options.
@@ -95,9 +92,9 @@ export class TaskOptions<
  */
 export interface TaskManager {
   context: Context
-  task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>>(
-    to: TaskOptions<Hooks, HookNames>
-  ): Task<Hooks, HookNames>
+  task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(
+    to: TaskOptions<Hooks, HookName>
+  ): Task<Hooks, HookName>
 }
 
 /**
@@ -115,12 +112,9 @@ export interface Context {}
  *
  * @public
  */
-export class Task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> extends HookDriver<
-  Hooks,
-  HookNames
-> {
-  constructor (private readonly _to: TaskOptions<Hooks, HookNames>, readonly manager: TaskManager) {
-    super(_to.hns as HookNames)
+export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> extends HookDriver<Hooks, HookName> {
+  constructor (private readonly _to: TaskOptions<Hooks, HookName>, readonly manager: TaskManager) {
+    super(_to.hns)
     this._to = _to
     this.manager = manager
     _to.children.forEach((child) => this.children.push(manager.task(child)))

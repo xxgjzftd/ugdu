@@ -4,8 +4,8 @@ import type { UnionToIntersection } from 'type-fest'
 import type { BaseHooks } from './hook-driver'
 
 type SatisfyHooks<T> = T extends BaseHooks<T> ? T : never
-type ParentHooks<T extends TaskOptions> = UnionToIntersection<T extends TaskOptions<infer U> ? U : never>
-type ParentTaskOptions<T extends TaskOptions[]> = TaskOptions<SatisfyHooks<ParentHooks<T[number]>>>
+type ParentHooks<T extends TaskOptions<any, any>> = UnionToIntersection<T extends TaskOptions<infer U> ? U : never>
+type ParentTaskOptions<T extends TaskOptions<any, any>[]> = TaskOptions<SatisfyHooks<ParentHooks<T[number]>>, never>
 
 /**
  * Compose the children task options in series mode.

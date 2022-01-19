@@ -27,10 +27,10 @@ export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
  *
  * @public
  */
-export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
-  constructor (_hns?: HookNames) {
+export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks = keyof Hooks> {
+  constructor (_hns?: HookName[]) {
     this._hns = _hns || []
-    const _hn2hfm = {} as { [Name in HookNames[number]]: Hooks[Name][] }
+    const _hn2hfm = {} as { [Name in HookName]: Hooks[Name][] }
     this._hns.forEach((hn) => (_hn2hfm[hn] = []))
     this._hn2hfm = _hn2hfm
   }
@@ -38,12 +38,12 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<
   /**
    * Hook names this hook driver could call with.
    */
-  private readonly _hns: Array<keyof Hooks>
+  private readonly _hns: HookName[]
 
   /**
    * Hook name to hook fns map.
    */
-  private readonly _hn2hfm: { [Name in HookNames[number]]: Hooks[Name][] }
+  private readonly _hn2hfm: { [Name in HookName]: Hooks[Name][] }
 
   /**
    * The children of this hook driver.
@@ -56,8 +56,8 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<
    * @param name - The hook name
    * @returns The hook driver which is responsible for invoking the corresponding hook function
    */
-  private _getTarget <Name extends keyof Hooks>(name: Name) {
-    if (this._hns.includes(name)) {
+  private _getTarget <Name extends keyof Hooks>(name: Name): HookDriver<any, any> | void {
+    if (this._hns.includes(name as unknown as HookName)) {
       return this
     } else {
       this.children.forEach(
@@ -76,7 +76,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<
    * @param name - The hook name this hook driver could call with
    * @returns The corresponding fns
    */
-  private _fns <Name extends HookNames[number]>(name: Name) {
+  private _fns <Name extends HookName>(name: Name) {
     return this._hn2hfm[name]
   }
 
@@ -148,7 +148,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<
    * @param args - The args of the hook fn
    * @returns The return value of the hook fn if `type` is `first` else return nothing
    */
-  async call <Name extends HookNames[number], T extends HookType>(
+  async call <Name extends HookName, T extends HookType>(
     name: Name,
     type: T,
     ...args: Parameters<Hooks[Name]>
