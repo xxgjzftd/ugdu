@@ -85,7 +85,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
    * @param name - The hook name
    * @returns The corresponding fns
    */
-  fns <Name extends keyof Hooks>(name: Name) {
+  fns <Name extends keyof Hooks>(name: Name): Hooks[Name][] {
     const target = this._getTarget(name)
     if (!target) {
       throw new Error(`Hook name '${name}' doesn't exist in this hook driver.`)

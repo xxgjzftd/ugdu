@@ -21,9 +21,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
     call<Name extends HookName, T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
     children: HookDriver<any, any>[];
     // (undocumented)
-    fns<Name extends keyof Hooks>(name: Name): {
-        [x: string]: any[];
-    }[Name];
+    fns<Name extends keyof Hooks>(name: Name): Hooks[Name][];
     hook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
     prepend<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
     unhook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
