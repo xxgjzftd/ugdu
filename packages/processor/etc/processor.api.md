@@ -36,7 +36,7 @@ export type HookType = 'first' | 'sequential' | 'parallel';
 // Warning: (ae-forgotten-export) The symbol "ParentTaskOptions" needs to be exported by the entry point index.d.ts
 //
 // @public
-export const parallel: <T extends TaskOptions<{}, never[]>[]>(...children: T) => ParentTaskOptions<T>;
+export const parallel: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Processor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
 //
@@ -49,7 +49,7 @@ export { Processor }
 export default Processor;
 
 // @public
-export const series: <T extends TaskOptions<{}, never[]>[]>(...children: T) => ParentTaskOptions<T>;
+export const series: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
 export class Task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> extends HookDriver<Hooks, HookNames> {

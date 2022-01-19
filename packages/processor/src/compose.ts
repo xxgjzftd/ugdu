@@ -15,7 +15,7 @@ type ParentTaskOptions<T extends TaskOptions[]> = TaskOptions<SatisfyHooks<Paren
  *
  * @public
  */
-export const series = function <T extends TaskOptions[]>(...children: T) {
+export const series = function <T extends TaskOptions<any, any>[]>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(
     async function () {
       const { manager } = this
@@ -36,7 +36,7 @@ export const series = function <T extends TaskOptions[]>(...children: T) {
  *
  * @public
  */
-export const parallel = function <T extends TaskOptions[]>(...children: T) {
+export const parallel = function <T extends TaskOptions<any, any>[]>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(
     async function () {
       const { manager } = this

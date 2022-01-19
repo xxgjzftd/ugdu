@@ -29,16 +29,16 @@ export interface BaseRoute {
 }
 
 // @public (undocumented)
-export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks>;
+export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module" | "build-routes-module" | "build-vendor-module")[]>;
 
 // @public (undocumented)
-export const buildEntryModule: TaskOptions<SetConfigHooks & SetProjectHooks>;
+export const buildEntryModule: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
 
 // @public (undocumented)
 export const buildLocalModule: (this: any, lmn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildLocalModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks>;
+export const buildLocalModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module")[]>;
 
 // @public (undocumented)
 export interface BuildLocalModulesHooks {
@@ -50,7 +50,7 @@ export interface BuildLocalModulesHooks {
 export const buildRoutesModule: (this: any, rmn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildRoutesModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks>;
+export const buildRoutesModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, ("get-config" | keyof SetProjectHooks | "build-routes-module")[]>;
 
 // @public (undocumented)
 export interface BuildRoutesModulesHooks {
@@ -62,7 +62,7 @@ export interface BuildRoutesModulesHooks {
 export const buildVendorModule: (vvn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks>;
+export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module" | "build-vendor-module")[]>;
 
 // @public (undocumented)
 export interface BuildVendorModulesHooks {
@@ -194,10 +194,10 @@ export interface RoutesOption {
 }
 
 // @public (undocumented)
-export const serve: TaskOptions<SetConfigHooks & SetProjectHooks>;
+export const serve: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
 
 // @public (undocumented)
-export const setConfig: TaskOptions<SetConfigHooks>;
+export const setConfig: TaskOptions<SetConfigHooks, "get-config"[]>;
 
 // @public (undocumented)
 export interface SetConfigHooks {
@@ -206,13 +206,13 @@ export interface SetConfigHooks {
 }
 
 // @public (undocumented)
-export const setConstants: TaskOptions<{}>;
+export const setConstants: TaskOptions<{}, never[]>;
 
 // @public (undocumented)
-export const setContext: TaskOptions<SetConfigHooks & SetProjectHooks>;
+export const setContext: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
 
 // @public (undocumented)
-export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks>;
+export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
 
 // @public (undocumented)
 export interface SetProjectHooks {
@@ -233,7 +233,7 @@ export interface SetProjectHooks {
 }
 
 // @public (undocumented)
-export const setUtils: TaskOptions<SetConfigHooks & SetProjectHooks>;
+export const setUtils: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
 
 // @public (undocumented)
 export interface Sources {
@@ -280,7 +280,7 @@ export interface UserConfig {
 export type Utils = ReturnType<typeof getUtils>;
 
 // @public (undocumented)
-export const write: TaskOptions<{}>;
+export const write: TaskOptions<{}, never[]>;
 
 // (No @packageDocumentation comment for this package)
 

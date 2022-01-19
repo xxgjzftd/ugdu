@@ -75,6 +75,7 @@ export const buildRoutesModules = series(
 
       await Promise.all([...pending].map((rmn) => this.call('build-routes-module', 'parallel', rmn, context)))
     },
+    ['build-routes-module'],
     {
       'build-routes-module': buildRoutesModule
     }

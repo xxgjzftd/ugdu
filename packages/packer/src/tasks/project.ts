@@ -335,6 +335,15 @@ export const setProject = series(
       project.sources = await this.call('get-sources', 'first', context)
       project.routes = await this.call('get-routes', 'first', context)
     },
+    [
+      'get-local-packages',
+      'get-alias',
+      'get-all-packages',
+      'get-previous-meta',
+      'get-current-meta',
+      'get-sources',
+      'get-routes'
+    ],
     {
       'get-local-packages': getLocalPkgs,
       'get-alias': getAlias,

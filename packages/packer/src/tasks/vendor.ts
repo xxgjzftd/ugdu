@@ -200,6 +200,7 @@ export const buildVendorModules = series(
         }
       }
     },
+    ['build-vendor-module'],
     {
       'build-vendor-module': buildVendorModule
     }
