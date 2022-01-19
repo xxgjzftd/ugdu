@@ -4,6 +4,12 @@ import { build, mergeConfig } from 'vite'
 import { setContext } from './context'
 import { entry } from '../plugins/entry'
 
+/**
+ * @remarks
+ * This task build the entry of the project.
+ *
+ * @public
+ */
 export const buildEntryModule = series(
   setContext,
   new TaskOptions(

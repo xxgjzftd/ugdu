@@ -47,10 +47,16 @@ const getModuleNameToBindingsMap = (context: Context) => {
   return mn2bm
 }
 
+/**
+ * @public
+ */
 export interface BuildLocalModulesHooks {
   'build-local-module'(lmn: string, context: Context): Promisable<void>
 }
 
+/**
+ * @public
+ */
 export const buildLocalModule = cached(
   async function (lmn, context: Context) {
     const {
@@ -89,6 +95,9 @@ export const buildLocalModule = cached(
   }
 )
 
+/**
+ * @public
+ */
 export const buildLocalModules = series(
   setContext,
   new TaskOptions<BuildLocalModulesHooks>(

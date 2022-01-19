@@ -18,6 +18,9 @@ import type { PackageNode } from 'dependencies-hierarchy'
 import type { AliasOptions } from 'vite'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @public
+ */
 export interface Project {
   alias: AliasOptions
   pkgs: PkgNode[]
@@ -160,8 +163,14 @@ const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
     }
   )
 
+/**
+ * @internal
+ */
 export const getPkgId = cached((lpn) => lpn.replace(/.+\//, ''))
 
+/**
+ * @internal
+ */
 export const getAliasKey = cached((lpn) => `@${getPkgId(lpn)}`)
 
 const getAlias = (localPkgs: PkgNode[]) => {
@@ -173,6 +182,9 @@ const getAlias = (localPkgs: PkgNode[]) => {
   return alias
 }
 
+/**
+ * @internal
+ */
 export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
   const localPkgs = [...localPkgToDepsMap.keys()]
   const pkgs = [...localPkgs]
@@ -303,6 +315,9 @@ const getRoutesModuleNameToPathsMap = (context: Context) => {
   return rmn2pm
 }
 
+/**
+ * @public
+ */
 export interface SetProjectHooks {
   'get-local-packages'(cwd: string): Promisable<PkgNode[]>
   'get-alias'(localPkgs: PkgNode[]): Promisable<AliasOptions>
@@ -313,6 +328,9 @@ export interface SetProjectHooks {
   'get-routes'(context: Context): Promisable<RoutesModuleNameToPathsMap>
 }
 
+/**
+ * @public
+ */
 export const setProject = series(
   parallel(setConstants, setConfig),
   new TaskOptions<SetProjectHooks>(

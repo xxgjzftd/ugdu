@@ -1,7 +1,13 @@
 import { TaskOptions } from '@ugdu/processor'
 import { resolve } from 'path/posix'
 
+/**
+ * @internal
+ */
 export const CONSTANTS = {
+  /**
+   * The filename of the file which store previous build info.
+   */
   META_JSON: 'meta.json',
   PACKAGE_JSON: 'package.json',
   BINDING_NAME_SEP: '$ugdu',
@@ -13,10 +19,16 @@ export const CONSTANTS = {
   VENDOR_INPUT: resolve('vendor')
 } as const
 
+/**
+ * @internal
+ */
+export type CONSTANTS = typeof CONSTANTS
+
+/**
+ * @public
+ */
 export const setConstants = new TaskOptions(
   function () {
     this.manager.context.CONSTANTS = CONSTANTS
   }
 )
-
-export type CONSTANTS = typeof CONSTANTS

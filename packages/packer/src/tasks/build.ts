@@ -11,7 +11,7 @@ import { write } from './write'
  * The `build` task options.
  *
  * @remarks
- * The build task contains the following subtasks
+ * This task contains the following subtasks
  * - set {@link Context.building} to `true`
  * - set {@link Context}
  * - build `local modules` and `routes modules` in parallel
