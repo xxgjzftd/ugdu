@@ -7,6 +7,20 @@ import { buildVendorModules } from './vendor'
 import { buildEntryModule } from './entry'
 import { write } from './write'
 
+/**
+ * The `build` task options.
+ *
+ * @remarks
+ * The build task contains the following subtasks
+ * - set {@link Context.building} to `true`
+ * - set {@link Context}
+ * - build `local modules` and `routes modules` in parallel
+ * - build `vendor modules`
+ * - build `entry modules`
+ * - write the info of this build to disk
+ *
+ * @public
+ */
 export const build = series(
   new TaskOptions(
     function setBuilding () {

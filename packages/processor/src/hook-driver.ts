@@ -97,7 +97,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
    *
    * @param name - The hook name
    * @param fn - The hook fn
-   * @param prepend - Wether to prepend
+   * @param prepend - Whether to prepend
    * @returns The hook driver instance for chained calls
    */
   private _hook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name], prepend: boolean) {

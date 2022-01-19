@@ -29,16 +29,16 @@ export interface BaseRoute {
 }
 
 // @public (undocumented)
-export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module" | "build-routes-module" | "build-vendor-module")[]>;
+export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks, never>;
 
 // @public (undocumented)
-export const buildEntryModule: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
+export const buildEntryModule: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
 export const buildLocalModule: (this: any, lmn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildLocalModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module")[]>;
+export const buildLocalModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks, never>;
 
 // @public (undocumented)
 export interface BuildLocalModulesHooks {
@@ -50,7 +50,7 @@ export interface BuildLocalModulesHooks {
 export const buildRoutesModule: (this: any, rmn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildRoutesModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, ("get-config" | keyof SetProjectHooks | "build-routes-module")[]>;
+export const buildRoutesModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, never>;
 
 // @public (undocumented)
 export interface BuildRoutesModulesHooks {
@@ -62,7 +62,7 @@ export interface BuildRoutesModulesHooks {
 export const buildVendorModule: (vvn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
-export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks, ("get-config" | keyof SetProjectHooks | "build-local-module" | "build-vendor-module")[]>;
+export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks, never>;
 
 // @public (undocumented)
 export interface BuildVendorModulesHooks {
@@ -194,10 +194,10 @@ export interface RoutesOption {
 }
 
 // @public (undocumented)
-export const serve: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
+export const serve: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
-export const setConfig: TaskOptions<SetConfigHooks, "get-config"[]>;
+export const setConfig: TaskOptions<SetConfigHooks, "get-config">;
 
 // @public (undocumented)
 export interface SetConfigHooks {
@@ -206,13 +206,13 @@ export interface SetConfigHooks {
 }
 
 // @public (undocumented)
-export const setConstants: TaskOptions<{}, never[]>;
+export const setConstants: TaskOptions<{}, never>;
 
 // @public (undocumented)
-export const setContext: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
+export const setContext: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
-export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
+export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
 export interface SetProjectHooks {
@@ -233,7 +233,7 @@ export interface SetProjectHooks {
 }
 
 // @public (undocumented)
-export const setUtils: TaskOptions<SetConfigHooks & SetProjectHooks, ("get-config" | keyof SetProjectHooks)[]>;
+export const setUtils: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
 export interface Sources {
@@ -280,7 +280,7 @@ export interface UserConfig {
 export type Utils = ReturnType<typeof getUtils>;
 
 // @public (undocumented)
-export const write: TaskOptions<{}, never[]>;
+export const write: TaskOptions<{}, never>;
 
 // (No @packageDocumentation comment for this package)
 
