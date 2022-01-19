@@ -27,7 +27,7 @@ export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
  *
  * @public
  */
-export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> {
+export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
   constructor (_hns?: HookNames) {
     this._hns = _hns || []
     const _hn2hfm = {} as { [Name in HookNames[number]]: Hooks[Name][] }

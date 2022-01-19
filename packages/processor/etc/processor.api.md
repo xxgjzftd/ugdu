@@ -15,7 +15,7 @@ export interface Context {
 }
 
 // @public
-export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> {
+export class HookDriver<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
     constructor(_hns?: HookNames);
     // (undocumented)
     call<Name extends HookNames[number], T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
@@ -36,7 +36,7 @@ export type HookType = 'first' | 'sequential' | 'parallel';
 // Warning: (ae-forgotten-export) The symbol "ParentTaskOptions" needs to be exported by the entry point index.d.ts
 //
 // @public
-export const parallel: <T extends TaskOptions<{}, []>[]>(...children: T) => ParentTaskOptions<T>;
+export const parallel: <T extends TaskOptions<{}, never[]>[]>(...children: T) => ParentTaskOptions<T>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Processor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
 //
@@ -49,10 +49,10 @@ export { Processor }
 export default Processor;
 
 // @public
-export const series: <T extends TaskOptions<{}, []>[]>(...children: T) => ParentTaskOptions<T>;
+export const series: <T extends TaskOptions<{}, never[]>[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
-export class Task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> extends HookDriver<Hooks, HookNames> {
+export class Task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> extends HookDriver<Hooks, HookNames> {
     // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
     constructor(_to: TaskOptions<Hooks, HookNames>, manager: TaskManager);
     get action(): (this: Task<Hooks, HookNames>) => Promisable<void>;
@@ -71,11 +71,11 @@ export interface TaskManager {
     // (undocumented)
     context: Context;
     // (undocumented)
-    task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
+    task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>>(to: TaskOptions<Hooks, HookNames>): Task<Hooks, HookNames>;
 }
 
 // @public
-export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> {
+export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = Array<keyof Hooks>> {
     constructor(action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>);
     readonly action: (this: Task<Hooks, HookNames>) => Promisable<void>;
     // @internal

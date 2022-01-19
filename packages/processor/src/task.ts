@@ -13,7 +13,10 @@ import type { BaseHooks } from './hook-driver'
  *
  * @public
  */
-export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> {
+export class TaskOptions<
+  Hooks extends BaseHooks<Hooks> = {},
+  HookNames extends Array<keyof Hooks> = Array<keyof Hooks>
+> {
   constructor (action: (this: Task<Hooks, HookNames>) => Promisable<void>, hns?: HookNames, hooks?: Partial<Hooks>) {
     this.action = action
     this.hns = hns || []
@@ -92,7 +95,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookNames extends 
  */
 export interface TaskManager {
   context: Context
-  task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []>(
+  task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>>(
     to: TaskOptions<Hooks, HookNames>
   ): Task<Hooks, HookNames>
 }
@@ -112,7 +115,7 @@ export interface Context {}
  *
  * @public
  */
-export class Task<Hooks extends BaseHooks<Hooks> = {}, HookNames extends Array<keyof Hooks> = []> extends HookDriver<
+export class Task<Hooks extends BaseHooks<Hooks>, HookNames extends Array<keyof Hooks>> extends HookDriver<
   Hooks,
   HookNames
 > {
