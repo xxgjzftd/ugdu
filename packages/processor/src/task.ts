@@ -122,9 +122,9 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
   }
 
   /**
-   * If this task has executed.
+   * The return value of this task's action.
    */
-  private _executed = false
+  private _result: Promisable<void> | null = null
 
   /**
    * Invoked when this task is running.
@@ -154,9 +154,9 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
    * @param force - Whether to force reruning
    */
   async run (force = false) {
-    if (force || !this._executed) {
-      this._executed = true
-      this.action.call(this)
+    if (force || !this._result) {
+      this._result = this.action.call(this)
     }
+    return this._result
   }
 }
