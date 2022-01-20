@@ -6,6 +6,9 @@ import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 import type { PkgNode } from '../tasks/project'
 
+/**
+ * @internal
+ */
 export const meta = function (mn: string, context: Context): Plugin {
   const {
     CONSTANTS: { BINDING_NAME_SEP },

@@ -12,10 +12,16 @@ import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @public
+ */
 export interface BuildRoutesModulesHooks {
   'build-routes-module'(rmn: string, context: Context): Promisable<void>
 }
 
+/**
+ * @internal
+ */
 export const buildRoutesModule = cached(
   async function (rmn, context: Context) {
     const {
@@ -47,6 +53,9 @@ export const buildRoutesModule = cached(
   }
 )
 
+/**
+ * @public
+ */
 export const buildRoutesModules = series(
   setContext,
   new TaskOptions<BuildRoutesModulesHooks>(

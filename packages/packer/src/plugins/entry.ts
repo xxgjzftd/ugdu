@@ -2,6 +2,9 @@ import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 import type { UgduModule } from '@ugdu/runtime'
 
+/**
+ * @internal
+ */
 export const entry = function (context: Context): Plugin {
   const {
     building,

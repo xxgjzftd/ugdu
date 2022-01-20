@@ -40,7 +40,7 @@ const getModuleNameToBindingsMap = (context: Context) => {
           )
         }
       )
-      Object.keys(map).forEach((vvn) => (map[vvn] = [...new Set(map[vvn])].sort()))
+      Object.keys(map).forEach((mn) => (map[mn] = [...new Set(map[mn])].sort()))
     }
   )
 

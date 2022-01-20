@@ -1,6 +1,9 @@
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @internal
+ */
 export const local = function (lmn: string, context: Context): Plugin {
   const {
     project: {

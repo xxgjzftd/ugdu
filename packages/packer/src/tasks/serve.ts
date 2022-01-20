@@ -10,6 +10,9 @@ import { routes } from '../plugins/routes'
 import type { AddressInfo } from 'net'
 import type { Plugin } from 'vite'
 
+/**
+ * @public
+ */
 export const serve = series(
   new TaskOptions(
     function setBuilding () {

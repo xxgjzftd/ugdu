@@ -3,7 +3,7 @@ import { join } from 'path/posix'
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
-import { cached } from '../shared/utils'
+import { assign, cached } from '../shared/utils'
 import { setContext } from './context'
 import { buildLocalModules } from './local'
 import { vendor } from '../plugins/vendor'
@@ -60,7 +60,7 @@ export const buildVendorModule = async function (vvn: string, context: Context) 
       remove(vvn)
     }
   } else {
-    Object.assign(cmm, pmm)
+    assign(cmm, pmm)
   }
 }
 

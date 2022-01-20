@@ -310,6 +310,9 @@ const getUtils = (context: Context) => {
   }
 }
 
+/**
+ * @public
+ */
 export const setUtils = series(
   parallel(setConstants, setConfig, setProject),
   new TaskOptions(
@@ -322,4 +325,7 @@ export const setUtils = series(
   )
 )
 
+/**
+ * @public
+ */
 export type Utils = ReturnType<typeof getUtils>

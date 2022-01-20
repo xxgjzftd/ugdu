@@ -9,7 +9,7 @@ import { execa } from 'execa'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { cached, getDefault } from '../shared/utils'
+import { cached, clone, getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 
@@ -32,6 +32,9 @@ export interface Project {
   routes: RoutesModuleNameToPathsMap
 }
 
+/**
+ * @public
+ */
 export interface PkgNode {
   name: string
   version: string
@@ -43,14 +46,23 @@ export interface PkgNode {
   dependencies: PkgNode[]
 }
 
+/**
+ * @internal
+ */
 export type LocalPkgToDepsMap = Map<PkgNode, PackageNode[]>
 
+/**
+ * @public
+ */
 export interface Meta {
   modules: MetaModule[]
   hash?: string
   version?: string
 }
 
+/**
+ * @public
+ */
 export interface MetaModule {
   /**
    * The module name.
@@ -95,6 +107,9 @@ export interface MetaModule {
   exports?: string[]
 }
 
+/**
+ * @public
+ */
 export interface MetaModuleImport {
   /**
    * The module name.
@@ -110,16 +125,25 @@ export interface MetaModuleImport {
   bindings: string[]
 }
 
+/**
+ * @public
+ */
 export interface Sources {
   all: string[]
   changed: ChangedSource[]
 }
 
+/**
+ * @public
+ */
 export interface ChangedSource {
   status: 'A' | 'M' | 'D'
   path: string
 }
 
+/**
+ * @public
+ */
 export type RoutesModuleNameToPathsMap = Record<string, string[]>
 
 const getLocalPkgs = async (cwd: string) =>
@@ -258,7 +282,7 @@ const getCurMeta = async (context: Context) => {
   const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
   cur.hash = stdout
   cur.version = VERSION
-  cur.modules = pre.modules.filter((m) => !m.externals)
+  cur.modules = clone(pre.modules.filter((m) => !m.externals))
   return cur
 }
 

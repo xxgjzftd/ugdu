@@ -2,6 +2,9 @@ import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 import type { BaseRoute } from '../tasks/config'
 
+/**
+ * @internal
+ */
 export const routes = function (rmn: string, context: Context): Plugin {
   const {
     building,

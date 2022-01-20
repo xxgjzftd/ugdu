@@ -3,6 +3,9 @@ import { isAbsolute } from 'path/posix'
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @internal
+ */
 export const vendor = function (vvn: string, context: Context): Plugin {
   const {
     CONSTANTS: { BINDING_NAME_SEP, VENDOR, VENDOR_INPUT },
