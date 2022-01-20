@@ -60,14 +60,13 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
     if (this._hns.includes(name as unknown as HookName)) {
       return this
     } else {
-      this.children.forEach(
-        (child) => {
-          let target = child._getTarget(name)
-          if (target) {
-            return target
-          }
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i]
+        let target = child._getTarget(name)
+        if (target) {
+          return target
         }
-      )
+      }
     }
   }
 
