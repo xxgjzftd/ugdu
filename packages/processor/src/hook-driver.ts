@@ -73,23 +73,23 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
   /**
    *
    * @param name - The hook name this hook driver could call with
-   * @returns The corresponding fns
+   * @returns The corresponding hook fns
    */
-  private _fns <Name extends HookName>(name: Name) {
+  private _hfs <Name extends HookName>(name: Name) {
     return this._hn2hfm[name]
   }
 
   /**
    *
    * @param name - The hook name
-   * @returns The corresponding fns
+   * @returns The corresponding hook fns
    */
-  fns <Name extends keyof Hooks>(name: Name): Hooks[Name][] {
+  hfs <Name extends keyof Hooks>(name: Name): Hooks[Name][] {
     const target = this._getTarget(name)
     if (!target) {
       throw new Error(`Hook name '${name}' doesn't exist in this hook driver.`)
     }
-    return target._fns(name)
+    return target._hfs(name)
   }
 
   /**
@@ -100,8 +100,8 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
    * @returns The hook driver instance for chained calls
    */
   private _hook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name], prepend: boolean) {
-    const fns = this.fns(name)
-    prepend ? fns.unshift(fn) : fns.push(fn)
+    const hfs = this.hfs(name)
+    prepend ? hfs.unshift(fn) : hfs.push(fn)
     return this
   }
 
@@ -132,10 +132,10 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
    * @returns The hook driver instance for chained calls
    */
   unhook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name]) {
-    const fns = this.fns(name)
-    let index = fns.lastIndexOf(fn)
+    const hfs = this.hfs(name)
+    let index = hfs.lastIndexOf(fn)
     if (~index) {
-      fns.splice(index, 1)
+      hfs.splice(index, 1)
     }
     return this
   }
@@ -153,11 +153,11 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
     ...args: Parameters<Hooks[Name]>
   ): // @ts-ignore
   Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void> {
-    const fns = this._fns(name)
+    const hfs = this._hfs(name)
     switch (type) {
       case 'first':
         let value = null
-        for (const fn of fns) {
+        for (const fn of hfs) {
           value = await fn.call(this, ...args)
           if (value != null) {
             break
@@ -165,12 +165,12 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
         }
         return value
       case 'sequential':
-        for (const fn of fns) {
+        for (const fn of hfs) {
           await fn.call(this, ...args)
         }
         break
       case 'parallel':
-        await Promise.all(fns.map((fn) => fn.call(this, ...args)))
+        await Promise.all(hfs.map((fn) => fn.call(this, ...args)))
         break
       default:
         throw new Error(`Illegal hook type '${type}'. Only 'first', 'sequential' and 'parallel' are allowed.`)
