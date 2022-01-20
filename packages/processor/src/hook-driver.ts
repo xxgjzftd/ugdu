@@ -47,7 +47,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
 
   /**
    * The children of this hook driver.
-   * User could hook on the children hook driver by invoking the {@link HookDriver.hook} method of the parent.
+   * User could hook in the children hook driver by invoking the {@link HookDriver.hook} method of the parent.
    */
   children: HookDriver<any, any>[] = []
 
