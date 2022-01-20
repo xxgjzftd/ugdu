@@ -12,7 +12,7 @@ import type { PackageNode } from 'dependencies-hierarchy';
 import type { Promisable } from 'type-fest';
 import { TaskOptions } from '@ugdu/processor';
 
-// @public (undocumented)
+// @public
 export interface BaseRoute {
     // (undocumented)
     children?: BaseRoute[];
@@ -20,7 +20,6 @@ export interface BaseRoute {
     component: string;
     // (undocumented)
     depth: number;
-    // (undocumented)
     id: string;
     // (undocumented)
     name: string;
@@ -28,7 +27,7 @@ export interface BaseRoute {
     path: string;
 }
 
-// @public (undocumented)
+// @public
 export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks, never>;
 
 // @public (undocumented)
@@ -46,7 +45,9 @@ export interface BuildLocalModulesHooks {
     'build-local-module'(lmn: string, context: Context): Promisable<void>;
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "buildRoutesModule" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const buildRoutesModule: (this: any, rmn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
@@ -58,7 +59,9 @@ export interface BuildRoutesModulesHooks {
     'build-routes-module'(rmn: string, context: Context): Promisable<void>;
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "buildVendorModule" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const buildVendorModule: (vvn: string, context: Context) => Promise<void>;
 
 // @public (undocumented)
@@ -78,12 +81,16 @@ export interface ChangedSource {
     status: 'A' | 'M' | 'D';
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "Config" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export type Config = Merge<Required<UserConfig>, {
     apps: Required<UserAppConfig>[];
 }>;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "CONSTANTS" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const CONSTANTS: {
     readonly META_JSON: "meta.json";
     readonly PACKAGE_JSON: "package.json";
@@ -96,19 +103,27 @@ export const CONSTANTS: {
     readonly VENDOR_INPUT: string;
 };
 
-// @public (undocumented)
+// @internal (undocumented)
 export type CONSTANTS = typeof CONSTANTS;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "getAliasKey" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const getAliasKey: (this: any, lpn: string) => string;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "getPkgId" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const getPkgId: (this: any, lpn: string) => string;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "getPkgs" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export const getPkgs: (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => PkgNode[];
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "LocalPkgToDepsMap" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export type LocalPkgToDepsMap = Map<PkgNode, PackageNode[]>;
 
 // @public (undocumented)
@@ -181,22 +196,17 @@ export type RoutesModuleNameToPathsMap = Record<string, string[]>;
 
 // @public (undocumented)
 export interface RoutesOption {
-    // (undocumented)
     base: `/${string}/` | '/';
-    // (undocumented)
     depth: number;
     // Warning: (ae-forgotten-export) The symbol "RouteExtend" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     extends: RouteExtend[];
-    // (undocumented)
     patterns: string | string[];
 }
 
 // @public (undocumented)
 export const serve: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
-// @public (undocumented)
+// @public
 export const setConfig: TaskOptions<SetConfigHooks, "get-config">;
 
 // @public (undocumented)
@@ -245,13 +255,9 @@ export interface Sources {
 
 // @public (undocumented)
 export interface UserAppConfig {
-    // (undocumented)
     name: string;
-    // (undocumented)
     packages: ((packages: PkgNode[]) => string[]) | string[];
-    // (undocumented)
     predicate?: (pathname: string) => boolean;
-    // (undocumented)
     vite?: InlineConfig;
 }
 
@@ -261,16 +267,11 @@ export interface UserConfig {
     apps: UserAppConfig[];
     assets?: string;
     base?: string;
-    // (undocumented)
     cwd?: string;
     dist?: string;
-    // (undocumented)
     extensions: string[];
-    // (undocumented)
     meta: 'local' | `http${'s' | ''}://${string}/`;
-    // (undocumented)
     routes?: Record<string, RoutesOption>;
-    // (undocumented)
     vite?: InlineConfig;
 }
 
@@ -279,7 +280,7 @@ export interface UserConfig {
 // @public (undocumented)
 export type Utils = ReturnType<typeof getUtils>;
 
-// @public (undocumented)
+// @public
 export const write: TaskOptions<{}, never>;
 
 // (No @packageDocumentation comment for this package)

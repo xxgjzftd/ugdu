@@ -12,10 +12,16 @@ import { meta } from '../plugins/meta'
 import type { Promisable } from 'type-fest'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @public
+ */
 export interface BuildVendorModulesHooks {
   'build-vendor-module'(rmn: string, task: Context): Promisable<void>
 }
 
+/**
+ * @internal
+ */
 export const buildVendorModule = async function (vvn: string, context: Context) {
   const {
     CONSTANTS: { VENDOR_INPUT },
@@ -88,6 +94,9 @@ const getCurrentBindings = (vvn: string, context: Context) => {
   return [...bindings].sort()
 }
 
+/**
+ * @public
+ */
 export const buildVendorModules = series(
   setContext,
   buildLocalModules,

@@ -12,6 +12,9 @@ import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'
 import type { Context } from '@ugdu/processor'
 
+/**
+ * @public
+ */
 declare module './project' {
   interface Project {
     mn2bm: ModuleNameToBindingsMap

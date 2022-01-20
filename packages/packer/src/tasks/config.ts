@@ -38,25 +38,25 @@ export interface UserConfig {
    * - Where to find `all sources` and `changed sources`
    * - In build process, the relative path to this field of a file is used to represent the path of that file
    *
-   * @default `process.cwd()`
+   * @defaultValue `process.cwd()`
    */
   cwd?: string
   /**
    * The output directory.
    *
-   * @default 'dist'
+   * @defaultValue 'dist'
    */
   dist?: string
   /**
    * The directory to nest generated assets.
    *
-   * @default 'assets'
+   * @defaultValue 'assets'
    */
   assets?: string
   /**
    * Base public path when served in development or production.
    *
-   * @default '/'
+   * @defaultValue '/'
    */
   base?: string
   /**
@@ -84,13 +84,13 @@ export interface UserConfig {
    * import routes from 'routes/bar'
    * ```
    *
-   * @default {}
+   * @defaultValue \{\}
    */
   routes?: Record<string, RoutesOption>
   /**
    * The vite config all apps should apply.
    *
-   * @default {}
+   * @defaultValue \{\}
    */
   vite?: InlineConfig
   /**
@@ -233,7 +233,7 @@ export interface SetConfigHooks {
  *
  * @remarks
  * This task get user's config from `get-config` hook and normalize it.
- * Then set it to {@link Context.config}.
+ * Then set it to `context.config`.
  *
  * @public
  */
