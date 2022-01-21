@@ -65,9 +65,7 @@ export const clone = <T>(target: T) => {
 export const assign = <T extends object, U extends object>(target: T, source: U) => {
   Object.entries(source).forEach(
     ([key, value]) => {
-      if (!(target as any)[key]) {
-        ;(target as any)[key] = clone(value)
-      }
+      ;(target as any)[key] = clone(value)
     }
   )
   return target as T & U
