@@ -120,7 +120,7 @@ export const meta = function (mn: string, context: Context): Plugin {
                 mm.imports.push(mmi)
               }
               const bindings = mmi.bindings
-              const prefix = imported.length > ppn.length || !rbs.length ? imported + '/' : ''
+              const prefix = imported.length > ppn.length || !rbs.length ? imported.replace(ppn, '') + '/' : ''
               rbs.length ? rbs.forEach((rb) => bindings.push(prefix + rb)) : bindings.push(prefix)
             }
           } else {
