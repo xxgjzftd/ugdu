@@ -121,7 +121,7 @@ const getUtils = (context: Context) => {
           (dep) => {
             let paths = [...dp, dep]
             if (shouldExternal(dep)) {
-              externals.push(getPublicPkgName(paths))
+              externals.push(getPublicPkgNameFromDepPath(paths))
             } else {
               traverse(dep, paths)
             }
@@ -234,7 +234,16 @@ const getUtils = (context: Context) => {
     return path
   }
 
-  const getPublicPkgName = (dp: PkgNode[]) => dp.map((pkg) => pkg.name).join(PACKAGE_NAME_SEP)
+  const getPublicPkgNameFromDepPath = (dp: PkgNode[]) => dp.map((pkg) => pkg.name).join(PACKAGE_NAME_SEP)
+
+  const getPublicPkgNameFromImported = cached(
+    (imported) => {
+      const pns = imported.split(PACKAGE_NAME_SEP)
+      const last = pns.pop()!
+      pns.push(getPkgName(last))
+      return pns.join(PACKAGE_NAME_SEP)
+    }
+  )
 
   const getPkgFromPublicPkgName = (parent: PkgNode, ppn: string) =>
     ppn.split(PACKAGE_NAME_SEP).reduce((parent, pn) => parent.dependencies.find((pkg) => pkg.name === pn)!, parent)
@@ -303,7 +312,8 @@ const getUtils = (context: Context) => {
     getPkgFromSourceAndImporter,
     getVersionedPkgName,
     getDepPath,
-    getPublicPkgName,
+    getPublicPkgNameFromDepPath,
+    getPublicPkgNameFromImported,
     getPkgFromPublicPkgName,
     getRoutesOption,
     stringify

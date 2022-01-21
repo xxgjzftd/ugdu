@@ -18,9 +18,9 @@ export const meta = function (mn: string, context: Context): Plugin {
       isVendorModule,
       getVersionedPkgName,
       getPkgFromModuleName,
-      getPkgName,
       getMetaModule,
-      getPkgFromPublicPkgName
+      getPkgFromPublicPkgName,
+      getPublicPkgNameFromImported
     }
   } = context
   return {
@@ -31,7 +31,7 @@ export const meta = function (mn: string, context: Context): Plugin {
       Object.keys(importedBindings).forEach(
         (imported) => {
           if (isVendorModule(imported)) {
-            let ppn = getPkgName(imported)
+            let ppn = getPublicPkgNameFromImported(imported)
             if (imported.length > ppn.length) {
               pending.push([imported, ppn])
             }
@@ -113,7 +113,7 @@ export const meta = function (mn: string, context: Context): Plugin {
           if (isVendorModule(imported)) {
             // Routes module doesn't import any thing from vendor module, and there is no routes pkg.
             if (pkg) {
-              const ppn = getPkgName(imported)
+              const ppn = getPublicPkgNameFromImported(imported)
               let mmi = mm.imports.find((i) => i.name === ppn)
               if (!mmi) {
                 mmi = { id: getVersionedPkgName(getPkgFromPublicPkgName(pkg, ppn)), name: ppn, bindings: [] }

@@ -10,7 +10,13 @@ export const vendor = function (vvn: string, context: Context): Plugin {
   const {
     CONSTANTS: { BINDING_NAME_SEP, VENDOR, VENDOR_INPUT },
     project: { mn2bm },
-    utils: { shouldExternal, getPkgFromModuleName, getPkgFromSourceAndImporter, getDepPath, getPublicPkgName }
+    utils: {
+      shouldExternal,
+      getPkgFromModuleName,
+      getPkgFromSourceAndImporter,
+      getDepPath,
+      getPublicPkgNameFromDepPath
+    }
   } = context
   const pkg = getPkgFromModuleName(vvn)
   return {
@@ -30,7 +36,7 @@ export const vendor = function (vvn: string, context: Context): Plugin {
         const dep = getPkgFromSourceAndImporter(source, importer!)
         if (dep && shouldExternal(dep)) {
           return {
-            id: source.replace(dep.name, getPublicPkgName(getDepPath(pkg, dep))),
+            id: source.replace(dep.name, getPublicPkgNameFromDepPath(getDepPath(pkg, dep))),
             external: true
           }
         }
