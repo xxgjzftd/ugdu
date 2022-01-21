@@ -60,7 +60,7 @@ export const vendor = function (vvn: string, context: Context): Plugin {
             .map(
               (sub) => {
                 const index = sub.lastIndexOf('/')
-                const path = sub.slice(0, index)
+                const path = pkg.name + sub.slice(0, index)
                 const binding = sub.slice(index + 1)
                 const name = sub.replace(/\W/g, BINDING_NAME_SEP)
                 return binding
