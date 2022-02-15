@@ -1,4 +1,4 @@
-import { join } from 'path/posix'
+import { join } from 'path'
 
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'

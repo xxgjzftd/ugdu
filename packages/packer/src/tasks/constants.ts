@@ -1,5 +1,5 @@
 import { TaskOptions } from '@ugdu/processor'
-import { resolve } from 'path/posix'
+import { resolve } from 'path'
 
 /**
  * @internal

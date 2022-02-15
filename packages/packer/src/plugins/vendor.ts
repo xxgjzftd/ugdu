@@ -1,4 +1,4 @@
-import { isAbsolute } from 'path/posix'
+import { isAbsolute } from 'path'
 
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'

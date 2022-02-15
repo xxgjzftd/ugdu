@@ -51,7 +51,7 @@ export const meta = function (mn: string, context: Context): Plugin {
                   let content = code.slice(ss, se).replace(/\n/g, ' ')
                   if (bindings.length) {
                     const bindingToNameMap: Record<string, string> = {}
-                    const d = content.match(/(?<=^import).+?(?=\bfrom\b)/)![0].trim()
+                    const d = content.match(/(?<=^(import|export)).+?(?=\bfrom\b)/)![0].trim()
                     const m = d.match(/^{(.+)}$/)
                     if (m) {
                       m[1]
