@@ -23,8 +23,10 @@ jobs:
       - name: install pnpm
         run: npm i pnpm@latest -g
 
-      - name: setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+      - name: setup pnpm
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}"
 
       - name: install dependencies
         run: pnpm install
