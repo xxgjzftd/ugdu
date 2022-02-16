@@ -1,5 +1,0 @@
----
-'@ugdu/packer': patch
----
-
-ci

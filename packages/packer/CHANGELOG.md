@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 0.1.8
+
+### Patch Changes
+
+- b2c464d: ci
+
 ## 0.1.7
 
 ### Patch Changes
