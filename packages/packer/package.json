@@ -14,6 +14,8 @@
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
     "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "ci:version": "pnpm build && changeset version",
+    "ci:publish": "changeset publish",
     "test": "jest"
   },
   "files": [
