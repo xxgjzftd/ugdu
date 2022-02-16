@@ -6,6 +6,10 @@
   ],
   "author": "xxgjzftd <xxgjzftd@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "ci:version": "pnpm build -r --if-present && changeset version",
+    "ci:publish": "changeset publish"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.20.0",
     "@microsoft/api-extractor": "^7.19.1",
