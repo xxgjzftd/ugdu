@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  version:
+  release:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: create and publish versions
-        uses: changesets/action@master
+        uses: changesets/action@v1
         with:
           commit: 'chore: update versions'
           title: 'chore: update versions'
