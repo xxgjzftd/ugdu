@@ -14,9 +14,9 @@ import { write } from './write'
  * This task contains the following subtasks
  * - set `context.building` to `true`
  * - set `context`
- * - build `local modules` and `routes modules` in parallel
- * - build `vendor modules`
- * - build `entry modules`
+ * - build `local module` and `routes module` in parallel
+ * - build `vendor module`
+ * - build `entry module`
  * - write the info of this build to disk
  *
  * @public

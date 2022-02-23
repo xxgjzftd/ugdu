@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
-import type { UgduModule } from '@ugdu/runtime'
+import type { UgduRuntimeModule } from '@ugdu/runtime'
 
 /**
  * @internal
@@ -23,10 +23,10 @@ export const entry = function (context: Context): Plugin {
           scopes: Scopes
         }
         const importmap: Importmap = { imports: {}, scopes: {} }
-        const ums: UgduModule[] = []
+        const urms: UgduRuntimeModule[] = []
         project.meta.cur.modules.forEach(
           (m) => {
-            ums.push({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) })
+            urms.push({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) })
             const folder = getPkgName(m.id)
             const path = base + m.js
             const scope = path.replace(new RegExp(`(?<=/${folder}/).+`), '')
@@ -56,9 +56,9 @@ export const entry = function (context: Context): Plugin {
             {
               tag: 'script',
               children:
-                `window.ugdu = window.ugdu || {};` +
-                `window.ugdu.base = '${base}';` +
-                `window.ugdu.modules = ${JSON.stringify(ums)}`
+                `window.ur = window.ur || {};` +
+                `window.ur.base = '${base}';` +
+                `window.ur.modules = ${JSON.stringify(urms)}`
             },
             {
               tag: 'script',
@@ -69,12 +69,12 @@ export const entry = function (context: Context): Plugin {
                 apps
                   .map(
                     (app) =>
-                      `ugdu.register(` +
+                      `ur.register(` +
                       `"${app.name}", ${stringify(app.predicate)},` +
-                      `()=>ugdu.load` +
+                      `()=>ur.load` +
                       `("${app.name}"));`
                   )
-                  .join('') + `ugdu.start();`,
+                  .join('') + `ur.start();`,
               injectTo: 'head'
             }
           ]
@@ -91,12 +91,12 @@ export const entry = function (context: Context): Plugin {
               apps
                 .map(
                   (app) =>
-                    `ugdu.register(` +
+                    `ur.register(` +
                     `"${app.name}", ${stringify(app.predicate)},` +
                     `()=>import` +
                     `("/${getLocalModulePath(app.name)}"));`
                 )
-                .join('') + `ugdu.start();`,
+                .join('') + `ur.start();`,
             injectTo: 'head'
           }
         ]

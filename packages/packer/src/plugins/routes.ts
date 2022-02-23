@@ -96,9 +96,7 @@ export const routes = function (rmn: string, context: Context): Plugin {
           (key, value) => {
             if (key === 'component') {
               return (
-                '()=>' +
-                (building ? `ugdu.load` : `import`) +
-                `("${building ? getLocalModuleName(value) : '/' + value}")`
+                '()=>' + (building ? `ur.load` : `import`) + `("${building ? getLocalModuleName(value) : '/' + value}")`
               )
             }
           }

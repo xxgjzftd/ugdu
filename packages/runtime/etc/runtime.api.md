@@ -5,13 +5,13 @@
 ```ts
 
 // @public (undocumented)
-export interface Ugdu {
+export interface UgduRuntime {
     // (undocumented)
     base: string;
     // (undocumented)
     load(mn: string): Promise<any>;
     // (undocumented)
-    modules: UgduModule[];
+    modules: UgduRuntimeModule[];
     // (undocumented)
     register(name: string, predicate: (pathname: string) => boolean, load: () => Promise<any>): void;
     // (undocumented)
@@ -21,7 +21,7 @@ export interface Ugdu {
 }
 
 // @public (undocumented)
-export interface UgduModule {
+export interface UgduRuntimeModule {
     // (undocumented)
     css?: string;
     // (undocumented)

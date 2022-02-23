@@ -1,15 +1,15 @@
 import 'es-module-shims'
 
-export interface UgduModule {
+export interface UgduRuntimeModule {
   id: string
   js: string
   css?: string
   imports: string[]
 }
 
-export interface Ugdu {
+export interface UgduRuntime {
   base: string
-  modules: UgduModule[]
+  modules: UgduRuntimeModule[]
   load(mn: string): Promise<any>
   unload(mn: string): void
   register(name: string, predicate: (pathname: string) => boolean, load: () => Promise<any>): void
@@ -18,7 +18,7 @@ export interface Ugdu {
 
 declare global {
   interface Window {
-    ugdu: Ugdu
+    ur: UgduRuntime
   }
 }
 
@@ -34,7 +34,7 @@ const cached = <T extends (string: string) => any>(fn: T) => {
 const getDeps = cached(
   (mn) => {
     let deps: string[] = []
-    const m = window.ugdu.modules.find((m) => m.id === mn)!
+    const m = window.ur.modules.find((m) => m.id === mn)!
     deps.push(m.js)
     m.css && deps.push(m.css)
     m.imports.forEach(
@@ -46,15 +46,15 @@ const getDeps = cached(
   }
 )
 
-const ugdu = (window.ugdu = window.ugdu || {})
-ugdu.load = function (mn) {
+const ur = (window.ur = window.ur || {})
+ur.load = function (mn) {
   const deps = getDeps(mn)
   return Promise.all(
     deps.map(
       (dep) => {
         if (seen[dep]) return
         seen[dep] = true
-        const href = ugdu.base + dep
+        const href = ur.base + dep
         const isCss = dep.endsWith('.css')
         const cssSelector = isCss ? '[rel="stylesheet"]' : ''
         if (document.querySelector(`link[href="${href}"]${cssSelector}`)) {
@@ -81,7 +81,7 @@ ugdu.load = function (mn) {
   ).then(() => window.importShim(mn))
 }
 
-ugdu.unload = function (mn) {
+ur.unload = function (mn) {
   const deps = getDeps(mn)
   deps
     .filter((dep) => dep.endsWith('.css'))
@@ -89,7 +89,7 @@ ugdu.unload = function (mn) {
       (dep) => {
         if (seen[dep]) {
           seen[dep] = false
-          const href = ugdu.base + dep
+          const href = ur.base + dep
           const link = document.querySelector(`link[href="${href}"][rel="stylesheet"]`)
           link && link.remove()
         }
@@ -97,7 +97,7 @@ ugdu.unload = function (mn) {
     )
 }
 
-enum MFAppStatus {
+enum UgduAppStatus {
   NOT_LOADED,
   NOT_MOUNTED,
   MOUNTED
@@ -112,37 +112,37 @@ interface BaseApp {
   name: string
   predicate: (pathname: string) => boolean
   load(): Promise<{ default: UserDefinedApp }>
-  status: MFAppStatus
+  status: UgduAppStatus
 }
 
-type MFApp = BaseApp & Partial<UserDefinedApp>
+type UgduApp = BaseApp & Partial<UserDefinedApp>
 
-const apps: MFApp[] = []
+const apps: UgduApp[] = []
 
-ugdu.register = function (name, predicate, load) {
+ur.register = function (name, predicate, load) {
   apps.push(
     {
       name,
       predicate,
       load,
-      status: MFAppStatus.NOT_LOADED
+      status: UgduAppStatus.NOT_LOADED
     }
   )
 }
 
 const getApps = () => {
-  const toBeMounted: MFApp[] = []
-  const toBeUnmounted: MFApp[] = []
+  const toBeMounted: UgduApp[] = []
+  const toBeUnmounted: UgduApp[] = []
 
   apps.forEach(
     (app) => {
       const shouldBeActive = app.predicate(location.pathname)
       switch (app.status) {
-        case MFAppStatus.NOT_LOADED:
-        case MFAppStatus.NOT_MOUNTED:
+        case UgduAppStatus.NOT_LOADED:
+        case UgduAppStatus.NOT_MOUNTED:
           shouldBeActive && toBeMounted.push(app)
           break
-        case MFAppStatus.MOUNTED:
+        case UgduAppStatus.MOUNTED:
           shouldBeActive || toBeUnmounted.push(app)
       }
     }
@@ -157,25 +157,25 @@ const route = async function () {
     toBeUnmounted.map(
       async (app) => {
         await app.unmount!()
-        return ugdu.unload(app.name)
+        return ur.unload(app.name)
       }
     )
   )
   await Promise.all(
     toBeMounted.map(
       async (app) => {
-        if (app.status === MFAppStatus.NOT_LOADED) {
+        if (app.status === UgduAppStatus.NOT_LOADED) {
           Object.assign(app, await app.load().then((m) => m.default))
-          app.status = MFAppStatus.NOT_MOUNTED
+          app.status = UgduAppStatus.NOT_MOUNTED
         }
         await app.mount!()
-        app.status = MFAppStatus.MOUNTED
+        app.status = UgduAppStatus.MOUNTED
       }
     )
   )
 }
 
-ugdu.start = route
+ur.start = route
 
 window.addEventListener('popstate', route)
 const pushState = history.pushState
