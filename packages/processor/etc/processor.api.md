@@ -17,7 +17,6 @@ export interface Context {
 // @public
 export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks = keyof Hooks> {
     constructor(_hns?: HookName[]);
-    // (undocumented)
     call<Name extends HookName, T extends HookType>(name: Name, type: T, ...args: Parameters<Hooks[Name]>): Promise<T extends 'first' ? ReturnType<Hooks[Name]> : void>;
     children: HookDriver<any, any>[];
     // (undocumented)
@@ -27,10 +26,10 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
     unhook<Name extends keyof Hooks>(name: Name, fn: Hooks[Name]): this;
 }
 
-// @public
+// @public (undocumented)
 export type HookFn = (...args: any[]) => any;
 
-// @public
+// @public (undocumented)
 export type HookType = 'first' | 'sequential' | 'parallel';
 
 // Warning: (ae-forgotten-export) The symbol "ParentTaskOptions" needs to be exported by the entry point index.d.ts
@@ -38,8 +37,6 @@ export type HookType = 'first' | 'sequential' | 'parallel';
 // @public
 export const parallel: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Processor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
-//
 // @public
 class Processor implements TaskManager {
     readonly context: Context;
@@ -53,24 +50,17 @@ export const series: <T extends TaskOptions<any, any>[]>(...children: T) => Pare
 
 // @public
 export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> extends HookDriver<Hooks, HookName> {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "TaskManager" which is marked as @internal
     constructor(_to: TaskOptions<Hooks, HookName>, manager: TaskManager);
     get action(): (this: Task<Hooks, HookName>) => Promisable<void>;
     isCreatedBy(to: TaskOptions<any, any>): boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "manager" is marked as @public, but its signature references "TaskManager" which is marked as @internal
-    //
     // (undocumented)
     readonly manager: TaskManager;
     run(force?: boolean): Promise<void>;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "TaskManager" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
+// @public
 export interface TaskManager {
-    // (undocumented)
     context: Context;
-    // (undocumented)
     task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(to: TaskOptions<Hooks, HookName>): Task<Hooks, HookName>;
 }
 

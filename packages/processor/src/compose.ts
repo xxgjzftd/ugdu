@@ -8,10 +8,10 @@ type ParentHooks<T extends TaskOptions<any, any>> = UnionToIntersection<T extend
 type ParentTaskOptions<T extends TaskOptions<any, any>[]> = TaskOptions<SatisfyHooks<ParentHooks<T[number]>>, never>
 
 /**
- * Compose the children task options in series mode.
+ * Composes the parent `task options` with children `task options` in series mode.
  *
- * @param children - The task options to be wrapped
- * @returns The composed task options
+ * @param children - The `task options` to be wrapped
+ * @returns The composed `task options`
  *
  * @public
  */
@@ -29,10 +29,10 @@ export const series = function <T extends TaskOptions<any, any>[]>(...children: 
 }
 
 /**
- * Compose the children task options in parallel mode.
+ * Composes the parent `task options` with children `task options` in parallel mode.
  *
- * @param children - The task options to be wrapped
- * @returns The composed task options
+ * @param children - The `task options` to be wrapped
+ * @returns The composed `task options`
  *
  * @public
  */

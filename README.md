@@ -1,18 +1,18 @@
-ugdu is a collection of tools for developing micro front-end projects.
+`ugdu` is a collection of tools for developing micro front-end projects.
 
 ## Features
 
 - Minimal build time.
   - For your source code, only files changed will be rebuilt.
-  - For `vendor package`, only packages with version changes will be rebuilt.
+  - For `vendor package`, only packages whose version changes will be rebuilt.
 - Minimal generated files.
   - Only modules imported by multiple modules or `local module` will be built separately.
 - Minimal generated size.
   - For `vendor package`, only code used in your source code will be built into the generated files.
 - Security.
-  - The package will be rebuilt when you import `binding`s that the corresponding generated module haven't export in your source code.
+  - The package will be rebuilt when you import `binding`s that the corresponding generated module haven't export.
   - We will throw a meaningful error in build time other than runtime when you accidentally make a mistake.
-- Multiple framework in one project.
+- Multiple frameworks in one project.
   - This means that you can upgrade or refactor your project incrementally. For example, develop new feature with vue3 and the other code remain vue2.
 
 ## Usage

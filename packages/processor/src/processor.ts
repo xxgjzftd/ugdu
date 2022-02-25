@@ -4,26 +4,23 @@ import type { TaskOptions, TaskManager, Context } from './task'
 import type { BaseHooks } from './hook-driver'
 
 /**
- * The processor maintain tasks.
+ * Used to manage `task`s.
  *
  * @public
  */
 export class Processor implements TaskManager {
   /**
-   * Holds all tasks created by this processor.
+   * Holds all `task`s created by this processor.
    */
   private readonly _tasks: Task<any, any>[] = []
 
   /**
-   * The context of {@link Task.action}.
+   * {@inheritDoc TaskManager.context}
    */
   readonly context: Context = {}
 
   /**
-   * Get the task instance of this task options in this processor.
-   *
-   * @param to - task options
-   * @returns A task instance
+   * {@inheritDoc TaskManager.task}
    */
   task <Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(
     to: TaskOptions<Hooks, HookName>

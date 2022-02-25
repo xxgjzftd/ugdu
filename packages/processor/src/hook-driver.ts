@@ -1,33 +1,37 @@
 /**
- * The type of hooks.
- *
  * @remarks
- * - `first` means the hook fns run sequentially until a hook fn returns a value other than `null` or `undefined`.
- * - `sequential` is as same as the `first` except that all of the hook fns will be run.
- * - `parallel` also run all of the hook fns but in parallel mode.
+ *
+ * - `first` means the `hook fn`s run sequentially until a `hook fn` returns a value other than `null` or `undefined`.
+ *
+ * - `sequential` is as same as the `first` except that all of the `hook fn`s will be run.
+ *
+ * - `parallel` also run all of the `hook fn`s but in parallel mode.
+ *
  * @public
  */
 export type HookType = 'first' | 'sequential' | 'parallel'
 
 /**
- * Hook fn must be a function.
  * @public
  */
 export type HookFn = (...args: any[]) => any
 
 /**
- * The key of Hooks is `hook name`.
- * The value of Hooks is `hook fn`.
+ * Used to constrain `Hooks` in {@link HookDriver} to be a type that all its value are {@link HookFn}.
+ *
  * @public
  */
 export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
 
 /**
- * The HookDriver class.
+ * Provides features like invoking corresponding `hook fn`s according to `hook name` in {@link HookType} mode, hooking into children `hookd driver`, etc.
  *
  * @public
  */
 export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks = keyof Hooks> {
+  /**
+   * @param _hns - {@inheritDoc HookDriver._hns}
+   */
   constructor (_hns?: HookName[]) {
     this._hns = _hns || []
     const _hn2hfm = {} as { [Name in HookName]: Hooks[Name][] }
@@ -36,25 +40,27 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
   }
 
   /**
-   * Hook names this hook driver could call with.
+   * The `hook name`s this `hook driver` could call with.
    */
   private readonly _hns: HookName[]
 
   /**
-   * Hook name to hook fns map.
+   * The `hook name` to `hook fn`s map.
    */
   private readonly _hn2hfm: { [Name in HookName]: Hooks[Name][] }
 
   /**
-   * The children of this hook driver.
-   * User could hook in the children hook driver by invoking the {@link HookDriver.hook} method of the parent.
+   * The children `hook driver`.
+   * User could hook in the children `hook driver` by invoking the {@link HookDriver.hook} method of the parent.
+   * It looks like the parent `hook driver` itself provides those hooks.
+   * By doing so, user only need to know which and what hooks are provided by the driver they are using.
    */
   children: HookDriver<any, any>[] = []
 
   /**
    *
-   * @param name - The hook name
-   * @returns The hook driver which is responsible for invoking the corresponding hook function
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @returns The `hook driver` which is responsible for invoking the corresponding `hook fn`
    */
   private _getTarget <Name extends keyof Hooks>(name: Name): HookDriver<any, any> | void {
     if (this._hns.includes(name as unknown as HookName)) {
@@ -72,8 +78,8 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
 
   /**
    *
-   * @param name - The hook name this hook driver could call with
-   * @returns The corresponding hook fns
+   * @param name - The `hook name` this `hook driver` could call with
+   * @returns The corresponding `hook fn`s
    */
   private _hfs <Name extends HookName>(name: Name) {
     return this._hn2hfm[name]
@@ -81,8 +87,8 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
 
   /**
    *
-   * @param name - The hook name
-   * @returns The corresponding hook fns
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @returns The corresponding `hook fn`s
    */
   hfs <Name extends keyof Hooks>(name: Name): Hooks[Name][] {
     const target = this._getTarget(name)
@@ -94,10 +100,10 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
 
   /**
    *
-   * @param name - The hook name
-   * @param fn - The hook fn
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @param fn - The `hook fn`
    * @param prepend - Whether to prepend
-   * @returns The hook driver instance for chained calls
+   * @returns The `hook driver` for chained calls
    */
   private _hook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name], prepend: boolean) {
     const hfs = this.hfs(name)
@@ -106,30 +112,30 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
   }
 
   /**
-   * Append `fn` to hook fns.
-   * @param name - The hook name
-   * @param fn - The hook fn
-   * @returns The hook driver instance for chained calls
+   * Appends `fn` to `hook fn`s.
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @param fn - The `hook fn`
+   * @returns The `hook driver` for chained calls
    */
   hook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name]) {
     return this._hook(name, fn, false)
   }
 
   /**
-   * Prepend `fn` to hook fns.
-   * @param name - The hook name
-   * @param fn - The hook fn
-   * @returns The hook driver instance for chained calls
+   * Prepends `fn` to `hook fn`s.
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @param fn - The `hook fn`
+   * @returns The `hook driver` for chained calls
    */
   prepend <Name extends keyof Hooks>(name: Name, fn: Hooks[Name]) {
     return this._hook(name, fn, true)
   }
 
   /**
-   * Remove `fn` from hook fns.
-   * @param name - The hook name
-   * @param fn - The hook fn
-   * @returns The hook driver instance for chained calls
+   * Remove `fn` from `hook fn`s.
+   * @param name - The `hook name` this `hook driver` or its descendants could call with
+   * @param fn - The `hook fn`
+   * @returns The `hook driver` for chained calls
    */
   unhook <Name extends keyof Hooks>(name: Name, fn: Hooks[Name]) {
     const hfs = this.hfs(name)
@@ -141,11 +147,12 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
   }
 
   /**
+   * Invokes corresponding `hook fn`s according to `name` in {@link HookType | type} mode.
    *
-   * @param name - The hook name this hook driver could call with
-   * @param type - The hook type (cf.{@link HookType})
-   * @param args - The args of the hook fn
-   * @returns The return value of the hook fn if `type` is `first` else return nothing
+   * @param name - The `hook name` this `hook driver` could call with
+   * @param type - The `hook type`
+   * @param args - The args of the `hook fn`
+   * @returns The return value of the `hook fn` if `type` is `first` else nothing
    */
   async call <Name extends HookName, T extends HookType>(
     name: Name,

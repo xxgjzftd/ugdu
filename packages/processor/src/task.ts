@@ -4,16 +4,21 @@ import type { Promisable } from 'type-fest'
 import type { BaseHooks } from './hook-driver'
 
 /**
- * Taskoptions can be seen as a definition of a task.
+ * `task options` can be seen as a definition of a `task`. It is used to create `task` by calling {@link TaskManager.task}.
  *
  * @remarks
- * It's instance is used to create {@link Task}.
  * The reason why we need this class is we can organize tasks easily by it's props and methods.
- * The {@link series} and {@link parallel} can help to compose task options.
+ * The {@link series} and {@link parallel} can help to compose `task options`.
  *
  * @public
  */
 export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends keyof Hooks = keyof Hooks> {
+  /**
+   *
+   * @param action - {@link TaskOptions.action}
+   * @param hns - {@link TaskOptions.hns}
+   * @param hooks - {@link TaskOptions.hooks}
+   */
   constructor (action: (this: Task<Hooks, HookName>) => Promisable<void>, hns?: HookName[], hooks?: Partial<Hooks>) {
     this.action = action
     this.hns = hns || []
@@ -21,38 +26,37 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
   }
 
   /**
-   * Invoked when the corresponding task is running.
+   * Invoked when the corresponding `task` is running.
    *
    * @readonly
    */
   readonly action: (this: Task<Hooks, HookName>) => Promisable<void>
 
   /**
-   * Hook names this corresponding task could call with.
+   * The `hook name`s that the corresponding `task` could call with.
    *
    * @readonly
    */
   readonly hns: HookName[]
 
   /**
-   * The hooks of this task options.
+   * The preset hooks of the corresponding `task`.
    *
    * @remarks
-   * We can adjust the hooks by invoking {@link TaskOptions.setHooks}.
-   * The hooks of task options actually is the default hooks of the corresponding task.
+   * We can adjust this prop by invoking {@link TaskOptions.setHooks}.
    *
    */
   hooks: Partial<Hooks>
 
   /**
-   * The children task options of this task options.
+   * The children `task options` of this `task options`.
    *
    * @internal @readonly
    */
   children: TaskOptions<any, any>[] = []
 
   /**
-   * Add child to this task options.
+   * Adds child to this `task options`.
    *
    * @param child - The child task options
    * @returns The reference of `this`
@@ -65,7 +69,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
   }
 
   /**
-   * Set hooks of this task options.
+   * Sets hooks of this `task options`.
    *
    * @remarks
    * This method use the hooks you pass in as the hooks of the task options.
@@ -88,24 +92,36 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
 }
 
 /**
- * @internal
+ * Used to manage `task`s.
+ *
+ * @public
  */
 export interface TaskManager {
+  /**
+   * The context of all `task`s.
+   * We can access it in {@link Task.action}.
+   */
   context: Context
+  /**
+   * Gets the `task` corresponding to `to` in this `manager`.
+   *
+   * @param to - `task options`
+   * @returns The corresponding `task`
+   */
   task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks>(
     to: TaskOptions<Hooks, HookName>
   ): Task<Hooks, HookName>
 }
 
 /**
- * The context of all task instances.
+ * The context of all `task`s.
  *
  * @public
  */
 export interface Context {}
 
 /**
- * The Task class.
+ * A subclass of {@link HookDriver}.
  *
  * @remarks
  * Task class can only be instantiated by {@link TaskManager.task} with {@link TaskOptions}.
@@ -122,12 +138,12 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
   }
 
   /**
-   * The return value of this task's action.
+   * The return value of this `task`'s action.
    */
   private _result: Promisable<void> | null = null
 
   /**
-   * Invoked when this task is running.
+   * Invoked when this `task` is running.
    *
    * @readonly
    */
@@ -136,9 +152,9 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
   }
 
   /**
-   * Check whether this task is created by the specified `to`.
+   * Check whether this `task` is created by the specified `to`.
    *
-   * @param to - The task options to be test
+   * @param to - The `task options` to be test
    * @returns true if it is
    */
   isCreatedBy (to: TaskOptions<any, any>): boolean {
@@ -146,7 +162,7 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
   }
 
   /**
-   * Executes this task.
+   * Executes this `task`.
    *
    * @remarks
    * By default, invoke this method repeatly will not invoke the action repeatly unless the `force` is specified as true.
