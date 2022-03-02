@@ -33,6 +33,8 @@ export interface UgduRuntimeModule {
 
 /**
  * Used to register and start `app`, load and unload resources, etc.
+ *
+ * @public
  */
 export interface UgduRuntime {
   /**
@@ -57,7 +59,7 @@ export interface UgduRuntime {
   /**
    * Unloads the `module` corresponding to `mn`.
    *
-   * @param mn The `module name`
+   * @param mn - The `module name`
    */
   unload(mn: string): void
   /**
