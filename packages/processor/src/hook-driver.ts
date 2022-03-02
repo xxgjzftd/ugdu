@@ -30,7 +30,7 @@ export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
  */
 export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks = keyof Hooks> {
   /**
-   * @param _hns - {@inheritDoc HookDriver._hns}
+   * @param _hns - The `hook name`s this `hook driver` could call with.
    */
   constructor (_hns?: HookName[]) {
     this._hns = _hns || []

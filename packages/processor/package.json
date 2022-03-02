@@ -2,7 +2,7 @@
   "name": "@ugdu/processor",
   "version": "0.1.0",
   "type": "module",
-  "description": "a tool for micro frontend dev and build",
+  "description": "A task processor which could be hooked in.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
-    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && api-documenter markdown -i temp && rimraf temp",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
     "test": "jest"
   },
   "files": [

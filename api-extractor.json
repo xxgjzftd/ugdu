@@ -2,11 +2,14 @@
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
 
   "apiReport": {
-    "enabled": true
+    "enabled": true,
+    "reportFolder": "./etc/",
+    "reportTempFolder": "./temp/"
   },
 
   "docModel": {
-    "enabled": true
+    "enabled": true,
+    "apiJsonFilePath": "./temp/<unscopedPackageName>.api.json"
   },
 
   "dtsRollup": {

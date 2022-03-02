@@ -7,7 +7,7 @@
   "author": "xxgjzftd <xxgjzftd@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "ci:version": "pnpm build -r --if-present && changeset version",
+    "ci:version": "pnpm build -r --if-present && api-documenter markdown -i temp && changeset version",
     "ci:publish": "changeset publish"
   },
   "devDependencies": {
