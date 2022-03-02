@@ -1,5 +1,5 @@
 /**
- * A runtime lib for micro frontend.
+ * A runtime lib for micro front-end.
  *
  * @remarks
  * This lib serves source code over ESM.
