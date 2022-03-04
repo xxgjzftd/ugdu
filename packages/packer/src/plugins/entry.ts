@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
-import type { UgduRuntimeModule } from '@ugdu/runtime'
+import type { RuntimeModule } from '@ugdu/runtime'
 
 /**
  * @internal
@@ -23,10 +23,10 @@ export const entry = function (context: Context): Plugin {
           scopes: Scopes
         }
         const importmap: Importmap = { imports: {}, scopes: {} }
-        const urms: UgduRuntimeModule[] = []
+        const rms: RuntimeModule[] = []
         project.meta.cur.modules.forEach(
           (m) => {
-            urms.push({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) })
+            rms.push({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) })
             const folder = getPkgName(m.id)
             const path = base + m.js
             const scope = path.replace(new RegExp(`(?<=/${folder}/).+`), '')
@@ -55,13 +55,6 @@ export const entry = function (context: Context): Plugin {
             },
             {
               tag: 'script',
-              children:
-                `window.ur = window.ur || {};` +
-                `window.ur.base = '${base}';` +
-                `window.ur.modules = ${JSON.stringify(urms)}`
-            },
-            {
-              tag: 'script',
               attrs: {
                 type: 'module-shim'
               },
@@ -74,7 +67,7 @@ export const entry = function (context: Context): Plugin {
                       `()=>ur.load` +
                       `("${app.name}"));`
                   )
-                  .join('') + `ur.start();`,
+                  .join('') + `ur.start(${JSON.stringify(rms)},'${base}');`,
               injectTo: 'head'
             }
           ]

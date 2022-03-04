@@ -1,8 +1,8 @@
 /**
- * A runtime lib for micro front-end.
+ * A runtime lib for micro frontends.
  *
  * @remarks
- * This lib serves source code over ESM.
+ * This lib serves code over ESM.
  * For better browser compatibility, we integrated {@link https://github.com/guybedford/es-module-shims | es-module-shims} in this lib.
  *
  * @packageDocumentation
@@ -15,7 +15,7 @@ import 'es-module-shims'
  *
  * @public
  */
-export interface UgduRuntimeModule {
+export interface RuntimeModule {
   id: string
   /**
    * The corresponding js url of this `module`.
@@ -36,22 +36,22 @@ export interface UgduRuntimeModule {
  *
  * @public
  */
-export interface UgduRuntime {
+export interface Runtime {
   /**
-   * Used to prepend to {@link UgduRuntimeModule.js} and {@link UgduRuntimeModule.css}.
+   * Used to prepend to {@link RuntimeModule.js} and {@link RuntimeModule.css}.
    */
   base: string
   /**
    * All `module`s which would be used.
    */
-  modules: UgduRuntimeModule[]
+  modules: RuntimeModule[]
   /**
    * Loads the `module` corresponding to `mn`.
    *
    * @remarks
-   * Here the `mn` means `module name`. The `module name` actually is {@link UgduRuntimeModule.id}.
+   * Here the `mn` means `module name`. The `module name` actually is {@link RuntimeModule.id}.
    * When loading this `module`, for performance, the `module`s this `module` imports will be {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload | preload}.
-   * To avoid {@link https://en.wikipedia.org/wiki/Flash_of_unstyled_content | FOUC}, the `module` will only be evaluated after the {@link UgduRuntimeModule.css} is loaded.
+   * To avoid {@link https://en.wikipedia.org/wiki/Flash_of_unstyled_content | FOUC}, the `module` will only be evaluated after the {@link RuntimeModule.css} is loaded.
    *
    * @param mn - The `module name`
    */
@@ -75,14 +75,23 @@ export interface UgduRuntime {
    */
   register(name: string, predicate: (pathname: string) => boolean, load: () => Promise<any>): void
   /**
-   * Starts this project. All `app`s(usually only one) which should be active will be mounted to the `document`.
+   * Starts this project.
+   * All `app`s(usually only one) which should be active will be mounted to the `document`.
+   *
+   * @remarks
+   * Technically, with `rms` and `base`, we can create `importmap` dynamicly.
+   * But for performance and compatibility, we leave it to user who should provide `importmap` staticly.
+   * Usually, you will use this lib with `@ugdu/packer` which will do that for you.
+   *
+   * @param rms - {@link Runtime.modules}
+   * @param base - {@link Runtime.base}
    */
-  start(): Promise<any>
+  start(rms: RuntimeModule[], base: string): Promise<any>
 }
 
 declare global {
   interface Window {
-    ur: UgduRuntime
+    ur: Runtime
   }
 }
 
@@ -161,7 +170,7 @@ ur.unload = function (mn) {
     )
 }
 
-enum UgduAppStatus {
+enum AppStatus {
   NOT_LOADED,
   NOT_MOUNTED,
   MOUNTED
@@ -171,7 +180,7 @@ enum UgduAppStatus {
  * The user defined app config.
  * @public
  */
-export interface UgduUserApp {
+export interface UserApp {
   /**
    * The method how this `app` should be mounted.
    */
@@ -182,16 +191,16 @@ export interface UgduUserApp {
   unmount(): Promise<any>
 }
 
-interface UgduBaseApp {
+interface BaseApp {
   name: string
   predicate: (pathname: string) => boolean
-  load(): Promise<{ default: UgduUserApp }>
-  status: UgduAppStatus
+  load(): Promise<{ default: UserApp }>
+  status: AppStatus
 }
 
-type UgduApp = UgduBaseApp & Partial<UgduUserApp>
+type App = BaseApp & Partial<UserApp>
 
-const apps: UgduApp[] = []
+const apps: App[] = []
 
 ur.register = function (name, predicate, load) {
   apps.push(
@@ -199,24 +208,24 @@ ur.register = function (name, predicate, load) {
       name,
       predicate,
       load,
-      status: UgduAppStatus.NOT_LOADED
+      status: AppStatus.NOT_LOADED
     }
   )
 }
 
 const getApps = () => {
-  const toBeMounted: UgduApp[] = []
-  const toBeUnmounted: UgduApp[] = []
+  const toBeMounted: App[] = []
+  const toBeUnmounted: App[] = []
 
   apps.forEach(
     (app) => {
       const shouldBeActive = app.predicate(location.pathname)
       switch (app.status) {
-        case UgduAppStatus.NOT_LOADED:
-        case UgduAppStatus.NOT_MOUNTED:
+        case AppStatus.NOT_LOADED:
+        case AppStatus.NOT_MOUNTED:
           shouldBeActive && toBeMounted.push(app)
           break
-        case UgduAppStatus.MOUNTED:
+        case AppStatus.MOUNTED:
           shouldBeActive || toBeUnmounted.push(app)
       }
     }
@@ -238,18 +247,22 @@ const route = async function () {
   await Promise.all(
     toBeMounted.map(
       async (app) => {
-        if (app.status === UgduAppStatus.NOT_LOADED) {
+        if (app.status === AppStatus.NOT_LOADED) {
           Object.assign(app, await app.load().then((m) => m.default))
-          app.status = UgduAppStatus.NOT_MOUNTED
+          app.status = AppStatus.NOT_MOUNTED
         }
         await app.mount!()
-        app.status = UgduAppStatus.MOUNTED
+        app.status = AppStatus.MOUNTED
       }
     )
   )
 }
 
-ur.start = route
+ur.start = async function (rms = [], base = '/') {
+  ur.modules = rms
+  ur.base = base
+  route()
+}
 
 window.addEventListener('popstate', route)
 const pushState = history.pushState

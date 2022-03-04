@@ -7,7 +7,10 @@ import type { BaseHooks } from './hook-driver'
  * `task options` can be seen as a definition of a `task`. It is used to create `task` by calling {@link TaskManager.task}.
  *
  * @remarks
- * The reason why we need this class is we can organize tasks easily by it's props and methods.
+ * The reason why we use the `task`'s definition instead of directly using the `task` itself is that usually we want share our `task`'s definition not the `task` itself.
+ *
+ * The reason why we need this class rather than a simple object is that we can organize `task options` easily by it's props and methods.
+ *
  * The {@link series} and {@link parallel} can help to compose `task options`.
  *
  * @public
@@ -58,7 +61,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
   /**
    * Adds child to this `task options`.
    *
-   * @param child - The child task options
+   * @param child - The child `task options`
    * @returns The reference of `this`
    *
    * @internal
@@ -72,7 +75,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
    * Sets hooks of this `task options`.
    *
    * @remarks
-   * This method use the hooks you pass in as the hooks of the task options.
+   * This method use the hooks you pass in as the hooks of the `task options`.
    * If you want to add instead of replace the hooks, you could call the method like below.
    *
    * @example

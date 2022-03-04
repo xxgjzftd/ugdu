@@ -5,17 +5,17 @@
 ```ts
 
 // @public
-export interface UgduRuntime {
+export interface Runtime {
     base: string;
     load(mn: string): Promise<any>;
-    modules: UgduRuntimeModule[];
+    modules: RuntimeModule[];
     register(name: string, predicate: (pathname: string) => boolean, load: () => Promise<any>): void;
     start(): Promise<any>;
     unload(mn: string): void;
 }
 
 // @public
-export interface UgduRuntimeModule {
+export interface RuntimeModule {
     css?: string;
     // (undocumented)
     id: string;
@@ -24,7 +24,7 @@ export interface UgduRuntimeModule {
 }
 
 // @public
-export interface UgduUserApp {
+export interface UserApp {
     mount(): Promise<any>;
     unmount(): Promise<any>;
 }

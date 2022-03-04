@@ -2,7 +2,7 @@
   "name": "@ugdu/runtime",
   "version": "0.1.0",
   "type": "module",
-  "description": "A runtime lib for micro front-end.",
+  "description": "A runtime lib for micro frontends.",
   "main": "src/index.ts",
   "types": "dist/index.d.ts",
   "publishConfig": {
