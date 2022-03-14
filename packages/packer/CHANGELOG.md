@@ -1,5 +1,13 @@
 # @ugdu/packer
 
+## 0.1.9
+
+### Patch Changes
+
+- 87fd3b8: Improve docs.
+- Updated dependencies [87fd3b8]
+  - @ugdu/processor@0.1.1
+
 ## 0.1.8
 
 ### Patch Changes

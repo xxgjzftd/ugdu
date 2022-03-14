@@ -26,7 +26,7 @@ The reference of `this`
 
 ## Remarks
 
-This method use the hooks you pass in as the hooks of the task options. If you want to add instead of replace the hooks, you could call the method like below.
+This method use the hooks you pass in as the hooks of the `task options`<!-- -->. If you want to add instead of replace the hooks, you could call the method like below.
 
 ## Example
 

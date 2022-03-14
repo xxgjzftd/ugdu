@@ -8,6 +8,7 @@
 
 |  Package | Description |
 |  --- | --- |
+|  [@ugdu/packer](./packer.md) |  |
 |  [@ugdu/processor](./processor.md) | A task processor which could be hooked in. |
-|  [@ugdu/runtime](./runtime.md) | A runtime lib for micro frontend. |
+|  [@ugdu/runtime](./runtime.md) | A runtime lib for micro frontends. |
 

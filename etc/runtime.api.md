@@ -10,7 +10,7 @@ export interface Runtime {
     load(mn: string): Promise<any>;
     modules: RuntimeModule[];
     register(name: string, predicate: (pathname: string) => boolean, load: () => Promise<any>): void;
-    start(): Promise<any>;
+    start(rms: RuntimeModule[], base: string): Promise<any>;
     unload(mn: string): void;
 }
 
