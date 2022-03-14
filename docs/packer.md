@@ -44,7 +44,7 @@
 |  [serve](./packer.serve.md) |  |
 |  [setConfig](./packer.setconfig.md) | Gets user's config from <code>get-config</code> hook and normalize it. Then set it to <code>context.config</code>. |
 |  [setConstants](./packer.setconstants.md) | Sets built-in CONSTANTS to <code>context.CONSTANTS</code>. |
-|  [setContext](./packer.setcontext.md) | Sets <code>context</code>. It contains the following sub <code>task options</code> [\`set constants\`](./packer.setconstants.md)<!-- -->, [\`set config\`](./packer.setconfig.md)<!-- -->, [\`set project\`](./packer.setproject.md) and [\`set utils\`](./packer.setutils.md)<!-- -->(in <code>parallel</code> mode). |
+|  [setContext](./packer.setcontext.md) | Sets <code>context</code>. It contains the following sub <code>task options</code> [\`set constants\`](./packer.setconstants.md)<!-- -->, [\`set config\`](./packer.setconfig.md)<!-- -->, [\`set utils\`](./packer.setutils.md)<!-- -->(in <code>parallel</code> mode). [\`set project\`](./packer.setproject.md) and |
 |  [setProject](./packer.setproject.md) |  |
 |  [setUtils](./packer.setutils.md) |  |
 |  [write](./packer.write.md) | The <code>write</code> task options. |

@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 0.1.11
+
+### Patch Changes
+
+- 7431d46: Adjust the order of setProject and setUtils
+
 ## 0.1.9
 
 ### Patch Changes

@@ -8,5 +8,5 @@
 <b>Signature:</b>
 
 ```typescript
-setUtils: TaskOptions<import("./config").SetConfigHooks & import("./project").SetProjectHooks, never>
+setUtils: TaskOptions<import("./config").SetConfigHooks, never>
 ```

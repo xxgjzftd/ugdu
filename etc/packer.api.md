@@ -233,7 +233,7 @@ export interface SetProjectHooks {
 }
 
 // @public (undocumented)
-export const setUtils: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
+export const setUtils: TaskOptions<SetConfigHooks, never>;
 
 // @public (undocumented)
 export interface Sources {
