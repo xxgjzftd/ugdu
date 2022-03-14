@@ -52,7 +52,6 @@ importers:
     dependencies:
       '@pnpm/find-workspace-packages': 3.1.23_@pnpm+logger@4.0.0
       '@pnpm/logger': 4.0.0
-      '@ugdu/processor': link:../processor
       axios: 0.21.4
       cac: 6.7.11
       dependencies-hierarchy: 10.0.13_@pnpm+logger@4.0.0
@@ -63,6 +62,7 @@ importers:
       vite: 2.6.14
     devDependencies:
       '@types/node': 16.11.7
+      '@ugdu/processor': link:../processor
       '@ugdu/runtime': link:../runtime
       rollup: 2.61.1
       type-fest: 2.5.3

@@ -9,6 +9,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "experimentalDecorators": true,
 
     "declaration": true,
     "declarationMap": true,

@@ -25,6 +25,8 @@ export const CONSTANTS = {
 export type CONSTANTS = typeof CONSTANTS
 
 /**
+ * Sets built-in CONSTANTS to `context.CONSTANTS`.
+ *
  * @public
  */
 export const setConstants = new TaskOptions(

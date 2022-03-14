@@ -7,7 +7,7 @@
     - For your source code, only files changed will be rebuilt.
     - For `vendor package`, only packages whose version changes will be rebuilt.
   - Minimal generated files.
-    - Only modules imported by multiple modules or `local module` will be built separately.
+    - For `vendor package`, Only packages imported by multiple `module`s or `local module` will be built separately.
   - Minimal generated size.
     - For `vendor package`, only code used in your source code will be built into the generated files.
   - Security.
@@ -49,7 +49,7 @@ npm install -g pnpm
 
 #### Install ugdu and vite
 
-`@ugdu/packer` is powered by vite.
+`@ugdu/packer` is powered by [vite](https://vitejs.dev/).
 
 ```
 pnpm add @ugdu/processor @ugdu/packer vite -DW

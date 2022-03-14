@@ -7,13 +7,20 @@
  * @param fn - The origin function
  * @returns The cached version function
  *
- * @internal
+ * @public
  */
 export const cached = <T extends (this: any, string: string, ...args: any[]) => any>(fn: T) => {
   const cache: Record<string, ReturnType<T>> = Object.create(null)
   return function (string, ...args) {
     return cache[string] || (cache[string] = fn.call(this, string, ...args))
   } as T
+}
+
+/**
+ * A method decorator which make the method cacheable.
+ */
+export const cacheable = (_target: any, _key: string, descriptor: PropertyDescriptor) => {
+  descriptor.value = cached(descriptor.value)
 }
 
 /**
@@ -55,18 +62,4 @@ export const clone = <T>(target: T) => {
       break
   }
   return result as T
-}
-
-/**
- * Same as `Object.assign` but deeply.
- *
- * @internal
- */
-export const assign = <T extends object, U extends object>(target: T, source: U) => {
-  Object.entries(source).forEach(
-    ([key, value]) => {
-      ;(target as any)[key] = clone(value)
-    }
-  )
-  return target as T & U
 }

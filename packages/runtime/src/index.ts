@@ -66,7 +66,7 @@ export interface Runtime {
    * Registers an `app`.
    *
    * @remarks
-   * The `app` actually is the entry `package`.
+   * The `app` can actually be thought of as the entry `package`.
    * We can register multiple `app` in one project. And those `app` could based on different framework.
    *
    * @param name - The `app`'s name

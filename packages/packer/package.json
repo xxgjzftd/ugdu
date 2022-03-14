@@ -26,6 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.6.1",
+    "@ugdu/processor": "workspace:^0.1.0",
     "@ugdu/runtime": "workspace:^0.1.0",
     "rollup": "^2.61.1",
     "type-fest": "^2.0.0"
@@ -33,7 +34,6 @@
   "dependencies": {
     "@pnpm/find-workspace-packages": "^3.1.23",
     "@pnpm/logger": "^4.0.0",
-    "@ugdu/processor": "workspace:^0.1.0",
     "axios": "^0.21.4",
     "cac": "^6.7.3",
     "dependencies-hierarchy": "^10.0.13",
@@ -42,5 +42,8 @@
     "fast-glob": "^3.2.7",
     "magic-string": "^0.25.7",
     "vite": "^2.6.14"
+  },
+  "peerDependencies": {
+    "@ugdu/processor": "workspace:^0.1.0"
   }
 }

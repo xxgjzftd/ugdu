@@ -12,9 +12,6 @@ import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'
 import type { Context } from '@ugdu/processor'
 
-/**
- * @public
- */
 declare module './project' {
   interface Project {
     mn2bm: ModuleNameToBindingsMap
@@ -54,11 +51,21 @@ const getModuleNameToBindingsMap = (context: Context) => {
  * @public
  */
 export interface BuildLocalModulesHooks {
+  /**
+   * A `parallel` type hook. It will be invoked once a `local module` need be built.
+   *
+   * Note: This hook will be triggered by the change of each `module`'s own file and its `source` file.
+   * So this hook may be invoked multiple times with the same `lmn`.
+   * However, because we have a caching mechanism, this `module` will only be built once.
+   *
+   * @param lmn - `local module` name
+   * @param context - {@link Context}
+   */
   'build-local-module'(lmn: string, context: Context): Promisable<void>
 }
 
 /**
- * @public
+ * @internal
  */
 export const buildLocalModule = cached(
   async function (lmn, context: Context) {
@@ -99,6 +106,12 @@ export const buildLocalModule = cached(
 )
 
 /**
+ * Builds `local module`s.
+ *
+ * @remarks
+ * `local module` is the `module` of `local package`s.
+ * Check {@link MetaModule} for more information about `module`.
+ *
  * @public
  */
 export const buildLocalModules = series(

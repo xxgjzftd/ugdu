@@ -3,7 +3,7 @@ import { join } from 'path'
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
-import { assign, cached } from '../shared/utils'
+import { clone, cached } from '../shared/utils'
 import { setContext } from './context'
 import { buildLocalModules } from './local'
 import { vendor } from '../plugins/vendor'
@@ -66,7 +66,11 @@ export const buildVendorModule = async function (vvn: string, context: Context) 
       remove(vvn)
     }
   } else {
-    assign(cmm, pmm)
+    Object.entries(pmm).forEach(
+      ([key, value]) => {
+        ;(cmm as any)[key] = clone(value)
+      }
+    )
   }
 }
 
