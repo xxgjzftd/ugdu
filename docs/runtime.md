@@ -4,17 +4,17 @@
 
 ## runtime package
 
-A runtime lib for micro frontend.
+A runtime lib for micro frontends.
 
 ## Remarks
 
-This lib serves source code over ESM. For better browser compatibility, we integrated [es-module-shims](https://github.com/guybedford/es-module-shims) in this lib.
+This lib serves code over ESM. For better browser compatibility, we integrated [es-module-shims](https://github.com/guybedford/es-module-shims) in this lib.
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
-|  [UgduRuntime](./runtime.ugduruntime.md) | Used to register and start <code>app</code>, load and unload resources, etc. |
-|  [UgduRuntimeModule](./runtime.ugduruntimemodule.md) | The <code>module</code>'s information. |
-|  [UgduUserApp](./runtime.ugduuserapp.md) | The user defined app config. |
+|  [Runtime](./runtime.runtime.md) | Used to register and start <code>app</code>, load and unload resources, etc. |
+|  [RuntimeModule](./runtime.runtimemodule.md) | The <code>module</code>'s information. |
+|  [UserApp](./runtime.userapp.md) | The user defined app config. |
 

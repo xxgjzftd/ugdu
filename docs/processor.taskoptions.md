@@ -14,7 +14,11 @@ export declare class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName e
 
 ## Remarks
 
-The reason why we need this class is we can organize tasks easily by it's props and methods. The [series](./processor.series.md) and [parallel](./processor.parallel.md) can help to compose `task options`<!-- -->.
+The reason why we use the `task`<!-- -->'s definition instead of directly using the `task` itself is that usually we want share our `task`<!-- -->'s definition not the `task` itself.
+
+The reason why we need this class rather than a simple object is that we can organize `task options` easily by it's props and methods.
+
+The [series](./processor.series.md) and [parallel](./processor.parallel.md) can help to compose `task options`<!-- -->.
 
 ## Constructors
 
