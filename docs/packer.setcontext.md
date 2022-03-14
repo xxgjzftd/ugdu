@@ -4,7 +4,7 @@
 
 ## setContext variable
 
-Sets `context`<!-- -->. It contains the following sub `task options` [\`set constants\`](./packer.setconstants.md)<!-- -->, [\`set config\`](./packer.setconfig.md)<!-- -->, [\`set project\`](./packer.setproject.md) and [\`set utils\`](./packer.setutils.md)<!-- -->(in `parallel` mode).
+Sets `context`<!-- -->. It contains the following sub `task options` [\`set constants\`](./packer.setconstants.md)<!-- -->, [\`set config\`](./packer.setconfig.md)<!-- -->, [\`set utils\`](./packer.setutils.md)<!-- -->(in `parallel` mode). [\`set project\`](./packer.setproject.md) and
 
 <b>Signature:</b>
 
