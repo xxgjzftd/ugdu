@@ -18,6 +18,8 @@ export const cached = <T extends (this: any, string: string, ...args: any[]) => 
 
 /**
  * A method decorator which make the method cacheable.
+ *
+ * @internal
  */
 export const cacheable = (_target: any, _key: string, descriptor: PropertyDescriptor) => {
   descriptor.value = cached(descriptor.value)

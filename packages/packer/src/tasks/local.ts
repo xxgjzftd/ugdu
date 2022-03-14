@@ -122,14 +122,23 @@ export const buildLocalModules = series(
         manager: {
           context,
           context: {
+            config: { apps },
+            utils: { remove, getLocalPkgs, getLocalModuleName },
             project: {
               sources: { changed },
               meta: { cur }
-            },
-            utils: { remove, getLocalModuleName }
+            }
           }
         }
       } = this
+
+      apps.forEach(
+        (app) => {
+          if (typeof app.packages === 'function') {
+            app.packages = app.packages(getLocalPkgs())
+          }
+        }
+      )
 
       await Promise.all(
         changed.map(

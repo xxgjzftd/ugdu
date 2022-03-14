@@ -24,7 +24,7 @@ export const routes = function (rmn: string, context: Context): Plugin {
     async load (id) {
       if (isRoutesModule(id)) {
         const code = stringify(
-          project.routes,
+          project.routes[id],
           (key, value) => {
             if (key === 'component') {
               return (

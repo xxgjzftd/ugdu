@@ -39,6 +39,7 @@ importers:
       '@types/node': ^16.6.1
       '@ugdu/processor': workspace:^0.1.2
       '@ugdu/runtime': workspace:^0.1.2
+      autobind-decorator: ^2.4.0
       axios: ^0.21.4
       cac: ^6.7.3
       dependencies-hierarchy: ^10.0.13
@@ -52,6 +53,7 @@ importers:
     dependencies:
       '@pnpm/find-workspace-packages': 3.1.23_@pnpm+logger@4.0.0
       '@pnpm/logger': 4.0.0
+      autobind-decorator: 2.4.0
       axios: 0.21.4
       cac: 6.7.11
       dependencies-hierarchy: 10.0.13_@pnpm+logger@4.0.0
@@ -1560,6 +1562,11 @@ packages:
   /asynckit/0.4.0:
     resolution: {integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=}
     dev: true
+
+  /autobind-decorator/2.4.0:
+    resolution: {integrity: sha512-OGYhWUO72V6DafbF8PM8rm3EPbfuyMZcJhtm5/n26IDwO18pohE4eNazLoCGhPiXOCD0gEGmrbU3849QvM8bbw==}
+    engines: {node: '>=8.10', npm: '>=6.4.1'}
+    dev: false
 
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}

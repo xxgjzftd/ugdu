@@ -16,7 +16,7 @@ esbuild.build(
     splitting: true,
     define: { VERSION: JSON.stringify(pi.version), TEST: 'false' },
     entryPoints: ['src/index.ts'],
-    external: Object.keys(pi.dependencies),
+    external: Object.keys(pi.dependencies).concat(Object.keys(pi.peerDependencies)),
     format: 'esm',
     outdir,
     platform: 'node',

@@ -417,7 +417,7 @@ const getRoutes = (context: Context) => {
   const {
     config,
     CONSTANTS: { ROUTES },
-    utils: { getPkgName, getLocalModuleName }
+    utils: { getLocalPkgFromPath }
   } = context
   const routes: Routes = {}
 
@@ -434,7 +434,7 @@ const getRoutes = (context: Context) => {
       const pn2pm: Record<string, string[]> = {}
       paths.forEach(
         (path) => {
-          const pn = getPkgName(getLocalModuleName(path)!)
+          const pn = getLocalPkgFromPath(path).name
           pn2pm[pn] = pn2pm[pn] || []
           pn2pm[pn].push(path)
         }

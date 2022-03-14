@@ -2,8 +2,9 @@ import { isAbsolute, resolve } from 'path'
 
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
+import autobind from 'autobind-decorator'
 
-import { cacheable } from '../shared/utils'
+import { cacheable, getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 
@@ -28,6 +29,7 @@ export const setUtils = series(
 /**
  * @public
  */
+@getDefault(autobind)
 export class Utils {
   constructor (public context: Context) {}
 
