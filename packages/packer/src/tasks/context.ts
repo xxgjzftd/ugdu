@@ -9,9 +9,9 @@ import { setUtils } from './utils'
  * Sets `context`. It contains the following sub `task options`
  * {@link setConstants | `set constants`},
  * {@link setConfig | `set config`},
- * {@link setProject | `set project`} and
  * {@link setUtils | `set utils`}(in `parallel` mode).
+ * {@link setProject | `set project`} and
  *
  * @public
  */
-export const setContext = parallel(setConstants, setConfig, setProject, setUtils)
+export const setContext = parallel(setConstants, setConfig, setUtils, setProject)

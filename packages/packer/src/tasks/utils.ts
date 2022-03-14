@@ -6,7 +6,6 @@ import { parallel, series, TaskOptions } from '@ugdu/processor'
 import { cacheable } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
-import { setProject } from './project'
 
 import type { Context } from '@ugdu/processor'
 import type { PkgNode, BaseRoute } from './project'
@@ -15,7 +14,7 @@ import type { PkgNode, BaseRoute } from './project'
  * @public
  */
 export const setUtils = series(
-  parallel(setConstants, setConfig, setProject),
+  parallel(setConstants, setConfig),
   new TaskOptions(
     function () {
       const {

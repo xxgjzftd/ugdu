@@ -12,6 +12,7 @@ import { parallel, series, TaskOptions } from '@ugdu/processor'
 import { cached, clone, getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
+import { setUtils } from './utils'
 
 import type { Promisable } from 'type-fest'
 import type { PackageNode } from 'dependencies-hierarchy'
@@ -522,7 +523,7 @@ export interface SetProjectHooks {
  * @public
  */
 export const setProject = series(
-  parallel(setConstants, setConfig),
+  parallel(setConstants, setConfig, setUtils),
   new TaskOptions<SetProjectHooks>(
     async function () {
       const {
