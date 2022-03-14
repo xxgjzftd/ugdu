@@ -4,7 +4,7 @@
 
 ## Utils.resolve() method
 
-Same as the `resolve` method of nodejs's 'path' moudle, But this method will resolve `pss` with .
+Same as the `resolve` method of nodejs's 'path' moudle, But this method will resolve `pss` with [UserConfig.cwd](./packer.userconfig.cwd.md)<!-- -->.
 
 <b>Signature:</b>
 

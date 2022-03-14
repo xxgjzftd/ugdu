@@ -59,7 +59,7 @@ export interface BuildLocalModulesHooks {
    * However, because we have a caching mechanism, this `module` will only be built once.
    *
    * @param lmn - `local module` name
-   * @param context - {@link Context}
+   * @param context - {@link @ugdu/processor#Context}
    */
   'build-local-module'(lmn: string, context: Context): Promisable<void>
 }

@@ -219,7 +219,7 @@ export interface BaseRoute {
   path: string
   name: string
   /**
-   * The file path relative to {@link UserConfig.cwd}. In the generated code, this field will be something like '() => import("/path/to/this/component")'.
+   * The file path relative to {@link UserConfig.cwd}. In the generated code, this field will be something like '() =\> import("/path/to/this/component")'.
    */
   component: string
   children?: BaseRoute[]

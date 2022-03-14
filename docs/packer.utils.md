@@ -57,8 +57,8 @@ export declare class Utils
 |  [isPage(path)](./packer.utils.ispage.md) |  | Is the <code>path</code> a <code>page</code>. <code>page</code> is <code>module</code> which is imported by the <code>routes module</code> as a route. Check [UserConfig.cwd](./packer.userconfig.cwd.md) for what <code>path</code> is. |
 |  [isRoutesModule(mn)](./packer.utils.isroutesmodule.md) |  | Is the <code>mn</code> a <code>routes module</code> name. |
 |  [isVendorModule(mn)](./packer.utils.isvendormodule.md) |  | Is the <code>mn</code> a <code>vendor module</code> name. |
-|  [remove(mn)](./packer.utils.remove.md) |  | Removes the <code>module</code> whose id is <code>mn</code> from . |
-|  [resolve(pss)](./packer.utils.resolve.md) |  | Same as the <code>resolve</code> method of nodejs's 'path' moudle, But this method will resolve <code>pss</code> with . |
+|  [remove(mn)](./packer.utils.remove.md) |  | Removes the <code>module</code> whose id is <code>mn</code> from [Meta.modules](./packer.meta.modules.md)<!-- -->. |
+|  [resolve(pss)](./packer.utils.resolve.md) |  | Same as the <code>resolve</code> method of nodejs's 'path' moudle, But this method will resolve <code>pss</code> with [UserConfig.cwd](./packer.userconfig.cwd.md)<!-- -->. |
 |  [shouldExternal(pkg)](./packer.utils.shouldexternal.md) |  | Whether the <code>pkg</code> should be external. Only <code>vendor package</code>s imported by multiple <code>module</code>s or <code>local module</code> should be external. |
 |  [stringify(payload, replacer)](./packer.utils.stringify.md) |  | Convert the <code>payload</code> to a string. |
 

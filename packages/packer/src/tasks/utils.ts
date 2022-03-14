@@ -33,7 +33,7 @@ export class Utils {
   constructor (public context: Context) {}
 
   /**
-   * Same as the `resolve` method of nodejs's 'path' moudle, But this method will resolve `pss` with {@link Context.config.cwd}.
+   * Same as the `resolve` method of nodejs's 'path' moudle, But this method will resolve `pss` with {@link UserConfig.cwd}.
    *
    * @param pss - path segments
    * @returns The result path
@@ -46,7 +46,7 @@ export class Utils {
   }
 
   /**
-   * Removes the `module` whose id is `mn` from {@link Context.project.meta.cur.modules}.
+   * Removes the `module` whose id is `mn` from {@link Meta.modules}.
    *
    * @param mn - The id of the `module` to be removed
    */

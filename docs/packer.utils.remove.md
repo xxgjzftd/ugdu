@@ -4,7 +4,7 @@
 
 ## Utils.remove() method
 
-Removes the `module` whose id is `mn` from .
+Removes the `module` whose id is `mn` from [Meta.modules](./packer.meta.modules.md)<!-- -->.
 
 <b>Signature:</b>
 

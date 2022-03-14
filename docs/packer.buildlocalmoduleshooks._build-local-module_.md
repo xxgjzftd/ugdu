@@ -19,7 +19,7 @@ Note: This hook will be triggered by the change of each `module`<!-- -->'s own f
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  lmn | string | <code>local module</code> name |
-|  context | Context |  |
+|  context | Context | [Context](./processor.context.md) |
 
 <b>Returns:</b>
 
