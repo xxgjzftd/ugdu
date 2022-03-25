@@ -37,7 +37,7 @@ importers:
       '@pnpm/find-workspace-packages': ^3.1.23
       '@pnpm/logger': ^4.0.0
       '@types/node': ^16.6.1
-      '@ugdu/processor': workspace:^0.1.2
+      '@ugdu/processor': workspace:^0.1.3
       '@ugdu/runtime': workspace:^0.1.2
       autobind-decorator: ^2.4.0
       axios: ^0.21.4
