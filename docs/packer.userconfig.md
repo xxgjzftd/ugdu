@@ -22,6 +22,5 @@ export interface UserConfig
 |  [dist?](./packer.userconfig.dist.md) | string | <i>(Optional)</i> The output directory. |
 |  [extensions](./packer.userconfig.extensions.md) | string\[\] | In <code>local package</code>s which don't have <code>main</code> field, all files with extension in this config are considered to be a <code>module</code>. |
 |  [meta](./packer.userconfig.meta.md) | 'local' \| \`http${'s' \| ''}://${string}/\` | Decide where to find previous build information. |
-|  [routes?](./packer.userconfig.routes.md) | Record&lt;string, [RoutesConfigProperties](./packer.routesconfigproperties.md)<!-- -->&gt; | <i>(Optional)</i> The <code>routes id</code> to [RoutesConfigProperties](./packer.routesconfigproperties.md) array map. |
 |  [vite?](./packer.userconfig.vite.md) | InlineConfig | <i>(Optional)</i> The vite config all <code>app</code>s should apply. |
 

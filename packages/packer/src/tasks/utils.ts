@@ -82,7 +82,20 @@ export class Utils {
    */
   @cacheable
   isPage (path: string) {
-    return !!this.getRoutesMoudleNames(path).length
+    const {
+      project: { routes }
+    } = this.context
+    const queue: BaseRoute[] = [...routes]
+    while (queue.length) {
+      const br = queue.shift()!
+      if (br.id === path) {
+        return true
+      }
+      if (br.children) {
+        queue.push(...br.children)
+      }
+    }
+    return false
   }
 
   /**
@@ -118,7 +131,7 @@ export class Utils {
     const {
       CONSTANTS: { ROUTES }
     } = this.context
-    return mn.startsWith(this.appendSlash(ROUTES))
+    return mn === ROUTES
   }
 
   /**
@@ -249,34 +262,6 @@ export class Utils {
   }
 
   /**
-   * Gets the names of `routes module`s which import the `path`.
-   *
-   * @param path - The `path` we get `routes module` names from
-   * @returns The names of `routes module`s which import the `path`
-   */
-  @cacheable
-  getRoutesMoudleNames (path: string) {
-    const {
-      project: { routes }
-    } = this.context
-    return Object.keys(routes).filter(
-      (rmn) => {
-        const queue: BaseRoute[] = [...routes[rmn]]
-        while (queue.length) {
-          const br = queue.shift()!
-          if (br.id === path) {
-            return true
-          }
-          if (br.children) {
-            queue.push(...br.children)
-          }
-        }
-        return false
-      }
-    )
-  }
-
-  /**
    * Gets the `local module` name from the `path`.
    *
    * @param path - The `path` we get `local module` name from
@@ -329,7 +314,7 @@ export class Utils {
     } = this.context
     return [
       ...this.getLocalPkgFromName(lmn).dependencies.map((dep) => new RegExp('^' + dep.name + '(/.+)?$')),
-      new RegExp(`^${this.appendSlash(ROUTES)}`)
+      new RegExp(`^${ROUTES}$`)
     ]
   }
 
@@ -558,21 +543,6 @@ export class Utils {
     return ppn
       .split(PACKAGE_NAME_SEP)
       .reduce((parent, pn) => parent.dependencies.find((pkg) => pkg.name === pn)!, parent)
-  }
-
-  /**
-   * Gets the routes option from the `routes module` name.
-   *
-   * @param rmn - The `routes module` name
-   * @returns The corresponding routes option
-   */
-  @cacheable
-  getRoutesOption (rmn: string) {
-    const {
-      config: { routes },
-      CONSTANTS: { ROUTES }
-    } = this.context
-    return routes[rmn.slice(ROUTES.length + 1)]
   }
 
   /**

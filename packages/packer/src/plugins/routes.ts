@@ -4,10 +4,10 @@ import type { Context } from '@ugdu/processor'
 /**
  * @internal
  */
-export const routes = function (rmn: string, context: Context): Plugin {
+export const routes = function (context: Context): Plugin {
   const {
     building,
-    CONSTANTS: { ROUTES_INPUT },
+    CONSTANTS: { ROUTES_INPUT, ROUTES },
     project,
     utils: { isRoutesModule, getLocalModuleName, stringify }
   } = context
@@ -15,7 +15,7 @@ export const routes = function (rmn: string, context: Context): Plugin {
     name: 'ugdu:routes',
     resolveId (source) {
       if (source === ROUTES_INPUT) {
-        return rmn
+        return ROUTES
       }
       if (isRoutesModule(source)) {
         return source
@@ -24,7 +24,7 @@ export const routes = function (rmn: string, context: Context): Plugin {
     async load (id) {
       if (isRoutesModule(id)) {
         const code = stringify(
-          project.routes[id],
+          project.routes,
           (key, value) => {
             if (key === 'component') {
               return (

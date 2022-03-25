@@ -27,9 +27,10 @@ export const serve = series(
         manager: {
           context,
           context: {
+            CONSTANTS: { ROUTES },
             config,
             project: { alias },
-            utils: { getRoutesMoudleNames, getNormalizedPath }
+            utils: { isPage, getNormalizedPath }
           }
         }
       } = this
@@ -43,7 +44,7 @@ export const serve = series(
                     alias
                   },
                   plugins: [
-                    routes('', context),
+                    routes(context),
                     entry(context),
                     {
                       name: 'ugdu:serve',
@@ -76,11 +77,8 @@ export const serve = series(
             )
 
             const refresh = (ap: string) =>
-              getRoutesMoudleNames(getNormalizedPath(ap)).forEach(
-                (rmn) => (
-                  moduleGraph.invalidateModule(moduleGraph.getModuleById(rmn)!), ws.send({ type: 'full-reload' })
-                )
-              )
+              isPage(getNormalizedPath(ap)) &&
+              (moduleGraph.invalidateModule(moduleGraph.getModuleById(ROUTES)!), ws.send({ type: 'full-reload' }))
 
             watcher.on('add', refresh)
             watcher.on('unlink', refresh)

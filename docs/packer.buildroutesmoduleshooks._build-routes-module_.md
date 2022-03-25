@@ -7,14 +7,13 @@
 <b>Signature:</b>
 
 ```typescript
-'build-routes-module'(rmn: string, context: Context): Promisable<void>;
+'build-routes-module'(context: Context): Promisable<void>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  rmn | string |  |
 |  context | Context |  |
 
 <b>Returns:</b>

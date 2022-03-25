@@ -20,7 +20,7 @@ It contains the following sub `task options`<!-- -->(in `series` mode).
 
 - [\`set context\`](./packer.setcontext.md)
 
-- [\`build local module\`](./packer.buildlocalmodules.md) and [\`build routes module\`](./packer.buildroutesmodules.md) (in `parallel` mode)
+- [\`build local module\`](./packer.buildlocalmodules.md) and [\`build routes module\`](./packer.buildroutesmodule.md) (in `parallel` mode)
 
 - [\`build vendor module\`](./packer.buildvendormodules.md)
 

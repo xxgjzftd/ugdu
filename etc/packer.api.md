@@ -43,18 +43,13 @@ export interface BuildLocalModulesHooks {
     'build-local-module'(lmn: string, context: Context): Promisable<void>;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "buildRoutesModule" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const buildRoutesModule: (this: any, rmn: string, context: Context) => Promise<void>;
-
 // @public (undocumented)
-export const buildRoutesModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, never>;
+export const buildRoutesModule: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, never>;
 
 // @public (undocumented)
 export interface BuildRoutesModulesHooks {
     // (undocumented)
-    'build-routes-module'(rmn: string, context: Context): Promisable<void>;
+    'build-routes-module'(context: Context): Promisable<void>;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "buildVendorModule" should be prefixed with an underscore because the declaration is marked as @internal
@@ -99,6 +94,8 @@ export const CONSTANTS: {
     readonly ROUTES_INPUT: string;
     readonly VENDOR: "vendor";
     readonly VENDOR_INPUT: string;
+    readonly ROOT: "root";
+    readonly INDEX: "index";
 };
 
 // @internal (undocumented)
@@ -173,25 +170,8 @@ export interface Project {
         cur: Meta;
     };
     pkgs: PkgNode[];
-    routes: Routes;
+    routes: BaseRoute[];
     sources: Sources;
-}
-
-// @public
-export type Routes = Record<string, BaseRoute[]>;
-
-// @public
-export interface RoutesConfigGroup {
-    base: `/${string}/` | '/';
-    parent?: string;
-    patterns: string | string[];
-}
-
-// @public
-export interface RoutesConfigProperties {
-    // Warning: (ae-forgotten-export) The symbol "RoutesExtend" needs to be exported by the entry point index.d.ts
-    extends: RoutesExtend[];
-    groups: RoutesConfigGroup[];
 }
 
 // @public (undocumented)
@@ -227,7 +207,7 @@ export interface SetProjectHooks {
     // (undocumented)
     'get-previous-meta'(context: Context): Promisable<Meta>;
     // (undocumented)
-    'get-routes'(context: Context): Promisable<Routes>;
+    'get-routes'(context: Context): Promisable<BaseRoute[]>;
     // (undocumented)
     'get-sources'(context: Context): Promisable<Sources>;
 }
@@ -260,7 +240,6 @@ export interface UserConfig {
     dist?: string;
     extensions: string[];
     meta: 'local' | `http${'s' | ''}://${string}/`;
-    routes?: Record<string, RoutesConfigProperties>;
     vite?: InlineConfig;
 }
 
@@ -289,8 +268,6 @@ export class Utils {
     getPkgName(specifier: string): string;
     getPublicPkgNameFromDepPath(dp: PkgNode[]): string;
     getPublicPkgNameFromImported(imported: string): string;
-    getRoutesMoudleNames(path: string): string[];
-    getRoutesOption(rmn: string): RoutesConfigProperties;
     getVendorModuleExternals(mn: string): string[];
     getVersionedPkgName(pkg: PkgNode): string;
     isBareSpecifier(specifier: string): boolean;

@@ -16,7 +16,9 @@ export const CONSTANTS = {
   ROUTES: 'routes',
   ROUTES_INPUT: resolve('routes'),
   VENDOR: 'vendor',
-  VENDOR_INPUT: resolve('vendor')
+  VENDOR_INPUT: resolve('vendor'),
+  ROOT: 'root',
+  INDEX: 'index'
 } as const
 
 /**

@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build-docs": "api-documenter markdown -i temp -o docs",
-    "ci:version": "pnpm build -r --if-present && pnpm build-docs && changeset version",
-    "ci:publish": "changeset publish"
+    "ci:version": "changeset version && pnpm install",
+    "ci:publish": "pnpm build -r --if-present && pnpm build-docs && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.20.0",

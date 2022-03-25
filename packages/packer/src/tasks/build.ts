@@ -2,7 +2,7 @@ import { parallel, series, TaskOptions } from '@ugdu/processor'
 
 import { setContext } from './context'
 import { buildLocalModules } from './local'
-import { buildRoutesModules } from './routes'
+import { buildRoutesModule } from './routes'
 import { buildVendorModules } from './vendor'
 import { buildEntry } from './entry'
 import { write } from './write'
@@ -17,7 +17,7 @@ import { write } from './write'
  *
  * - {@link setContext | `set context`}
  *
- * - {@link buildLocalModules | `build local module`} and {@link buildRoutesModules | `build routes module`} (in `parallel` mode)
+ * - {@link buildLocalModules | `build local module`} and {@link buildRoutesModule | `build routes module`} (in `parallel` mode)
  *
  * - {@link buildVendorModules | `build vendor module`}
  *
@@ -34,7 +34,7 @@ export const build = series(
     }
   ),
   setContext,
-  parallel(buildLocalModules, buildRoutesModules),
+  parallel(buildLocalModules, buildRoutesModule),
   buildVendorModules,
   buildEntry,
   write

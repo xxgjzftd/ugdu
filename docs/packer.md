@@ -24,8 +24,6 @@
 |  [MetaModuleImport](./packer.metamoduleimport.md) |  |
 |  [PkgNode](./packer.pkgnode.md) |  |
 |  [Project](./packer.project.md) | The information of your project. |
-|  [RoutesConfigGroup](./packer.routesconfiggroup.md) | Used to generate [BaseRoute](./packer.baseroute.md) array. |
-|  [RoutesConfigProperties](./packer.routesconfigproperties.md) | Used to generate <code>routes module</code> which export a [BaseRoute](./packer.baseroute.md) array. Check [MetaModule](./packer.metamodule.md) for more information about <code>module</code>. |
 |  [SetConfigHooks](./packer.setconfighooks.md) |  |
 |  [SetProjectHooks](./packer.setprojecthooks.md) |  |
 |  [Sources](./packer.sources.md) |  |
@@ -39,7 +37,7 @@
 |  [build](./packer.build.md) | Builds project for production. |
 |  [buildEntry](./packer.buildentry.md) | Build the entry of the project. |
 |  [buildLocalModules](./packer.buildlocalmodules.md) | Builds <code>local module</code>s. |
-|  [buildRoutesModules](./packer.buildroutesmodules.md) |  |
+|  [buildRoutesModule](./packer.buildroutesmodule.md) |  |
 |  [buildVendorModules](./packer.buildvendormodules.md) |  |
 |  [serve](./packer.serve.md) |  |
 |  [setConfig](./packer.setconfig.md) | Gets user's config from <code>get-config</code> hook and normalize it. Then set it to <code>context.config</code>. |
@@ -48,10 +46,4 @@
 |  [setProject](./packer.setproject.md) |  |
 |  [setUtils](./packer.setutils.md) |  |
 |  [write](./packer.write.md) | The <code>write</code> task options. |
-
-## Type Aliases
-
-|  Type Alias | Description |
-|  --- | --- |
-|  [Routes](./packer.routes.md) | The <code>routes module</code> name to <code>routes module</code> information map. |
 

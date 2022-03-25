@@ -173,7 +173,7 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
    * @param force - Whether to force reruning
    */
   async run (force = false) {
-    if (force || !this._result) {
+    if (force || this._result === null) {
       this._result = this.action.call(this)
     }
     return this._result

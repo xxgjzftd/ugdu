@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-'get-routes'(context: Context): Promisable<Routes>;
+'get-routes'(context: Context): Promisable<BaseRoute[]>;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@
 
 <b>Returns:</b>
 
-Promisable&lt;[Routes](./packer.routes.md)<!-- -->&gt;
+Promisable&lt;[BaseRoute](./packer.baseroute.md)<!-- -->\[\]&gt;
 

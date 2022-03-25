@@ -6,7 +6,7 @@ import { mergeConfig, normalizePath } from 'vite'
 import type { InlineConfig } from 'vite'
 import type { Merge } from 'type-fest'
 
-import type { PkgNode, BaseRoute } from './project'
+import type { PkgNode } from './project'
 
 /**
  * @public
@@ -74,28 +74,6 @@ export interface UserConfig {
    */
   apps: UserAppConfig[]
   /**
-   * The `routes id` to {@link RoutesConfigProperties} array map.
-   *
-   * @remarks
-   * The `routes id` is used as the generated `routes module`'s name.
-   * The `routes module` is a `module` which export a {@link BaseRoute} array.
-   * The array is generated based on the project structure.
-   *
-   * @example
-   * If we have such config
-   * ```
-   * { foo: {...}, bar: {...} }
-   * ```
-   * Then we could code in our source code as
-   * ```
-   * import routes from 'routes/foo'
-   * import routes from 'routes/bar'
-   * ```
-   *
-   * @defaultValue \{\}
-   */
-  routes?: Record<string, RoutesConfigProperties>
-  /**
    * The vite config all `app`s should apply.
    *
    * @defaultValue \{\}
@@ -135,101 +113,6 @@ export interface UserAppConfig {
    */
   packages: ((packages: PkgNode[]) => string[]) | string[]
 }
-
-/**
- * Used to generate `routes module` which export a {@link BaseRoute} array.
- * Check {@link MetaModule} for more information about `module`.
- *
- * @example
- * If we have such files
- * ```
- * packages/foo/src/pages/xx/layout.tsx
- * packages/foo/src/pages/yy/list.tsx
- * packages/foo/src/pages/zz/list.tsx
- * ```
- * The package name is `foo`.
- * And the corresponding config is
- * ```ts
- * {
- *   groups: [
- *      {
- *        //...
- *        base: '/example/',
- *        parent: 'packages/foo/src/pages/xx/layout.tsx'
- *      }
- *   ],
- *   extends: [
- *     {
- *       id: 'packages/foo/src/pages/xx/layout.tsx',
- *       path: '/example'
- *     }
- *   ]
- * }
- * ```
- * Then the generated routes will be
- * ```
- * [
- *   {
- *     //...
- *     id: 'packages/foo/src/pages/xx/layout.tsx',
- *     path: '/example',
- *     children: [
- *       {
- *         id: 'packages/foo/src/pages/yy/list.tsx',
- *         path: '/example/foo/yy/list'
- *       },
- *       {
- *         id: 'packages/foo/src/pages/zz/list.tsx',
- *         path: '/example/foo/zz/list'
- *       }
- *     ]
- *   }
- * ]
- * ```
- * In this example, for path '/example/foo/yy/list'.
- * The reason why 'example' appears is the config `base` is `/example/`.
- * The 'foo' is the package name is 'foo'.
- * The 'yy/list' is the id replaced with extension and `lca` of all ids.
- * cf. https://en.wikipedia.org/wiki/Lowest_common_ancestor for `lca`.
- *
- * @public
- */
-export interface RoutesConfigProperties {
-  /**
-   * Used to generate {@link BaseRoute} array.
-   */
-  groups: RoutesConfigGroup[]
-  /**
-   * Used to extend the generated {@link BaseRoute} array.
-   */
-  extends: RoutesExtend[]
-}
-
-/**
- * Used to generate {@link BaseRoute} array.
- *
- * @public
- */
-export interface RoutesConfigGroup {
-  /**
-   * The patterns used by `fast-glob` to decide which file belonging to this routes.
-   */
-  patterns: string | string[]
-  /**
-   * The generated path will prepend this field.
-   */
-  base: `/${string}/` | '/'
-  /**
-   * The generated routes will be the children of the route whose {@link BaseRoute.id | id} is equal to this field.
-   */
-  parent?: string
-}
-
-/**
- * Used to extend the generated {@link BaseRoute} array.
- *
- */
-type RoutesExtend = Partial<Pick<BaseRoute, 'path' | 'name'>> & Pick<BaseRoute, 'id'>
 
 /**
  * The normalized config.
@@ -275,7 +158,6 @@ export const setConfig = new TaskOptions<SetConfigHooks>(
       },
       config.vite ?? {}
     )
-    config.routes = config.routes ?? {}
     config.apps.forEach(
       (app) => {
         app.predicate = app.predicate ?? (() => true)

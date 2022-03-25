@@ -9,5 +9,5 @@ A `routes module` name to `routes module` information map.
 <b>Signature:</b>
 
 ```typescript
-routes: Routes;
+routes: BaseRoute[];
 ```

@@ -15,5 +15,5 @@ export interface BuildRoutesModulesHooks
 
 |  Method | Description |
 |  --- | --- |
-|  ["build-routes-module"(rmn, context)](./packer.buildroutesmoduleshooks._build-routes-module_.md) |  |
+|  ["build-routes-module"(context)](./packer.buildroutesmoduleshooks._build-routes-module_.md) |  |
 

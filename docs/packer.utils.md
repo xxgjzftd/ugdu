@@ -47,8 +47,6 @@ export declare class Utils
 |  [getPkgName(specifier)](./packer.utils.getpkgname.md) |  | Gets the <code>package</code> name from the <code>specifier</code>. |
 |  [getPublicPkgNameFromDepPath(dp)](./packer.utils.getpublicpkgnamefromdeppath.md) |  | Gets the <code>public package name</code> from dep path. The <code>public package name</code> is the package name used at runtime. |
 |  [getPublicPkgNameFromImported(imported)](./packer.utils.getpublicpkgnamefromimported.md) |  | Gets the <code>public package name</code> without subpath from the <code>public package name</code> which may contains subpath. |
-|  [getRoutesMoudleNames(path)](./packer.utils.getroutesmoudlenames.md) |  | Gets the names of <code>routes module</code>s which import the <code>path</code>. |
-|  [getRoutesOption(rmn)](./packer.utils.getroutesoption.md) |  | Gets the routes option from the <code>routes module</code> name. |
 |  [getVendorModuleExternals(mn)](./packer.utils.getvendormoduleexternals.md) |  | Gets the [MetaModule.externals](./packer.metamodule.externals.md) of the the <code>vendor module</code>. |
 |  [getVersionedPkgName(pkg)](./packer.utils.getversionedpkgname.md) |  | Gets the versioned <code>package</code> name from 'package'. |
 |  [isBareSpecifier(specifier)](./packer.utils.isbarespecifier.md) |  | Is the <code>specifier</code> a bare <code>specifier</code>. |
