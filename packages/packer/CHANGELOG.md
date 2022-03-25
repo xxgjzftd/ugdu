@@ -1,5 +1,13 @@
 # @ugdu/packer
 
+## 0.1.14
+
+### Patch Changes
+
+- 43e0373: Adjust route generation API
+- Updated dependencies [43e0373]
+  - @ugdu/processor@0.1.3
+
 ## 0.1.11
 
 ### Patch Changes

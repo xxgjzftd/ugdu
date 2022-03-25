@@ -1,6 +1,6 @@
 {
   "name": "@ugdu/packer",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "type": "module",
   "description": "a tool for micro frontends dev and build",
   "main": "dist/index.js",
@@ -26,7 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.6.1",
-    "@ugdu/processor": "workspace:^0.1.2",
+    "@ugdu/processor": "workspace:^0.1.3",
     "@ugdu/runtime": "workspace:^0.1.2",
     "rollup": "^2.61.1",
     "type-fest": "^2.0.0"
@@ -45,6 +45,6 @@
     "vite": "^2.6.14"
   },
   "peerDependencies": {
-    "@ugdu/processor": "workspace:^0.1.2"
+    "@ugdu/processor": "workspace:^0.1.3"
   }
 }
