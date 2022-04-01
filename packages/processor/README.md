@@ -1,5 +1,16 @@
 A task processor which could be hooked in.
 
+## Overview
+
+The task processor is responsible for creating and managing tasks.
+Tasks can be organized in parallel or serial according to your needs.
+The hooks defined in the task will be triggered during the task execution.
+There are different types of hooks to meet your needs. Such as `first`, `sequential` and `parallel`.
+For features, check [features](#features).
+For a simple example, check [usage](#usage).
+The phrases like `hook dirver` are terms. Their brief explanation is [here](#terms).
+For more detail, check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main/docs/processor.md).
+
 ## Features
 
 - Delegation
@@ -15,9 +26,7 @@ A task processor which could be hooked in.
 
 ## Usage
 
-Below is a simple example of a `task` which sets data to the `context`, writes the data to disk, and calls the `hook`s at the same time.
-
-For more detail, check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main/docs/processor.md).
+Below is a simple example of a `task` which sets data to the `context`, writes the data to disk, and calls the `hook fn`s at the same time.
 
 ```ts
 import { writeFile } from 'fs/promises'
@@ -80,3 +89,16 @@ task.run()
 // 'before ~'
 // 'after ~'
 ```
+
+## Terms
+
+- `hook dirver`
+  A `hook dirver` is an instance of [HookDriver](https://github.com/xxgjzftd/ugdu/blob/main/docs/processor.hookdriver.md).
+- `task`
+  A `task` is an instance of [Task](https://github.com/xxgjzftd/ugdu/blob/main/docs/processor.task.md) which is a subclass of [HookDriver](https://github.com/xxgjzftd/ugdu/blob/main/docs/processor.hookdriver.md).
+- `task options`
+  A definition of a `task`.
+- `hook fn`
+  The hook function.
+- `context`
+  The context shared between tasks.
