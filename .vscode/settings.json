@@ -1,9 +1,0 @@
-{
-  "typescript.reportStyleChecksAsWarnings": false,
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "typescript.suggest.completeFunctionCalls": true
-}
