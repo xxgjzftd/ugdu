@@ -1,5 +1,13 @@
 A runtime lib for micro frontends.
 
+## Overview
+
+This runtime lib provide a `ur` global variable which has some helpful methods like `register`, `load`, `unload` and `start`.
+For features, check [features](#features).
+For a simple example, check [usage](#usage).
+The phrases like `app` are terms. Their brief explanation is [here](#terms).
+For more detail, check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main/docs/runtime.md).
+
 ## Features
 
 - Independent deployment.
@@ -19,8 +27,6 @@ A runtime lib for micro frontends.
 Include `@ugdu/runtime` with a async attribute on the script, then include an importmap and module scripts normally.
 
 Below is an example for a project that which registers two `app`, one based on vue2 and the other based on vue2.
-
-For more detail, check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main/docs/runtime.md).
 
 Tips: When using our build tool `@ugdu/packer`, the importmap and the startup script will be generated according to your source code.
 
@@ -95,3 +101,10 @@ Tips: When using our build tool `@ugdu/packer`, the importmap and the startup sc
   </body>
 </html>
 ```
+
+## Terms
+
+- `app`
+  The `app` can actually be thought of as the entry `package`. We can register multiple `app` in one project. And those `app` could based on different framework.
+- `module`
+  The js `module`. The `module` may import other `module`s or css.
