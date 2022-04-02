@@ -49,48 +49,58 @@ Tips: When using our build tool `@ugdu/packer`, the importmap and the startup sc
         },
         "scopes": {
           "/assets/@v2/container": {
-            "vue": "https://unpkg.com/vue@2/dist/vue.esm.browser.js"
+            "vue": "/assets/vue@2.0.0/index.js"
           },
           "/assets/@v2/purchase": {
-            "vue": "https://unpkg.com/vue@2/dist/vue.esm.browser.js"
+            "vue": "/assets/vue@2.0.0/index.js"
           },
           "/assets/@v3/container": {
-            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+            "vue": "/assets/vue@3.0.0/index.js"
           },
           "/assets/@v3/sale": {
-            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+            "vue": "/assets/vue@3.0.0/index.js"
           }
         }
       }
     </script>
     <script type="module-shim">
       ur.register('@v2/container', pathname => pathname.startsWith('/v2'), () => ur.load('@v2/container'))
-      ur.register('@v3/container', pathname => pathname.startsWith('/v3'), () => ur.load('@v3/container'))
+      ur.register('@v3/container', pathname => pathname === '/' || pathname.startsWith('/v3'), () => ur.load('@v3/container'))
       const base = '/'
       const rms = [
         {
           id: '@v2/container',
           js: 'assets/@v2/container/index.js',
           css: 'assets/@v2/container/index.css',
-          imports: ['vue@2']
+          imports: ['vue@2.0.0']
         },
         {
           id: '@v2/purchase/src/pages/list.vue',
           js: 'assets/@v2/purchase/list.js',
           css: 'assets/@v2/purchase/list.css',
-          imports: ['vue@2']
+          imports: ['vue@2.0.0']
         },
         {
           id: '@v3/container',
           js: 'assets/@v3/container/index.js',
           css: 'assets/@v3/container/index.css',
-          imports: ['vue@3']
+          imports: ['vue@3.0.0']
         },
         {
           id: '@v3/sale/src/pages/list.vue',
           js: 'assets/@v3/sale/list.js',
           css: 'assets/@v3/sale/list.css',
-          imports: ['vue@3']
+          imports: ['vue@3.0.0']
+        },
+        {
+          id: 'vue@2.0.0',
+          js: 'assets/vue@2.0.0/index.js',
+          imports: []
+        },
+        {
+          id: 'vue@3.0.0',
+          js: 'assets/vue@3.0.0/index.js',
+          imports: []
         }
       ]
       ur.start(rms, base)

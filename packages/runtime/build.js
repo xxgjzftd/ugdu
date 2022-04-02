@@ -3,6 +3,7 @@ import esbuild from 'esbuild'
 esbuild.build(
   {
     bundle: true,
+    define: { TEST: 'false' },
     entryPoints: ['src/index.ts'],
     format: 'iife',
     minify: true,
