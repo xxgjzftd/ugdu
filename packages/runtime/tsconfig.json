@@ -6,5 +6,5 @@
       "src/*": ["src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["global.d.ts", "src"]
 }
