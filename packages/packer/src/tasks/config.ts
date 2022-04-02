@@ -16,7 +16,7 @@ export interface UserConfig {
    * In `local package`s which don't have `main` field, all files with extension in this config are considered to be a `module`.
    *
    * @remarks
-   * There are two types in our source files.
+   * There are two types of our source files.
    * One is `module`, the other is `source`.
    * `source`s are bundled into `module` when building.
    * `module`s import each other at runtime.
@@ -126,7 +126,7 @@ export type Config = Merge<Required<UserConfig>, { apps: Required<UserAppConfig>
  */
 export interface SetConfigHooks {
   /**
-   * A `first` type hook. Its non null return value will be used as config after normalized.
+   * A `first` type hook. Its first non null return value will be used as config after normalized.
    */
   'get-config'(): UserConfig | void
 }

@@ -54,6 +54,7 @@ export interface BuildLocalModulesHooks {
   /**
    * A `parallel` type hook. It will be invoked once a `local module` need be built.
    *
+   * @remarks
    * Note: This hook will be triggered by the change of each `module`'s own file and its `source` file.
    * So this hook may be invoked multiple times with the same `lmn`.
    * However, because we have a caching mechanism, this `module` will only be built once.

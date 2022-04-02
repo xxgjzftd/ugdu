@@ -14,7 +14,15 @@ import type { Context } from '@ugdu/processor'
 /**
  * @public
  */
-export interface BuildRoutesModulesHooks {
+export interface BuildRoutesModuleHooks {
+  /**
+   * A `parallel` type hook. It will be invoked once `routes module` need be built.
+   *
+   * @remarks
+   *
+   *
+   * @param context - {@link @ugdu/processor#Context}
+   */
   'build-routes-module'(context: Context): Promisable<void>
 }
 
@@ -23,7 +31,7 @@ export interface BuildRoutesModulesHooks {
  */
 export const buildRoutesModule = series(
   setContext,
-  new TaskOptions<BuildRoutesModulesHooks>(
+  new TaskOptions<BuildRoutesModuleHooks>(
     async function build () {
       const {
         manager: {

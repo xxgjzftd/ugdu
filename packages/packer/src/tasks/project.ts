@@ -37,7 +37,13 @@ export interface Project {
    * The information of the building.
    */
   meta: {
+    /**
+     * The information of the previous building.
+     */
     pre: Meta
+    /**
+     * The information of the current building.
+     */
     cur: Meta
   }
   /**
@@ -45,7 +51,29 @@ export interface Project {
    */
   sources: Sources
   /**
-   * A `routes module` name to `routes module` information map.
+   * Used to generate the code of the `routes module`.
+   *
+   * @remarks
+   * The default rule for generating this field is described below.
+   * Suppose we have the following structure:
+   * ```
+   * - packages/
+   *   - foo/
+   *     - package.json
+   *     - src/
+   *       - pages/
+   *         - xx.vue
+   *         - yy.vue
+   *         - xx/
+   *           - zz.vue
+   *   - bar/
+   *     - package.json
+   *     - src/
+   *       - pages/
+   *         - bar.vue
+   *         - xx/
+   *           - index.vue
+   * ```
    */
   routes: BaseRoute[]
 }
@@ -131,10 +159,12 @@ export interface MetaModule {
   /**
    * The module name.
    * There are three types of module names.
+   *
    * First is `local module` name.
-   * Such as `@pkg/components`, `@pkg/sale/src/pages/order/index.vue`
-   * Second is `routes module` name.
-   * Such as `routes/v2`
+   * Such as `@pkg/components`, `@pkg/sale/src/pages/order/index.vue`.
+   *
+   * Second is `routes module` name(i.e.`routes`).
+   *
    * Last is `vendor module` name.
    * Such as `lodash@4.17.21`
    * Here the `vendor module` name actually is versioned vendor package name.
@@ -154,7 +184,7 @@ export interface MetaModule {
    */
   sources?: string[]
   /**
-   * All public package names this module may depends.
+   * All `public package name`s this module may depends.
    * A vendor module will not be rebuilt unless one of it's externals and exports changed.
    * Only vendor modules have this field.
    */
@@ -193,7 +223,13 @@ export interface MetaModuleImport {
  * @public
  */
 export interface Sources {
+  /**
+   * All `path`s of your source files.
+   */
   all: string[]
+  /**
+   * The `path` and status of your source files which changed since last build.
+   */
   changed: ChangedSource[]
 }
 
@@ -201,7 +237,15 @@ export interface Sources {
  * @public
  */
 export interface ChangedSource {
+  /**
+   * 'A' means the file is added.
+   * 'M' means the file is modified.
+   * 'D' means the file is deleted.
+   */
   status: 'A' | 'M' | 'D'
+  /**
+   * The `path` of the source file.
+   */
   path: string
 }
 
@@ -473,12 +517,33 @@ const getRoutes = async (context: Context) => {
  * @public
  */
 export interface SetProjectHooks {
+  /**
+   * A `first` type hook. Its first non null return value will be used as `local package`s.
+   */
   'get-local-packages'(cwd: string): Promisable<PkgNode[]>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.alias}.
+   */
   'get-alias'(localPkgs: PkgNode[], context: Context): Promisable<AliasOptions>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.pkgs}.
+   */
   'get-all-packages'(localPkgs: PkgNode[], cwd: string): Promisable<PkgNode[]>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.pre}.
+   */
   'get-previous-meta'(context: Context): Promisable<Meta>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.cur}.
+   */
   'get-current-meta'(context: Context): Promisable<Meta>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.sources}.
+   */
   'get-sources'(context: Context): Promisable<Sources>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.routes}.
+   */
   'get-routes'(context: Context): Promisable<BaseRoute[]>
 }
 
