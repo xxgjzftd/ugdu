@@ -11,6 +11,8 @@ import type { AddressInfo } from 'net'
 import type { Plugin } from 'vite'
 
 /**
+ * Starts dev server for `app`s.
+ * 
  * @public
  */
 export const serve = series(

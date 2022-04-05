@@ -25,7 +25,7 @@ export interface BaseRoute {
 }
 
 // @public
-export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModulesHooks & BuildVendorModulesHooks, never>;
+export const build: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildRoutesModuleHooks & BuildVendorModulesHooks, never>;
 
 // @public
 export const buildEntry: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
@@ -43,12 +43,11 @@ export interface BuildLocalModulesHooks {
     'build-local-module'(lmn: string, context: Context): Promisable<void>;
 }
 
-// @public (undocumented)
-export const buildRoutesModule: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModulesHooks, never>;
+// @public
+export const buildRoutesModule: TaskOptions<SetConfigHooks & SetProjectHooks & BuildRoutesModuleHooks, never>;
 
 // @public (undocumented)
-export interface BuildRoutesModulesHooks {
-    // (undocumented)
+export interface BuildRoutesModuleHooks {
     'build-routes-module'(context: Context): Promisable<void>;
 }
 
@@ -57,7 +56,7 @@ export interface BuildRoutesModulesHooks {
 // @internal (undocumented)
 export const buildVendorModule: (vvn: string, context: Context) => Promise<void>;
 
-// @public (undocumented)
+// @public
 export const buildVendorModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks & BuildVendorModulesHooks, never>;
 
 // @public (undocumented)
@@ -68,9 +67,7 @@ export interface BuildVendorModulesHooks {
 
 // @public (undocumented)
 export interface ChangedSource {
-    // (undocumented)
     path: string;
-    // (undocumented)
     status: 'A' | 'M' | 'D';
 }
 
@@ -174,7 +171,7 @@ export interface Project {
     sources: Sources;
 }
 
-// @public (undocumented)
+// @public
 export const serve: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public
@@ -196,19 +193,12 @@ export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
 export interface SetProjectHooks {
-    // (undocumented)
     'get-alias'(localPkgs: PkgNode[], context: Context): Promisable<AliasOptions>;
-    // (undocumented)
     'get-all-packages'(localPkgs: PkgNode[], cwd: string): Promisable<PkgNode[]>;
-    // (undocumented)
     'get-current-meta'(context: Context): Promisable<Meta>;
-    // (undocumented)
     'get-local-packages'(cwd: string): Promisable<PkgNode[]>;
-    // (undocumented)
     'get-previous-meta'(context: Context): Promisable<Meta>;
-    // (undocumented)
     'get-routes'(context: Context): Promisable<BaseRoute[]>;
-    // (undocumented)
     'get-sources'(context: Context): Promisable<Sources>;
 }
 
@@ -217,9 +207,7 @@ export const setUtils: TaskOptions<SetConfigHooks, never>;
 
 // @public (undocumented)
 export interface Sources {
-    // (undocumented)
     all: string[];
-    // (undocumented)
     changed: ChangedSource[];
 }
 
@@ -264,7 +252,7 @@ export class Utils {
     getPkgFromModuleName(mn: string): PkgNode;
     getPkgFromPublicPkgName(parent: PkgNode, ppn: string): PkgNode;
     getPkgFromSourceAndImporter(source: string, importer: string | PkgNode): PkgNode | null;
-    getPkgId(lpn: string): string;
+    getPkgId(pn: string): string;
     getPkgName(specifier: string): string;
     getPublicPkgNameFromDepPath(dp: PkgNode[]): string;
     getPublicPkgNameFromImported(imported: string): string;

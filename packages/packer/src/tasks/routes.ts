@@ -19,7 +19,7 @@ export interface BuildRoutesModuleHooks {
    * A `parallel` type hook. It will be invoked once `routes module` need be built.
    *
    * @remarks
-   *
+   * This hook will be triggered when there are any creation or deletion of `page` in the project.
    *
    * @param context - {@link @ugdu/processor#Context}
    */
@@ -27,6 +27,11 @@ export interface BuildRoutesModuleHooks {
 }
 
 /**
+ * Builds `routes module`.
+ * 
+ * @remarks
+ * Check {@link MetaModule} for more information about `module`.
+ * 
  * @public
  */
 export const buildRoutesModule = series(

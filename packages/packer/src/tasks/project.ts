@@ -54,7 +54,17 @@ export interface Project {
    * Used to generate the code of the `routes module`.
    *
    * @remarks
-   * The default rule for generating this field is described below.
+   * By default, this field will be generated according to your project structure.
+   * Files in `src/pages` of `local package`s will be considered to be `page`s.
+   * A `page` corresponds to a `BaseRoute`.
+   * For its path, we need replace the `${local package path}/src/pages` with {@link Utils.getPkgId | `package` id} and then remove the file extension.
+   * For dynamic routes, you should name your file within [].
+   * For nested routes, you should put the children pages in the folder which has the same name with the parent page.
+   * If there is a file named `index`, the generated path will remove it automaticly.
+   * If there is a file whose name is the same as the {@link Utils.getPkgId | `package` id}, and it's located at the root of the `src/pages`, then it will be the parent page of the other pages in this package.
+   * If there is a package whose id is `root`, we will remove the `root` from the generated path. You may need to put the pages which is no need to make a package in this package. Such as `/login`, `/welcom` etc.
+   * 
+   * @example
    * Suppose we have the following structure:
    * ```
    * - packages/
@@ -73,6 +83,55 @@ export interface Project {
    *         - bar.vue
    *         - xx/
    *           - index.vue
+   *           - [id].vue
+   *   - root/
+   *     - package.json
+   *     - src/
+   *       - pages/
+   *         - index.vue
+   *         - login.vue
+   * ```
+   * 
+   * The generated `routes` module will be something like:
+   * ```
+   * [
+   *   {
+   *     path: '/foo/xx',
+   *     component: 'packages/foo/src/pages/xx.vue',
+   *     children: [
+   *       {
+   *         path: '/foo/xx/zz',
+   *         component: 'packages/foo/src/pages/xx/zz.vue'
+   *       }
+   *     ]
+   *   },
+   *   {
+   *     path: '/foo/yy',
+   *     component: 'packages/foo/src/pages/yy.vue'
+   *   },
+   *   {
+   *     path: '/bar',
+   *     component: 'packages/bar/src/pages/bar.vue',
+   *     children: [
+   *       {
+   *         path: '/bar/xx',
+   *         component: 'packages/bar/src/pages/xx/index.vue'
+   *       },
+   *       {
+   *         path: '/bar/xx/:id',
+   *         component: 'packages/bar/src/pages/xx/[id].vue'
+   *       }
+   *     ]
+   *   },
+   *   {
+   *     path: '/',
+   *     component: 'packages/root/src/pages/index.vue'
+   *   },
+   *   {
+   *     path: '/login',
+   *     component: 'packages/root/src/pages/login.vue'
+   *   }
+   * ]
    * ```
    */
   routes: BaseRoute[]

@@ -99,6 +99,11 @@ const getCurrentBindings = (vvn: string, context: Context) => {
 }
 
 /**
+ * Builds `vendor module`.
+ * 
+ * @remarks
+ * Check {@link MetaModule} for more information about `module`.
+ * 
  * @public
  */
 export const buildVendorModules = series(

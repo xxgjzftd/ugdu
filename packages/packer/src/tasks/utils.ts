@@ -215,14 +215,16 @@ export class Utils {
   }
 
   /**
-   * Gets the `package` name without `scope`.
+   * Gets the `package` id.
+   * The `package` id is the `package` name without `scope`.
+   * For a `package` whose name doesn't have `scope`, its id will be the same as its name.
    *
-   * @param lpn - The `local package` name
-   * @returns The `package` name without `scope`
+   * @param pn - The `package` name
+   * @returns The `package` id
    */
   @cacheable
-  getPkgId (lpn: string) {
-    return lpn.replace(/.+\//, '')
+  getPkgId (pn: string) {
+    return pn.replace(/.+\//, '')
   }
 
   /**
