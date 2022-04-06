@@ -1,4 +1,4 @@
-A packer powered by the [task processor](../processor/README.md) and the [runtime helper](../runtime/README.md) to help develop and build micro frontends projects.
+A packer powered by the [task processor](https://github.com/xxgjzftd/ugdu/blob/main/packages/processor/README.md) and the [runtime helper](https://github.com/xxgjzftd/ugdu/blob/main/packages/runtime/README.md) to help develop and build micro frontends projects.
 
 ## Overview
 
@@ -23,7 +23,7 @@ For more detail, check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main
   - We will throw a meaningful error in build time other than runtime when you accidentally make a mistake.
 - Extensible
   - You can hook into the stage you are interested in when you develop an application.
-  - You can enhance our built-in `task options`, or create your own. And then share to others. Check our [API docs](https://github.com/xxgjzftd/ugdu/blob/main/docs/index.md) for more detail.
+  - You can enhance our built-in `task options`, or create your own. And then share to others.
 
 ## Usage
 
