@@ -9,6 +9,12 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts"
   },
+  "keywords": [
+    "task",
+    "hook",
+    "processor",
+    "ugdu"
+  ],
   "scripts": {
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
