@@ -5,10 +5,6 @@
   "description": "A packer to help develop and build micro frontends projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts"
-  },
   "keywords": [
     "micro frontends",
     "build tool",
@@ -19,12 +15,21 @@
     "preinstall": "npx only-allow pnpm",
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
-    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project ./tsconfig.build.json && api-extractor run --local && rimraf temp",
     "test": "jest"
   },
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxgjzftd/ugdu.git",
+    "directory": "packages/packer"
+  },
+  "bugs": {
+    "url": "https://github.com/xxgjzftd/ugdu/issues"
+  },
+  "homepage": "https://github.com/xxgjzftd/ugdu/tree/main/packages/packer#readme",
   "engines": {
     "node": ">=14.17.0"
   },
@@ -42,7 +47,6 @@
     "@pnpm/logger": "^4.0.0",
     "autobind-decorator": "^2.4.0",
     "axios": "^0.21.4",
-    "cac": "^6.7.3",
     "dependencies-hierarchy": "^10.0.13",
     "es-module-lexer": "^0.7.1",
     "execa": "^6.0.0",

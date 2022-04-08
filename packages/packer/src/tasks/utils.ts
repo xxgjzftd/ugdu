@@ -1,32 +1,41 @@
 import { isAbsolute, resolve } from 'path'
 
 import { normalizePath } from 'vite'
-import { parallel, series, TaskOptions } from '@ugdu/processor'
 import autobind from 'autobind-decorator'
 
-import { cacheable, getDefault } from '../shared/utils'
-import { setConstants } from './constants'
-import { setConfig } from './config'
+import { getDefault } from '../shared/utils'
 
 import type { Context } from '@ugdu/processor'
 import type { PkgNode, BaseRoute } from './project'
 
-/**
- * @public
- */
-export const setUtils = series(
-  parallel(setConstants, setConfig),
-  new TaskOptions(
-    function () {
-      const {
-        manager: { context }
-      } = this
-      context.utils = new Utils(context)
+const cached = <T extends (this: Utils, string: string) => any>(origin: T) => {
+  const u2cm: Map<Utils, Record<string, ReturnType<T>>> = new Map()
+  const wrapper = function (string) {
+    let cache = u2cm.get(this)
+    if (!cache) {
+      cache = Object.create(null)
+      u2cm.set(this, cache!)
     }
-  )
-)
+    return cache![string] || (cache![string] = origin.call(this, string))
+  } as T
+  if (TEST) {
+    // @ts-ignore
+    wrapper.origin = origin
+  }
+  return wrapper
+}
+
+const cacheable = (_target: any, _key: string, descriptor: PropertyDescriptor) => {
+  descriptor.value = cached(descriptor.value)
+}
 
 /**
+ * A utils set.
+ *
+ * @remarks
+ * Note that some of the methods are not available before the corresponding data is ready.
+ * Such as `isPage(path)` needs to know the `context.project.routes` to decide whether the `path` is a `page`.
+ *
  * @public
  */
 @getDefault(autobind)
@@ -47,7 +56,7 @@ export class Utils {
   }
 
   /**
-   * Removes the `module` whose id is `mn` from {@link Meta.modules}.
+   * Removes the `module` whose id is `mn` from `context.project.meta.cur.modules`.
    *
    * @param mn - The id of the `module` to be removed
    */
@@ -62,19 +71,19 @@ export class Utils {
   }
 
   /**
-   * Appends '/' to `str`.
+   * Appends '/' to `str`. It will not append if the `str` already ends with '/'.
    *
    * @param str - The string to be appended
    * @returns The result string
    */
   @cacheable
   appendSlash (str: string) {
-    return `${str}/`
+    return str.endsWith('/') ? str : `${str}/`
   }
 
   /**
    * Is the `path` a `page`.
-   * `page` is `module` which is imported by the `routes module` as a route.
+   * `page` is a `module` which is imported by the `routes module` as a route.
    * Check {@link UserConfig.cwd} for what `path` is.
    *
    * @param path - The `path` to be test
@@ -82,20 +91,7 @@ export class Utils {
    */
   @cacheable
   isPage (path: string) {
-    const {
-      project: { routes }
-    } = this.context
-    const queue: BaseRoute[] = [...routes]
-    while (queue.length) {
-      const br = queue.shift()!
-      if (br.id === path) {
-        return true
-      }
-      if (br.children) {
-        queue.push(...br.children)
-      }
-    }
-    return false
+    return this.getPages().includes(path)
   }
 
   /**
@@ -215,6 +211,28 @@ export class Utils {
   }
 
   /**
+   * Gets the `path`s of all `page`s from {@link Project.routes}.
+   *
+   * @returns The `path`s of all `page`s
+   */
+  @cacheable
+  getPages () {
+    const {
+      project: { routes }
+    } = this.context
+    const pages = []
+    const queue: BaseRoute[] = [...routes]
+    while (queue.length) {
+      const br = queue.shift()!
+      pages.push(br.id)
+      if (br.children) {
+        queue.push(...br.children)
+      }
+    }
+    return pages
+  }
+
+  /**
    * Gets the `package` id.
    * The `package` id is the `package` name without `scope`.
    * For a `package` whose name doesn't have `scope`, its id will be the same as its name.
@@ -274,18 +292,17 @@ export class Utils {
     const { config } = this.context
     const lp = this.getLocalPkgFromPath(path)
     const { main, name } = lp
-    if (this.isPage(path) && main) {
-      throw new Error(
-        `A file in a package that has a main field cannot be specified as a page.` +
-          `Please migrate '${path}' to another package.`
-      )
+
+    if (main) {
+      if (this.getNormalizedPath(this.resolve(lp.path, main)) === path) {
+        return name
+      }
+    } else {
+      if (this.isPage(path) || config.extensions.includes(path.slice(path.lastIndexOf('.') + 1))) {
+        return path.replace(lp.path, name)
+      }
     }
-    if (this.isPage(path) || (!main && config.extensions.includes(path.slice(path.lastIndexOf('.') + 1)))) {
-      return path.replace(lp.path, name)
-    }
-    if (main && this.getNormalizedPath(this.resolve(lp.path, main)) === path) {
-      return name
-    }
+
     return null
   }
 
@@ -304,7 +321,7 @@ export class Utils {
   }
 
   /**
-   * Gets the `external` config of the `local module`.
+   * Gets the `external` config for the `local module`.
    *
    * @param lmn - `local module` name
    * @returns The `external` config of the `local module`
@@ -321,10 +338,10 @@ export class Utils {
   }
 
   /**
-   * Gets the {@link MetaModule.externals} of the the `vendor module`.
+   * Gets the {@link MetaModule.externals} for the `vendor module` whose name is the `mn`.
    *
    * @param mn - The `vendor module` name
-   * @returns The `externals` of the the `vendor module`
+   * @returns The `externals` of the `vendor module`
    */
   @cacheable
   getVendorModuleExternals (mn: string) {
@@ -347,7 +364,7 @@ export class Utils {
   }
 
   /**
-   * Gets the {@link MetaModule} from the `module` name.
+   * Gets the {@link MetaModule} for the `module` whose name is the `mn`.
    *
    * @param mn - The `module` name
    * @returns The {@link MetaModule}
@@ -419,9 +436,7 @@ export class Utils {
     const {
       project: { pkgs }
     } = this.context
-    const pkg = pkgs
-      .filter((pkg) => normalizePath(mi).startsWith(this.appendSlash(pkg.ap)))
-      .sort((a, b) => b.ap.length - a.ap.length)[0]
+    const pkg = pkgs.find((pkg) => normalizePath(mi).startsWith(this.appendSlash(pkg.ap)))
     if (!pkg) {
       throw new Error(
         `Can not find '${mi}' in context.project.pkgs. This maybe a bug of @ugdu/packer. Please issue a bug in github.`
@@ -454,7 +469,10 @@ export class Utils {
    * @returns The versioned `package` name
    */
   getVersionedPkgName (pkg: PkgNode) {
-    return `${pkg.name}@${pkg.version}`
+    const {
+      CONSTANTS: { VERSIONED_VENDOR_SEP }
+    } = this.context
+    return `${pkg.name}${VERSIONED_VENDOR_SEP}${pkg.version}`
   }
 
   /**
@@ -479,13 +497,15 @@ export class Utils {
       } else {
         pkg.dependencies.forEach(
           (dep) => {
-            queue.push(dep)
-            map.set(dep, [...pre, dep])
+            if (!map.has(dep)) {
+              queue.push(dep)
+              map.set(dep, [...pre, dep])
+            }
           }
         )
       }
     }
-    if (!path) {
+    if (!path.length && start !== end) {
       throw new Error(
         `Can not find the dep path from '${this.getVersionedPkgName(start)}' to '${this.getVersionedPkgName(end)}'. ` +
           `This maybe a bug of @ugdu/packer. Please issue a bug in github.`
@@ -521,6 +541,7 @@ export class Utils {
    * @param imported - The `public package name` which may contains subpath
    * @returns The `public package name` without subpath
    */
+  @cacheable
   getPublicPkgNameFromImported (imported: string) {
     const {
       CONSTANTS: { PACKAGE_NAME_SEP }
@@ -565,6 +586,7 @@ export class Utils {
     const type = typeof payload
     switch (type) {
       case 'object':
+        if (payload === null) return 'null'
         const isArray = Array.isArray(payload)
         let content = (
           isArray

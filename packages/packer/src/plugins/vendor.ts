@@ -15,7 +15,8 @@ export const vendor = function (vvn: string, context: Context): Plugin {
       getPkgFromModuleName,
       getPkgFromSourceAndImporter,
       getDepPath,
-      getPublicPkgNameFromDepPath
+      getPublicPkgNameFromDepPath,
+      getMetaModule
     }
   } = context
   const pkg = getPkgFromModuleName(vvn)
@@ -60,14 +61,24 @@ export const vendor = function (vvn: string, context: Context): Plugin {
             .map(
               (sub) => {
                 const index = sub.lastIndexOf('/')
-                const path = pkg.name + sub.slice(0, index)
+                const subpath = sub.slice(0, index)
+                const path = pkg.name + subpath
                 const binding = sub.slice(index + 1)
                 const name = sub.replace(/\W/g, BINDING_NAME_SEP)
-                return binding
-                  ? binding === '*'
-                    ? `export * as ${name} from "${path}";`
-                    : `export { ${binding} as ` + `${name} } from "${path}";`
-                  : `import "${path}";`
+                if (binding === '*') {
+                  const ref = this.emitFile(
+                    {
+                      id: path,
+                      type: 'chunk',
+                      importer: VENDOR
+                    }
+                  )
+                  const mm = getMetaModule(vvn)
+                  mm.subs = mm.subs || []
+                  mm.subs.push({ subpath, js: ref })
+                  return ''
+                }
+                return binding ? `export { ${binding} as ` + `${name} } from "${path}";` : `import "${path}";`
               }
             )
             .join('\n')

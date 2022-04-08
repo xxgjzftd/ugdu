@@ -5,10 +5,6 @@
   "description": "A task processor which could be hooked in.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts"
-  },
   "keywords": [
     "task",
     "hook",
@@ -18,12 +14,21 @@
   "scripts": {
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
-    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project ./tsconfig.build.json && api-extractor run --local && rimraf temp",
     "test": "jest"
   },
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxgjzftd/ugdu.git",
+    "directory": "packages/processor"
+  },
+  "bugs": {
+    "url": "https://github.com/xxgjzftd/ugdu/issues"
+  },
+  "homepage": "https://github.com/xxgjzftd/ugdu/tree/main/packages/processor#readme",
   "engines": {
     "node": ">=14.17.0"
   },

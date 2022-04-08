@@ -18,12 +18,7 @@ window.importShim = jest.fn(
   }
 )
 
-const microTaskQueueHasExhausted = async () =>
-  new Promise(
-    (resolve) => {
-      setTimeout(resolve, 0)
-    }
-  )
+const microTaskQueueHasExhausted = async () => new Promise((resolve) => setTimeout(resolve))
 
 const ur = window.ur
 const base = '/'

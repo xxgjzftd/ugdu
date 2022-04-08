@@ -28,14 +28,36 @@ export interface BuildRoutesModuleHooks {
 
 /**
  * Builds `routes module`.
- * 
+ *
  * @remarks
  * Check {@link MetaModule} for more information about `module`.
- * 
+ *
  * @public
  */
 export const buildRoutesModule = series(
   setContext,
+  new TaskOptions(
+    async function validate () {
+      const {
+        manager: {
+          context: {
+            utils: { getPages, getLocalModuleName }
+          }
+        }
+      } = this
+      getPages().forEach(
+        (page) => {
+          if (getLocalModuleName(page) === null) {
+            throw new Error(
+              `'${page}' is specified as a page, but it is not a 'local module'.` +
+                `For the 'local package' which have 'main' field, only the corresponding file of 'main' can be specified as a page.` +
+                `For other packages, there is no such restriction.`
+            )
+          }
+        }
+      )
+    }
+  ),
   new TaskOptions<BuildRoutesModuleHooks>(
     async function build () {
       const {
@@ -43,6 +65,7 @@ export const buildRoutesModule = series(
           context,
           context: {
             project: {
+              meta: { pre },
               sources: { changed }
             },
             utils: { isPage }
@@ -50,7 +73,9 @@ export const buildRoutesModule = series(
         }
       } = this
 
-      changed.some((s) => s.status !== 'M' && isPage(s.path)) && this.call('build-routes-module', 'parallel', context)
+      await (changed.some(
+        (s) => (s.status === 'A' && isPage(s.path)) || (s.status === 'D' && pre.pages.includes(s.path))
+      ) && this.call('build-routes-module', 'parallel', context))
     },
     ['build-routes-module'],
     {

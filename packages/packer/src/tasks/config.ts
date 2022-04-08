@@ -133,7 +133,7 @@ export interface SetConfigHooks {
 
 /**
  * Gets user's config from `get-config` hook and normalize it.
- * Then set it to `context.config`.
+ * Then sets it to `context.config`.
  *
  * @public
  */

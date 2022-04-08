@@ -4,8 +4,13 @@ import type { UnionToIntersection } from 'type-fest'
 import type { BaseHooks } from './hook-driver'
 
 type SatisfyHooks<T> = T extends BaseHooks<T> ? T : never
-type ParentHooks<T extends TaskOptions<any, any>> = UnionToIntersection<T extends TaskOptions<infer U> ? U : never>
-type ParentTaskOptions<T extends TaskOptions<any, any>[]> = TaskOptions<SatisfyHooks<ParentHooks<T[number]>>, never>
+type ParentHooks<T extends TaskOptions<any, any> | TaskOptions<any, never>> = UnionToIntersection<
+  T extends TaskOptions<infer U> ? U : {}
+>
+type ParentTaskOptions<T extends Array<TaskOptions<any, any> | TaskOptions<any, never>>> = TaskOptions<
+  SatisfyHooks<ParentHooks<T[number]>>,
+  never
+>
 
 /**
  * Composes the parent `task options` with children `task options` in series mode.
@@ -15,11 +20,12 @@ type ParentTaskOptions<T extends TaskOptions<any, any>[]> = TaskOptions<SatisfyH
  *
  * @public
  */
-export const series = function <T extends TaskOptions<any, any>[]>(...children: T) {
+export const series = function <T extends Array<TaskOptions<any, any> | TaskOptions<any, never>>>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(
     async function () {
       const { manager } = this
       for (const child of children) {
+        // @ts-ignore
         await manager.task(child).run()
       }
     }
@@ -36,10 +42,11 @@ export const series = function <T extends TaskOptions<any, any>[]>(...children: 
  *
  * @public
  */
-export const parallel = function <T extends TaskOptions<any, any>[]>(...children: T) {
+export const parallel = function <T extends Array<TaskOptions<any, any> | TaskOptions<any, never>>>(...children: T) {
   const parent: ParentTaskOptions<T> = new TaskOptions(
     async function () {
       const { manager } = this
+      // @ts-ignore
       await Promise.all(children.map((child) => manager.task(child).run()))
     }
   )

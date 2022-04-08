@@ -17,7 +17,7 @@ export class Processor implements TaskManager {
   /**
    * {@inheritDoc TaskManager.context}
    */
-  readonly context: Context = {}
+  readonly context: Context = {} as Context
 
   /**
    * {@inheritDoc TaskManager.task}

@@ -36,7 +36,10 @@ export const local = function (lmn: string, context: Context): Plugin {
               `importing source cross package is not allowed.`
           )
         }
-        if (importer && getLocalModuleName(path) && !isLocalPkg(getLocalModuleName(path)!)) {
+        if (getLocalModuleName(path)) {
+          if (isLocalPkg(getLocalModuleName(path)!)) {
+            return resolution
+          }
           return {
             id: getLocalModuleName(path)!,
             external: true
@@ -44,7 +47,7 @@ export const local = function (lmn: string, context: Context): Plugin {
         }
         const mm = getMetaModule(lmn)
         mm.sources = mm.sources || []
-        mm.sources.push(path)
+        mm.sources.includes(path) || mm.sources.push(path)
         return resolution
       }
       return null

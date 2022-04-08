@@ -3,7 +3,6 @@ import { join } from 'path'
 import { series, TaskOptions } from '@ugdu/processor'
 import { build, mergeConfig } from 'vite'
 
-import { cached } from '../shared/utils'
 import { setContext } from './context'
 import { local } from '../plugins/local'
 import { meta } from '../plugins/meta'
@@ -55,9 +54,7 @@ export interface BuildLocalModulesHooks {
    * A `parallel` type hook. It will be invoked once a `local module` need be built.
    *
    * @remarks
-   * Note: This hook will be triggered by the change of each `module`'s own file and its `source` file.
-   * So this hook may be invoked multiple times with the same `lmn`.
-   * However, because we have a caching mechanism, this `module` will only be built once.
+   * Note: This hook will be triggered by the change of the `module`'s own file or its `source` file.
    *
    * @param lmn - `local module` name
    * @param context - {@link @ugdu/processor#Context}
@@ -68,43 +65,41 @@ export interface BuildLocalModulesHooks {
 /**
  * @internal
  */
-export const buildLocalModule = cached(
-  async function (lmn, context: Context) {
-    const {
-      config,
-      config: { apps, assets },
-      project: { alias },
-      utils: { resolve, getLocalModulePath, getLocalModuleExternal, getPkgName }
-    } = context
-    const pn = getPkgName(lmn)
-    const app = apps.find((app) => (app.packages as string[]).includes(pn))
-    if (!app) {
-      throw new Error(`'${pn}' doesn't have corresponding app.`)
-    }
-    const dc: InlineConfig = {
-      publicDir: false,
-      resolve: {
-        alias
-      },
-      build: {
-        rollupOptions: {
-          input: resolve(getLocalModulePath(lmn)),
-          output: {
-            entryFileNames: join(assets, pn, '[name].[hash].js'),
-            chunkFileNames: join(assets, pn, '[name].[hash].js'),
-            assetFileNames: join(assets, pn, '[name].[hash][extname]'),
-            format: 'es'
-          },
-          preserveEntrySignatures: 'allow-extension',
-          external: getLocalModuleExternal(lmn)
-        }
-      },
-      plugins: [local(lmn, context), meta(lmn, context)]
-    }
-
-    await build(mergeConfig(dc, mergeConfig(config.vite, app.vite)))
+export const buildLocalModule = async function (lmn: string, context: Context) {
+  const {
+    config,
+    config: { apps, assets },
+    project: { alias },
+    utils: { resolve, getLocalModulePath, getLocalModuleExternal, getPkgName }
+  } = context
+  const pn = getPkgName(lmn)
+  const app = apps.find((app) => (app.packages as string[]).includes(pn))
+  if (!app) {
+    throw new Error(`'${pn}' doesn't have corresponding app.`)
   }
-)
+  const dc: InlineConfig = {
+    publicDir: false,
+    resolve: {
+      alias
+    },
+    build: {
+      rollupOptions: {
+        input: resolve(getLocalModulePath(lmn)),
+        output: {
+          entryFileNames: join(assets, pn, '[name].[hash].js'),
+          chunkFileNames: join(assets, pn, '[name].[hash].js'),
+          assetFileNames: join(assets, pn, '[name].[hash][extname]'),
+          format: 'es'
+        },
+        preserveEntrySignatures: 'allow-extension',
+        external: getLocalModuleExternal(lmn)
+      }
+    },
+    plugins: [local(lmn, context), meta(lmn, context)]
+  }
+
+  await build(mergeConfig(dc, mergeConfig(config.vite, app.vite)))
+}
 
 /**
  * Builds `local module`s.
@@ -141,25 +136,24 @@ export const buildLocalModules = series(
         }
       )
 
-      await Promise.all(
-        changed.map(
-          async ({ path, status }) => {
-            const lmn = getLocalModuleName(path)
+      const pending = new Set<string>()
+
+      changed.forEach(
+        ({ path, status }) => {
+          const lmn = getLocalModuleName(path)
+          if (lmn) {
             if (status === 'D') {
-              return lmn && remove(lmn)
-            }
-            if (lmn) {
-              return this.call('build-local-module', 'parallel', lmn, context)
+              remove(lmn)
             } else {
-              return Promise.all(
-                cur.modules
-                  .filter((m) => m.exports && m.sources?.includes(path))
-                  .map((m) => this.call('build-local-module', 'parallel', m.id, context))
-              )
+              pending.add(lmn)
             }
+          } else {
+            cur.modules.filter((m) => m.exports && m.sources?.includes(path)).forEach((m) => pending.add(m.id))
           }
-        )
+        }
       )
+
+      await Promise.all([...pending].map(async (lmn) => this.call('build-local-module', 'parallel', lmn, context)))
     },
     ['build-local-module'],
     {
@@ -182,25 +176,36 @@ export const buildLocalModules = series(
       const {
         manager: {
           context: {
-            project: { mn2bm, meta }
+            project: { mn2bm, meta },
+            utils: { isLocalModule, getLocalPkgFromName }
           }
         }
       } = this
-      meta.cur.modules.forEach(
+      const lms = meta.cur.modules.filter((m) => isLocalModule(m.id))
+      lms.forEach(
         (m) => {
-          if (m.exports) {
-            const mn = m.id
-            const missing = mn2bm.cur[mn]?.find((b, index) => !m.exports!.includes(b, index))
-            if (missing) {
-              const dependents = meta.cur.modules
-                .filter((m) => m.imports.find((i) => i.id === mn && i.bindings.includes(missing)))
-                .map((m) => m.id)
-              throw new Error(
-                `Module '${mn}' no longer exports '${missing}' in this build.` +
-                  `But ${dependents.join(',')} still import it.`
-              )
-            }
+          const mn = m.id
+          const missing = mn2bm.cur[mn]?.find((b, index) => !m.exports!.includes(b, index))
+          if (missing) {
+            const dependents = meta.cur.modules
+              .filter((m) => m.imports.find((i) => i.id === mn && i.bindings.includes(missing)))
+              .map((m) => m.id)
+            throw new Error(
+              `Module '${mn}' no longer exports '${missing}' in this build.` +
+                `But ${dependents.join(',')} still import it.`
+            )
           }
+
+          m.imports.forEach(
+            (i) => {
+              if (isLocalModule(i.id) && !lms.find((m) => m.id === i.id)) {
+                throw new Error(
+                  `Module '${i.id}' is imported by '${mn}' but it is not a local module name.` +
+                    `You may need to import from ${getLocalPkgFromName(i.id)} instead of ${i.id}.`
+                )
+              }
+            }
+          )
         }
       )
     }

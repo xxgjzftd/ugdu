@@ -27,51 +27,33 @@ export const buildVendorModule = async function (vvn: string, context: Context) 
     CONSTANTS: { VENDOR_INPUT },
     config,
     config: { assets },
-    project,
-    project: { mn2bm },
-    utils: { remove, getMetaModule }
+    utils: { getMetaModule }
   } = context
-  mn2bm.cur[vvn] = getCurrentBindings(vvn, context)
-  const pmm = project.meta.pre.modules.find((m) => m.id === vvn)
   const cmm = getMetaModule(vvn)
-  if (
-    mn2bm.pre[vvn]?.toString() !== mn2bm.cur[vvn].toString() ||
-    pmm?.externals!.toString() !== cmm.externals!.toString()
-  ) {
-    if (mn2bm.cur[vvn].length) {
-      await build(
-        mergeConfig(
-          {
-            publicDir: false,
-            build: {
-              rollupOptions: {
-                input: VENDOR_INPUT,
-                output: {
-                  entryFileNames: join(assets, vvn, '[hash].js'),
-                  chunkFileNames: join(assets, vvn, '[hash].js'),
-                  assetFileNames: join(assets, vvn, '[hash][extname]'),
-                  format: 'es',
-                  manualChunks: {}
-                },
-                preserveEntrySignatures: 'allow-extension',
-                external: cmm.externals
-              }
+  await build(
+    mergeConfig(
+      {
+        publicDir: false,
+        build: {
+          cssCodeSplit: false,
+          rollupOptions: {
+            input: VENDOR_INPUT,
+            output: {
+              entryFileNames: join(assets, vvn, '[hash].js'),
+              chunkFileNames: join(assets, vvn, '[hash].js'),
+              assetFileNames: join(assets, vvn, '[hash][extname]'),
+              format: 'es',
+              manualChunks: {}
             },
-            plugins: [vendor(vvn, context), meta(vvn, context)]
-          },
-          config.vite
-        )
-      )
-    } else {
-      remove(vvn)
-    }
-  } else {
-    Object.entries(pmm).forEach(
-      ([key, value]) => {
-        ;(cmm as any)[key] = clone(value)
-      }
+            preserveEntrySignatures: 'allow-extension',
+            external: cmm.externals
+          }
+        },
+        plugins: [vendor(vvn, context), meta(vvn, context)]
+      },
+      config.vite
     )
-  }
+  )
 }
 
 interface VersionedVendor {
@@ -100,10 +82,10 @@ const getCurrentBindings = (vvn: string, context: Context) => {
 
 /**
  * Builds `vendor module`.
- * 
+ *
  * @remarks
  * Check {@link MetaModule} for more information about `module`.
- * 
+ *
  * @public
  */
 export const buildVendorModules = series(
@@ -115,8 +97,9 @@ export const buildVendorModules = series(
         manager: {
           context,
           context: {
+            project,
             project: { pkgs, mn2bm },
-            utils: { shouldExternal, getVersionedPkgName, getMetaModule, getPkgFromPublicPkgName }
+            utils: { remove, shouldExternal, getVersionedPkgName, getMetaModule, getPkgFromPublicPkgName }
           }
         }
       } = this
@@ -153,7 +136,7 @@ export const buildVendorModules = series(
       )
 
       const seen: Set<VersionedVendor> = new Set()
-      const cs: Circle[] = []
+      let cs: Circle[] = []
       const traverse = (vv: VersionedVendor, dp: VersionedVendor[]) => {
         if (seen.has(vv)) return
         vv.dependents.forEach(
@@ -171,9 +154,38 @@ export const buildVendorModules = series(
 
       vvs.forEach((vv) => traverse(vv, [vv]))
 
+      let collapse: Circle[] = []
+      cs.forEach(
+        (c) => {
+          const pending = [c]
+          const others: Circle[] = []
+          collapse.forEach(
+            (cc) => {
+              if (c.some((vv) => cc.includes(vv))) {
+                pending.push(cc)
+              } else {
+                others.push(cc)
+              }
+            }
+          )
+          collapse = [
+            pending.reduce(
+              (res, c) => {
+                c.forEach((vv) => res.includes(vv) || res.push(vv))
+                return res
+              },
+              []
+            ),
+            ...others
+          ]
+        }
+      )
+
+      cs = collapse
+
       const status: Map<VersionedVendor, boolean> = new Map()
-      const getCircles = (vv: VersionedVendor, range = cs) => range.filter((c) => c.includes(vv))
-      const isInSameCircle = (vv1: VersionedVendor, vv2: VersionedVendor) => !!(getCircles(vv2), getCircles(vv1)).length
+      const getCircle = (vv: VersionedVendor) => cs.find((c) => c.includes(vv))
+      const isInSameCircle = (vv1: VersionedVendor, vv2: VersionedVendor) => !!getCircle(vv1)?.includes(vv2)
       const isReady = (vv: VersionedVendor) => {
         if (status.get(vv)) {
           return true
@@ -195,27 +207,72 @@ export const buildVendorModules = series(
       }
 
       while (vvs.length) {
-        const pending: VersionedVendor[] = []
+        const pending: (VersionedVendor | VersionedVendor[])[] = []
         vvs
           .filter((vv) => isReady(vv))
           .forEach(
             (vv) => {
-              const cs = getCircles(vv)
-              if (!cs.length || cs.every((c) => c.every((vv) => status.get(vv)))) {
+              const c = getCircle(vv)
+              if (!c || c.every((vv) => status.get(vv))) {
                 vvs.splice(vvs.indexOf(vv), 1)
-                pending.push(vv)
+
+                mn2bm.cur[vv.name] = getCurrentBindings(vv.name, context)
+                const pmm = project.meta.pre.modules.find((m) => m.id === vv.name)
+                const cmm = getMetaModule(vv.name)
+                if (
+                  mn2bm.pre[vv.name]?.toString() !== mn2bm.cur[vv.name].toString() ||
+                  pmm?.externals!.toString() !== cmm.externals!.toString()
+                ) {
+                  if (mn2bm.cur[vv.name].length) {
+                    if (c) {
+                      const sub = pending.find((p) => Array.isArray(p) && c.includes(p[0])) as VersionedVendor[]
+                      if (sub) {
+                        sub.push(vv)
+                      } else {
+                        pending.push([vv])
+                      }
+                    } else {
+                      pending.push(vv)
+                    }
+                  } else {
+                    remove(vv.name)
+                  }
+                } else {
+                  Object.entries(pmm).forEach(
+                    ([key, value]) => {
+                      ;(cmm as any)[key] = clone(value)
+                    }
+                  )
+                }
               }
             }
           )
 
-        let changed = [...pending]
-
-        while (changed.length) {
-          await Promise.all(changed.map((vv) => this.call('build-vendor-module', 'parallel', vv.name, context)))
-          changed = pending.filter(
-            (vv) => mn2bm.cur[vv.name].toString() !== getCurrentBindings(vv.name, context).toString()
+        await Promise.all(
+          pending.map(
+            async (p) => {
+              if (Array.isArray(p)) {
+                while (p.length) {
+                  await Promise.all(p.map((vv) => this.call('build-vendor-module', 'parallel', vv.name, context)))
+                  const c = getCircle(p[0])!
+                  p = c.filter(
+                    (vv) => {
+                      const cb = getCurrentBindings(vv.name, context)
+                      if (mn2bm.cur[vv.name].toString() !== cb.toString()) {
+                        mn2bm.cur[vv.name] = cb
+                        return true
+                      } else {
+                        return false
+                      }
+                    }
+                  ) as VersionedVendor[]
+                }
+              } else {
+                await this.call('build-vendor-module', 'parallel', p.name, context)
+              }
+            }
           )
-        }
+        )
       }
     },
     ['build-vendor-module'],

@@ -6,5 +6,5 @@
       "src/*": ["src/*"]
     }
   },
-  "include": ["global.d.ts", "src"]
+  "include": ["global.d.ts", "src", "__tests__"]
 }

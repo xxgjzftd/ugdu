@@ -3,12 +3,8 @@
   "version": "0.1.2",
   "type": "module",
   "description": "A runtime lib for micro frontends.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts"
-  },
   "keywords": [
     "micro frontends",
     "runtime",
@@ -17,12 +13,21 @@
   "scripts": {
     "build": "run-s build-bundle build-types",
     "build-bundle": "node ./build.js",
-    "build-types": "tsc --emitDeclarationOnly --outDir temp --project . && api-extractor run --local && rimraf temp",
+    "build-types": "tsc --emitDeclarationOnly --outDir temp --project ./tsconfig.build.json && api-extractor run --local && rimraf temp",
     "test": "jest"
   },
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxgjzftd/ugdu.git",
+    "directory": "packages/runtime"
+  },
+  "bugs": {
+    "url": "https://github.com/xxgjzftd/ugdu/issues"
+  },
+  "homepage": "https://github.com/xxgjzftd/ugdu/tree/main/packages/runtime#readme",
   "author": "xxgjzftd <xxgjzftd@gmail.com>",
   "license": "MIT",
   "dependencies": {

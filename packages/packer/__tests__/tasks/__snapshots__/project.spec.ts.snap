@@ -1,0 +1,3568 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The preset get-alias hook fn should return the alias accroding to the \`local package\`s of your project 1`] = `
+Object {
+  "@pkg0": "/path/to/project/packages/pkg0/src",
+  "@pkg1": "/path/to/project/packages/pkg1/src",
+  "@pkg2": "/path/to/project/packages/pkg2/src",
+}
+`;
+
+exports[`The preset get-all-packages hook fn should return all packages of your project 1`] = `
+Array [
+  Object {
+    "ap": "/path/to/project/packages/pkg0",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/packages/pkg1",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/packages/pkg2",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "different-version",
+                                "path": "node_modules/.pnpm/different-version@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "has-deps",
+                            "path": "node_modules/.pnpm/has-deps@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg2",
+                        "path": "packages/pkg2",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "circle-a",
+                    "path": "node_modules/.pnpm/circle-a@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@2.0.0",
+                "version": "2.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg1",
+            "path": "packages/pkg1",
+            "version": "1.0.0",
+          },
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg2",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg1",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg1",
+                            "path": "packages/pkg1",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-a",
+                    "path": "node_modules/.pnpm/circle-a@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg2",
+                "path": "packages/pkg2",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "has-deps",
+            "path": "node_modules/.pnpm/has-deps@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "plain",
+        "path": "node_modules/.pnpm/plain@1.0.0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/packages/pkg1",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              Object {
+                                "ap": "/path/to/project/packages/pkg2",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg2",
+                                "path": "packages/pkg2",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "circle-a",
+                            "path": "node_modules/.pnpm/circle-a@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg1",
+                    "path": "packages/pkg1",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "plain",
+                "path": "node_modules/.pnpm/plain@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg2",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg1",
+                            "dependencies": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "plain",
+                                "path": "node_modules/.pnpm/plain@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg1",
+                            "path": "packages/pkg1",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-a",
+                    "path": "node_modules/.pnpm/circle-a@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg2",
+                "path": "packages/pkg2",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "has-deps",
+            "path": "node_modules/.pnpm/has-deps@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "different-version",
+        "path": "node_modules/.pnpm/different-version@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg0",
+    "path": "packages/pkg0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/packages/pkg1",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg0",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg2",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                            "dependencies": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "different-version",
+                                "path": "node_modules/.pnpm/different-version@2.0.0",
+                                "version": "2.0.0",
+                              },
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-a",
+                            "path": "node_modules/.pnpm/circle-a@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg2",
+                        "path": "packages/pkg2",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "has-deps",
+                    "path": "node_modules/.pnpm/has-deps@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg0",
+            "path": "packages/pkg0",
+            "version": "1.0.0",
+          },
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg0",
+                    "dependencies": Array [
+                      [Circular],
+                      [Circular],
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg0",
+                    "path": "packages/pkg0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg2",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-a",
+                    "path": "node_modules/.pnpm/circle-a@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg2",
+                "path": "packages/pkg2",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "has-deps",
+            "path": "node_modules/.pnpm/has-deps@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "plain",
+        "path": "node_modules/.pnpm/plain@1.0.0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-b",
+                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-b",
+                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                "version": "1.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/packages/pkg2",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg0",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "different-version",
+                                "path": "node_modules/.pnpm/different-version@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg0",
+                            "path": "packages/pkg0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "plain",
+                        "path": "node_modules/.pnpm/plain@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg0",
+                            "dependencies": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "plain",
+                                "path": "node_modules/.pnpm/plain@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg0",
+                            "path": "packages/pkg0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "has-deps",
+                    "path": "node_modules/.pnpm/has-deps@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg2",
+                "path": "packages/pkg2",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "circle-a",
+            "path": "node_modules/.pnpm/circle-a@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "different-version",
+        "path": "node_modules/.pnpm/different-version@2.0.0",
+        "version": "2.0.0",
+      },
+    ],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg1",
+    "path": "packages/pkg1",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/packages/pkg2",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg0",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg0",
+                "path": "packages/pkg0",
+                "version": "1.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                    "version": "2.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "plain",
+            "path": "node_modules/.pnpm/plain@1.0.0",
+            "version": "1.0.0",
+          },
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                    "dependencies": Array [
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "circle-b",
+                                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                    "version": "1.0.0",
+                                  },
+                                ],
+                                "dependents": Array [
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                    "dependencies": Array [
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "circle-b",
+                                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                    "version": "1.0.0",
+                                  },
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-a",
+                                "path": "node_modules/.pnpm/circle-a@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@2.0.0",
+                            "version": "2.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg0",
+                "path": "packages/pkg0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [
+          [Circular],
+        ],
+        "local": false,
+        "name": "has-deps",
+        "path": "node_modules/.pnpm/has-deps@1.0.0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "has-deps",
+                                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg0",
+                                "path": "packages/pkg0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "has-deps",
+                        "path": "node_modules/.pnpm/has-deps@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@2.0.0",
+            "version": "2.0.0",
+          },
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+            "dependencies": Array [
+              [Circular],
+            ],
+            "dependents": Array [
+              [Circular],
+            ],
+            "local": false,
+            "name": "circle-b",
+            "path": "node_modules/.pnpm/circle-b@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+            "dependencies": Array [
+              [Circular],
+            ],
+            "dependents": Array [
+              [Circular],
+            ],
+            "local": false,
+            "name": "circle-b",
+            "path": "node_modules/.pnpm/circle-b@1.0.0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "local": false,
+        "name": "circle-a",
+        "path": "node_modules/.pnpm/circle-a@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg2",
+    "path": "packages/pkg2",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+    "dependencies": Array [],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/packages/pkg0",
+        "dependencies": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg2",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg1",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg1",
+                                "path": "packages/pkg1",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@2.0.0",
+                            "version": "2.0.0",
+                          },
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg2",
+                    "path": "packages/pkg2",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg0",
+        "path": "packages/pkg0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/packages/pkg1",
+        "dependencies": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/packages/pkg2",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg0",
+                                "path": "packages/pkg0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "has-deps",
+                        "path": "node_modules/.pnpm/has-deps@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg2",
+                    "path": "packages/pkg2",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "circle-a",
+                "path": "node_modules/.pnpm/circle-a@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@2.0.0",
+            "version": "2.0.0",
+          },
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg1",
+        "path": "packages/pkg1",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+        "dependencies": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg0",
+                "dependencies": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg0",
+                "path": "packages/pkg0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg2",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                    "version": "2.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-a",
+                "path": "node_modules/.pnpm/circle-a@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg2",
+            "path": "packages/pkg2",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "has-deps",
+        "path": "node_modules/.pnpm/has-deps@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "plain",
+    "path": "node_modules/.pnpm/plain@1.0.0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+    "dependencies": Array [],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/packages/pkg0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          Object {
+                            "ap": "/path/to/project/packages/pkg2",
+                            "dependencies": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "has-deps",
+                                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg2",
+                            "path": "packages/pkg2",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                    "version": "2.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg2",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg1",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg1",
+                                "path": "packages/pkg1",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@2.0.0",
+                            "version": "2.0.0",
+                          },
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg2",
+                    "path": "packages/pkg2",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "plain",
+            "path": "node_modules/.pnpm/plain@1.0.0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg0",
+        "path": "packages/pkg0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg0",
+                "dependencies": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg0",
+                "path": "packages/pkg0",
+                "version": "1.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          Object {
+                            "ap": "/path/to/project/packages/pkg2",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg2",
+                            "path": "packages/pkg2",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                    "version": "2.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "plain",
+            "path": "node_modules/.pnpm/plain@1.0.0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg2",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg0",
+                                "path": "packages/pkg0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "plain",
+                            "path": "node_modules/.pnpm/plain@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                    "version": "2.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                    ],
+                    "dependents": Array [
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "circle-b",
+                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-a",
+                "path": "node_modules/.pnpm/circle-a@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg2",
+            "path": "packages/pkg2",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "has-deps",
+        "path": "node_modules/.pnpm/has-deps@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "different-version",
+    "path": "node_modules/.pnpm/different-version@1.0.0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+    "dependencies": Array [],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/packages/pkg1",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg0",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg2",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                    "dependencies": Array [
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "circle-b",
+                                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                    "version": "1.0.0",
+                                  },
+                                ],
+                                "dependents": Array [
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                    "dependencies": Array [
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "circle-b",
+                                    "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                    "version": "1.0.0",
+                                  },
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-a",
+                                "path": "node_modules/.pnpm/circle-a@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg2",
+                            "path": "packages/pkg2",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "has-deps",
+                        "path": "node_modules/.pnpm/has-deps@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg0",
+                "path": "packages/pkg0",
+                "version": "1.0.0",
+              },
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg2",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "circle-b",
+                            "path": "node_modules/.pnpm/circle-b@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-a",
+                        "path": "node_modules/.pnpm/circle-a@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg2",
+                    "path": "packages/pkg2",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "local": false,
+            "name": "plain",
+            "path": "node_modules/.pnpm/plain@1.0.0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg1",
+        "path": "packages/pkg1",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+        "dependencies": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+            "dependencies": Array [
+              [Circular],
+            ],
+            "dependents": Array [
+              [Circular],
+            ],
+            "local": false,
+            "name": "circle-b",
+            "path": "node_modules/.pnpm/circle-b@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+            "dependencies": Array [
+              [Circular],
+            ],
+            "dependents": Array [
+              [Circular],
+            ],
+            "local": false,
+            "name": "circle-b",
+            "path": "node_modules/.pnpm/circle-b@1.0.0",
+            "version": "1.0.0",
+          },
+          Object {
+            "ap": "/path/to/project/packages/pkg2",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/packages/pkg1",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg1",
+                                "path": "packages/pkg1",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "plain",
+                            "path": "node_modules/.pnpm/plain@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg2",
+            "path": "packages/pkg2",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "circle-a",
+        "path": "node_modules/.pnpm/circle-a@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "different-version",
+    "path": "node_modules/.pnpm/different-version@2.0.0",
+    "version": "2.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg0",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  [Circular],
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg0",
+            "path": "packages/pkg0",
+            "version": "1.0.0",
+          },
+          Object {
+            "ap": "/path/to/project/packages/pkg1",
+            "dependencies": Array [
+              [Circular],
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                        ],
+                        "dependents": Array [
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "circle-b",
+                        "path": "node_modules/.pnpm/circle-b@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/packages/pkg2",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg2",
+                        "path": "packages/pkg2",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "circle-a",
+                    "path": "node_modules/.pnpm/circle-a@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@2.0.0",
+                "version": "2.0.0",
+              },
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg1",
+            "path": "packages/pkg1",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "local": false,
+        "name": "plain",
+        "path": "node_modules/.pnpm/plain@1.0.0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg0",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/packages/pkg1",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "circle-b",
+                                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                                "version": "1.0.0",
+                              },
+                              Object {
+                                "ap": "/path/to/project/packages/pkg2",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg2",
+                                "path": "packages/pkg2",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "circle-a",
+                            "path": "node_modules/.pnpm/circle-a@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg1",
+                    "path": "packages/pkg1",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "plain",
+                "path": "node_modules/.pnpm/plain@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg0",
+            "path": "packages/pkg0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "local": false,
+        "name": "different-version",
+        "path": "node_modules/.pnpm/different-version@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/packages/pkg2",
+        "dependencies": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg1",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg0",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "different-version",
+                                "path": "node_modules/.pnpm/different-version@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg0",
+                            "path": "packages/pkg0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "plain",
+                        "path": "node_modules/.pnpm/plain@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg1",
+                    "path": "packages/pkg1",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@2.0.0",
+                "version": "2.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-b",
+                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+                "dependencies": Array [
+                  [Circular],
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "circle-b",
+                "path": "node_modules/.pnpm/circle-b@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "circle-a",
+            "path": "node_modules/.pnpm/circle-a@1.0.0",
+            "version": "1.0.0",
+          },
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg2",
+        "path": "packages/pkg2",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "has-deps",
+    "path": "node_modules/.pnpm/has-deps@1.0.0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+        "dependencies": Array [],
+        "dependents": Array [
+          Object {
+            "ap": "/path/to/project/packages/pkg1",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg0",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg2",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg2",
+                                "path": "packages/pkg2",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "has-deps",
+                            "path": "node_modules/.pnpm/has-deps@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg0",
+                    "path": "packages/pkg0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg0",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg0",
+                            "path": "packages/pkg0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg2",
+                        "dependencies": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg2",
+                        "path": "packages/pkg2",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "has-deps",
+                    "path": "node_modules/.pnpm/has-deps@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "local": false,
+                "name": "plain",
+                "path": "node_modules/.pnpm/plain@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg1",
+            "path": "packages/pkg1",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "local": false,
+        "name": "different-version",
+        "path": "node_modules/.pnpm/different-version@2.0.0",
+        "version": "2.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+        "dependencies": Array [
+          [Circular],
+        ],
+        "dependents": Array [
+          [Circular],
+        ],
+        "local": false,
+        "name": "circle-b",
+        "path": "node_modules/.pnpm/circle-b@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+        "dependencies": Array [
+          [Circular],
+        ],
+        "dependents": Array [
+          [Circular],
+        ],
+        "local": false,
+        "name": "circle-b",
+        "path": "node_modules/.pnpm/circle-b@1.0.0",
+        "version": "1.0.0",
+      },
+      Object {
+        "ap": "/path/to/project/packages/pkg2",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg0",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg0",
+                    "path": "packages/pkg0",
+                    "version": "1.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/packages/pkg1",
+                    "dependencies": Array [
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "different-version",
+                        "path": "node_modules/.pnpm/different-version@2.0.0",
+                        "version": "2.0.0",
+                      },
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg1",
+                    "path": "packages/pkg1",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "plain",
+                "path": "node_modules/.pnpm/plain@1.0.0",
+                "version": "1.0.0",
+              },
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                "dependencies": Array [],
+                "dependents": Array [
+                  Object {
+                    "ap": "/path/to/project/packages/pkg0",
+                    "dependencies": Array [
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                        "dependencies": Array [],
+                        "dependents": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/packages/pkg1",
+                            "dependencies": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                                "dependencies": Array [],
+                                "dependents": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "local": false,
+                                "name": "different-version",
+                                "path": "node_modules/.pnpm/different-version@2.0.0",
+                                "version": "2.0.0",
+                              },
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg1",
+                            "path": "packages/pkg1",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "local": false,
+                        "name": "plain",
+                        "path": "node_modules/.pnpm/plain@1.0.0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "dependents": Array [],
+                    "local": true,
+                    "main": undefined,
+                    "name": "pkg0",
+                    "path": "packages/pkg0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "local": false,
+                "name": "different-version",
+                "path": "node_modules/.pnpm/different-version@1.0.0",
+                "version": "1.0.0",
+              },
+            ],
+            "dependents": Array [
+              [Circular],
+            ],
+            "local": false,
+            "name": "has-deps",
+            "path": "node_modules/.pnpm/has-deps@1.0.0",
+            "version": "1.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [],
+        "local": true,
+        "main": undefined,
+        "name": "pkg2",
+        "path": "packages/pkg2",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "circle-a",
+    "path": "node_modules/.pnpm/circle-a@1.0.0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/node_modules/.pnpm/circle-b@1.0.0",
+    "dependencies": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  Object {
+                                    "ap": "/path/to/project/packages/pkg2",
+                                    "dependencies": Array [
+                                      [Circular],
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [],
+                                    "local": true,
+                                    "main": undefined,
+                                    "name": "pkg2",
+                                    "path": "packages/pkg2",
+                                    "version": "1.0.0",
+                                  },
+                                ],
+                                "local": false,
+                                "name": "has-deps",
+                                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg0",
+                                "path": "packages/pkg0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg2",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg2",
+                            "path": "packages/pkg2",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "has-deps",
+                        "path": "node_modules/.pnpm/has-deps@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@2.0.0",
+            "version": "2.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/packages/pkg2",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@2.0.0",
+                            "version": "2.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/packages/pkg1",
+                                "dependencies": Array [
+                                  [Circular],
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                                    "dependencies": Array [],
+                                    "dependents": Array [
+                                      [Circular],
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "different-version",
+                                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                                    "version": "2.0.0",
+                                  },
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg1",
+                                "path": "packages/pkg1",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "plain",
+                            "path": "node_modules/.pnpm/plain@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg2",
+            "path": "packages/pkg2",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "circle-a",
+        "path": "node_modules/.pnpm/circle-a@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "dependents": Array [
+      Object {
+        "ap": "/path/to/project/node_modules/.pnpm/circle-a@1.0.0",
+        "dependencies": Array [
+          Object {
+            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+            "dependencies": Array [],
+            "dependents": Array [
+              Object {
+                "ap": "/path/to/project/packages/pkg1",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [
+                                  Object {
+                                    "ap": "/path/to/project/packages/pkg2",
+                                    "dependencies": Array [
+                                      [Circular],
+                                      [Circular],
+                                    ],
+                                    "dependents": Array [],
+                                    "local": true,
+                                    "main": undefined,
+                                    "name": "pkg2",
+                                    "path": "packages/pkg2",
+                                    "version": "1.0.0",
+                                  },
+                                ],
+                                "local": false,
+                                "name": "has-deps",
+                                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                                "version": "1.0.0",
+                              },
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                      Object {
+                        "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              Object {
+                                "ap": "/path/to/project/packages/pkg0",
+                                "dependencies": Array [
+                                  [Circular],
+                                  [Circular],
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg0",
+                                "path": "packages/pkg0",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [
+                          Object {
+                            "ap": "/path/to/project/packages/pkg2",
+                            "dependencies": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "dependents": Array [],
+                            "local": true,
+                            "main": undefined,
+                            "name": "pkg2",
+                            "path": "packages/pkg2",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "local": false,
+                        "name": "has-deps",
+                        "path": "node_modules/.pnpm/has-deps@1.0.0",
+                        "version": "1.0.0",
+                      },
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  [Circular],
+                ],
+                "dependents": Array [],
+                "local": true,
+                "main": undefined,
+                "name": "pkg1",
+                "path": "packages/pkg1",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "local": false,
+            "name": "different-version",
+            "path": "node_modules/.pnpm/different-version@2.0.0",
+            "version": "2.0.0",
+          },
+          [Circular],
+        ],
+        "dependents": Array [
+          [Circular],
+          Object {
+            "ap": "/path/to/project/packages/pkg2",
+            "dependencies": Array [
+              Object {
+                "ap": "/path/to/project/node_modules/.pnpm/has-deps@1.0.0",
+                "dependencies": Array [
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@1.0.0",
+                            "version": "1.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      Object {
+                        "ap": "/path/to/project/packages/pkg1",
+                        "dependencies": Array [
+                          [Circular],
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "different-version",
+                            "path": "node_modules/.pnpm/different-version@2.0.0",
+                            "version": "2.0.0",
+                          },
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg1",
+                        "path": "packages/pkg1",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "plain",
+                    "path": "node_modules/.pnpm/plain@1.0.0",
+                    "version": "1.0.0",
+                  },
+                  Object {
+                    "ap": "/path/to/project/node_modules/.pnpm/different-version@1.0.0",
+                    "dependencies": Array [],
+                    "dependents": Array [
+                      Object {
+                        "ap": "/path/to/project/packages/pkg0",
+                        "dependencies": Array [
+                          Object {
+                            "ap": "/path/to/project/node_modules/.pnpm/plain@1.0.0",
+                            "dependencies": Array [],
+                            "dependents": Array [
+                              [Circular],
+                              Object {
+                                "ap": "/path/to/project/packages/pkg1",
+                                "dependencies": Array [
+                                  [Circular],
+                                  Object {
+                                    "ap": "/path/to/project/node_modules/.pnpm/different-version@2.0.0",
+                                    "dependencies": Array [],
+                                    "dependents": Array [
+                                      [Circular],
+                                      [Circular],
+                                    ],
+                                    "local": false,
+                                    "name": "different-version",
+                                    "path": "node_modules/.pnpm/different-version@2.0.0",
+                                    "version": "2.0.0",
+                                  },
+                                ],
+                                "dependents": Array [],
+                                "local": true,
+                                "main": undefined,
+                                "name": "pkg1",
+                                "path": "packages/pkg1",
+                                "version": "1.0.0",
+                              },
+                              [Circular],
+                            ],
+                            "local": false,
+                            "name": "plain",
+                            "path": "node_modules/.pnpm/plain@1.0.0",
+                            "version": "1.0.0",
+                          },
+                          [Circular],
+                        ],
+                        "dependents": Array [],
+                        "local": true,
+                        "main": undefined,
+                        "name": "pkg0",
+                        "path": "packages/pkg0",
+                        "version": "1.0.0",
+                      },
+                      [Circular],
+                    ],
+                    "local": false,
+                    "name": "different-version",
+                    "path": "node_modules/.pnpm/different-version@1.0.0",
+                    "version": "1.0.0",
+                  },
+                ],
+                "dependents": Array [
+                  [Circular],
+                ],
+                "local": false,
+                "name": "has-deps",
+                "path": "node_modules/.pnpm/has-deps@1.0.0",
+                "version": "1.0.0",
+              },
+              [Circular],
+            ],
+            "dependents": Array [],
+            "local": true,
+            "main": undefined,
+            "name": "pkg2",
+            "path": "packages/pkg2",
+            "version": "1.0.0",
+          },
+        ],
+        "local": false,
+        "name": "circle-a",
+        "path": "node_modules/.pnpm/circle-a@1.0.0",
+        "version": "1.0.0",
+      },
+    ],
+    "local": false,
+    "name": "circle-b",
+    "path": "node_modules/.pnpm/circle-b@1.0.0",
+    "version": "1.0.0",
+  },
+]
+`;
+
+exports[`The preset get-local-packages hook fn should returns local packages of your project 1`] = `
+Array [
+  Object {
+    "ap": "/path/to/project/packages/pkg0",
+    "dependencies": Array [],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg0",
+    "path": "packages/pkg0",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/packages/pkg1",
+    "dependencies": Array [],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg1",
+    "path": "packages/pkg1",
+    "version": "1.0.0",
+  },
+  Object {
+    "ap": "/path/to/project/packages/pkg2",
+    "dependencies": Array [],
+    "dependents": Array [],
+    "local": true,
+    "main": undefined,
+    "name": "pkg2",
+    "path": "packages/pkg2",
+    "version": "1.0.0",
+  },
+]
+`;
+
+exports[`The preset get-previous-meta hook fn should read data from \`resolve(config.cwd, config.dist, CONSTANTS.META_JSON)\` when the \`config.meta\` is set to \`local\` 1`] = `
+Object {
+  "cur": Object {
+    "hash": "0123456",
+    "modules": Array [],
+    "pages": Array [],
+    "version": "\\"0.1.14\\"",
+  },
+  "pre": Object {
+    "modules": Array [],
+    "pages": Array [],
+  },
+}
+`;
+
+exports[`The preset get-sources hook fn should return all sources of your project accroding to the local packages 1`] = `
+Array [
+  "packages/pkg0/src/index.ts",
+  "packages/pkg0/src/index.css",
+  "packages/pkg1/src/index.ts",
+  "packages/pkg1/src/index.css",
+  "packages/pkg2/src/index.ts",
+  "packages/pkg2/src/index.css",
+]
+`;

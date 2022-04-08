@@ -7,7 +7,6 @@ import type { RuntimeModule } from '@ugdu/runtime'
  */
 export const entry = function (context: Context): Plugin {
   const {
-    building,
     config: { apps, base },
     project,
     utils: { isVendorModule, getLocalModulePath, getPkgName, getMetaModule, stringify }
@@ -15,7 +14,7 @@ export const entry = function (context: Context): Plugin {
   return {
     name: 'ugdu:entry',
     transformIndexHtml (html) {
-      if (building) {
+      if (context.building) {
         type Imports = Record<string, string>
         type Scopes = Record<string, Imports>
         interface Importmap {
@@ -37,14 +36,22 @@ export const entry = function (context: Context): Plugin {
             m.imports.forEach(
               (i) => {
                 if (!importmap.scopes[scope][i.name]) {
-                  importmap.scopes[scope][i.name] = base + getMetaModule(i.id).js
+                  const im = getMetaModule(i.id)
+                  importmap.scopes[scope][i.name] = base + im.js
+                  if (im.subs) {
+                    im.subs.forEach(
+                      (sub) => {
+                        importmap.scopes[scope][i.name + sub.subpath] = base + sub.js
+                      }
+                    )
+                  }
                 }
               }
             )
           }
         )
         return {
-          html: html.replace(/\<script(.+)type=['"]module['"]/g, '<script$1type="module-shim"'),
+          html: html.replace(/\<script(.+?)type=['"]module['"]/g, '<script$1type="module-shim"'),
           tags: [
             {
               tag: 'script',

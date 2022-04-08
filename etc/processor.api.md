@@ -35,7 +35,7 @@ export type HookType = 'first' | 'sequential' | 'parallel';
 // Warning: (ae-forgotten-export) The symbol "ParentTaskOptions" needs to be exported by the entry point index.d.ts
 //
 // @public
-export const parallel: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
+export const parallel: <T extends (TaskOptions<any, any> | TaskOptions<any, never>)[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
 class Processor implements TaskManager {
@@ -46,7 +46,7 @@ export { Processor }
 export default Processor;
 
 // @public
-export const series: <T extends TaskOptions<any, any>[]>(...children: T) => ParentTaskOptions<T>;
+export const series: <T extends (TaskOptions<any, any> | TaskOptions<any, never>)[]>(...children: T) => ParentTaskOptions<T>;
 
 // @public
 export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> extends HookDriver<Hooks, HookName> {
@@ -69,9 +69,9 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
     constructor(action: (this: Task<Hooks, HookName>) => Promisable<void>, hns?: HookName[], hooks?: Partial<Hooks>);
     readonly action: (this: Task<Hooks, HookName>) => Promisable<void>;
     // @internal
-    addChild(child: TaskOptions<any, any>): this;
+    addChild(child: TaskOptions<any, any> | TaskOptions<any, never>): this;
     // @internal
-    children: TaskOptions<any, any>[];
+    children: Array<TaskOptions<any, any> | TaskOptions<any, never>>;
     readonly hns: HookName[];
     hooks: Partial<Hooks>;
     setHooks(hooks: Partial<Hooks>): this;

@@ -10,17 +10,19 @@ import { routes } from '../plugins/routes'
 import type { AddressInfo } from 'net'
 import type { Plugin } from 'vite'
 
+const setBuilding = new TaskOptions(
+  function setBuilding () {
+    this.manager.context.building = false
+  }
+)
+
 /**
  * Starts dev server for `app`s.
- * 
+ *
  * @public
  */
 export const serve = series(
-  new TaskOptions(
-    function setBuilding () {
-      this.manager.context.building = false
-    }
-  ),
+  setBuilding,
   setContext,
   new TaskOptions(
     async function () {
@@ -39,7 +41,7 @@ export const serve = series(
       await Promise.all(
         config.apps.map(
           async (app) => {
-            const { ws, watcher, moduleGraph, listen } = await createServer(
+            const vds = await createServer(
               mergeConfig(
                 {
                   resolve: {
@@ -78,17 +80,21 @@ export const serve = series(
               )
             )
 
-            const refresh = (ap: string) =>
-              isPage(getNormalizedPath(ap)) &&
-              (moduleGraph.invalidateModule(moduleGraph.getModuleById(ROUTES)!), ws.send({ type: 'full-reload' }))
+            if (!TEST) {
+              const { ws, watcher, moduleGraph, listen } = vds
 
-            watcher.on('add', refresh)
-            watcher.on('unlink', refresh)
+              const refresh = (ap: string) =>
+                isPage(getNormalizedPath(ap)) &&
+                (moduleGraph.invalidateModule(moduleGraph.getModuleById(ROUTES)!), ws.send({ type: 'full-reload' }))
 
-            const server = await listen()
-            const { address, port } = server.httpServer!.address() as AddressInfo
-            const protocol = server.config.server.https ? 'https' : 'http'
-            an2om[app.name] = `${protocol}://${address}:${port}`
+              watcher.on('add', refresh)
+              watcher.on('unlink', refresh)
+
+              const server = await listen()
+              const { address, port } = server.httpServer!.address() as AddressInfo
+              const protocol = server.config.server.https ? 'https' : 'http'
+              an2om[app.name] = `${protocol}://${address}:${port}`
+            }
           }
         )
       )

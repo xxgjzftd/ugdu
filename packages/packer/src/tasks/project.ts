@@ -9,10 +9,10 @@ import { execa } from 'execa'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { cached, clone, getDefault } from '../shared/utils'
+import { clone, getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
-import { setUtils } from './utils'
+import { Utils } from './utils'
 
 import type { Promisable } from 'type-fest'
 import type { PackageNode } from 'dependencies-hierarchy'
@@ -27,6 +27,23 @@ import type { Context } from '@ugdu/processor'
 export interface Project {
   /**
    * The alias config used when building.
+   *
+   * @remarks
+   * By default, this field is generated accroding to the `local package`s of your project.
+   * The rule is something like:
+   * ```ts
+   * const alias: AliasOptions = {}
+   * localPkgs.forEach((lp) => (alias[`@${getPkgId(lp.name)}`] = resolve(lp.ap, 'src')))
+   * ```
+   *
+   * Suppose your `local package`s are:
+   * ```ts
+   * [{ name: '@xx/pkg0', ap: '/path/to/pkg0' }, { name: '@xx/pkg1', ap: '/path/to/pkg1' }, { name: '@xx/pkg2', ap: '/path/to/pkg2' }]
+   * ```
+   * Then the `alias` will be:
+   * ```ts
+   * { '@pkg0': '/path/to/pkg0/src', '@pkg1': '/path/to/pkg1/src', '@pkg2': '/path/to/pkg2/src' }
+   * ```
    */
   alias: AliasOptions
   /**
@@ -63,7 +80,7 @@ export interface Project {
    * If there is a file named `index`, the generated path will remove it automaticly.
    * If there is a file whose name is the same as the {@link Utils.getPkgId | `package` id}, and it's located at the root of the `src/pages`, then it will be the parent page of the other pages in this package.
    * If there is a package whose id is `root`, we will remove the `root` from the generated path. You may need to put the pages which is no need to make a package in this package. Such as `/login`, `/welcom` etc.
-   * 
+   *
    * @example
    * Suppose we have the following structure:
    * ```
@@ -91,7 +108,7 @@ export interface Project {
    *         - index.vue
    *         - login.vue
    * ```
-   * 
+   *
    * The generated `routes` module will be something like:
    * ```
    * [
@@ -186,9 +203,13 @@ export type LocalPkgToDepsMap = Map<PkgNode, PackageNode[]>
  */
 export interface Meta {
   /**
-   * All `module`s in this project.
+   * All `module`s in this build.
    */
   modules: MetaModule[]
+  /**
+   * The `path`s of all `page`s in this build.
+   */
+  pages: string[]
   hash?: string
   version?: string
 }
@@ -246,6 +267,7 @@ export interface MetaModule {
    * All `public package name`s this module may depends.
    * A vendor module will not be rebuilt unless one of it's externals and exports changed.
    * Only vendor modules have this field.
+   * This filed will be an empty array if this module does not have any externals.
    */
   externals?: string[]
   /**
@@ -258,9 +280,16 @@ export interface MetaModule {
    * Only local modules have this field.
    */
   exports?: string[]
+  /**
+   * The sub module info of this module.
+   * This field is only available in case of other `module`s import `*` from this module's sub modules.
+   */
+  subs?: MetaModuleSub[]
 }
 
 /**
+ * The information of a `module`'s import.
+ *
  * @public
  */
 export interface MetaModuleImport {
@@ -276,6 +305,22 @@ export interface MetaModuleImport {
    * The bindings that the parent module import.
    */
   bindings: string[]
+}
+
+/**
+ * The information of a `module`'s sub module.
+ *
+ * @public
+ */
+export interface MetaModuleSub {
+  /**
+   * The subpath of this sub module.
+   */
+  subpath: string
+  /**
+   * The corresponding js file url.
+   */
+  js: string
 }
 
 /**
@@ -350,6 +395,40 @@ const getLocalPkgs = async (cwd: string) =>
     }
   )
 
+const getPreMeta = async (context: Context) => {
+  let meta: Meta
+  const {
+    CONSTANTS: { META_JSON },
+    config,
+    config: { cwd, dist }
+  } = context
+  try {
+    if (config.meta === 'local') {
+      meta = JSON.parse(await readFile(resolve(cwd, dist, META_JSON), 'utf-8'))
+    } else {
+      meta = await axios.get(`${config.meta}${META_JSON}`).then((res) => res.data)
+    }
+  } catch (error) {
+    meta = { modules: [], pages: [] }
+  }
+  // meta.json maybe empty
+  meta.modules = meta.modules || []
+  meta.pages = meta.pages || []
+  return meta
+}
+
+const getAlias = (localPkgs: PkgNode[], context: Context) => {
+  const {
+    utils: { getPkgId }
+  } = context
+  const alias: AliasOptions = {}
+  localPkgs.forEach((lp) => (alias[`@${getPkgId(lp.name)}`] = resolve(lp.ap, 'src')))
+  if (Object.keys(alias).length < localPkgs.length) {
+    throw new Error(`There are duplicate pkg id in local packages.`)
+  }
+  return alias
+}
+
 const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
   getDefault(dh)(
     localPkgs.map((lp) => lp.ap),
@@ -368,33 +447,8 @@ const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
     }
   )
 
-/**
- * @internal
- */
-export const getPkgId = cached((lpn) => lpn.replace(/.+\//, ''))
-
-/**
- * @internal
- */
-export const getAliasKey = cached((lpn) => `@${getPkgId(lpn)}`)
-
-const getAlias = (localPkgs: PkgNode[], context: Context) => {
-  const {
-    utils: { getPkgId }
-  } = context
-  const alias: AliasOptions = {}
-  localPkgs.forEach((lp) => (alias[`@${getPkgId(lp.name)}`] = resolve(lp.ap, 'src')))
-  if (Object.keys(alias).length < localPkgs.length) {
-    throw new Error(`There are duplicate pkg id in local packages.`)
-  }
-  return alias
-}
-
-/**
- * @internal
- */
-export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
-  const localPkgs = [...localPkgToDepsMap.keys()]
+const getAllPkgs = async (localPkgs: PkgNode[], cwd: string) => {
+  const localPkgToDepsMap = await getLocalPkgToDepsMap(localPkgs, cwd)
   const pkgs = [...localPkgs]
   const traverse = (deps: PackageNode[], dependent: PkgNode, pp: string) => {
     deps.forEach(
@@ -421,65 +475,23 @@ export const getPkgs = (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => {
   }
   const findPkgFromDep = (dep: PackageNode) =>
     pkgs.find((pkg) => pkg.name === dep.name && (isLocalPkg(pkg) || pkg.version === dep.version))
-  const isLocalPkg = (n: PkgNode) => localPkgs.find((lp) => lp.name === n.name)
+  const isLocalPkg = (pkg: PkgNode) => localPkgs.find((lp) => lp.name === pkg.name)
   for (const localPkg of localPkgToDepsMap.keys()) {
     traverse(localPkgToDepsMap.get(localPkg)!, localPkg, localPkg.ap)
   }
   return pkgs
 }
 
-const getAllPkgs = async (localPkgs: PkgNode[], cwd: string) => {
-  const localPkgToDepsMap = await getLocalPkgToDepsMap(localPkgs, cwd)
-  const pkgs = getPkgs(localPkgToDepsMap, cwd)
-  return pkgs
-}
-
-const getPreMeta = async (context: Context) => {
-  let meta: Meta
-  const {
-    CONSTANTS: { META_JSON },
-    config,
-    config: { cwd, dist }
-  } = context
-  try {
-    if (config.meta === 'local') {
-      meta = JSON.parse(await readFile(resolve(cwd, dist, META_JSON), 'utf-8'))
-    } else {
-      meta = await axios.get(`${config.meta}${META_JSON}`).then((res) => res.data)
-    }
-  } catch (error) {
-    meta = { modules: [] }
-  }
-  // meta.json maybe empty
-  meta.modules = meta.modules || []
-  return meta
-}
-
-const getCurMeta = async (context: Context) => {
-  const {
-    project: {
-      meta: { pre }
-    },
-    config: { cwd }
-  } = context
-  const cur: Meta = { modules: [] }
-  const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
-  cur.hash = stdout
-  cur.version = VERSION
-  cur.modules = clone(pre.modules.filter((m) => !m.externals))
-  return cur
-}
-
 const getSources = async (context: Context) => {
   const {
     config: { cwd },
     project: {
-      pkgs,
       meta: { pre }
-    }
+    },
+    utils: { getLocalPkgPaths }
   } = context
   const all = await fg(
-    pkgs.filter((pkg) => pkg.local).map((lp) => lp.path + '/**'),
+    getLocalPkgPaths().map((lpp) => lpp + '/**'),
     {
       cwd,
       ignore: ['**/node_modules/**']
@@ -489,14 +501,13 @@ const getSources = async (context: Context) => {
   if (pre.hash && pre.version === VERSION) {
     const { stdout } = await execa('git', ['diff', pre.hash, 'HEAD', '--name-status'], { cwd })
     changed = stdout
-      .split('\n')
-      .map(
-        (info) => {
-          const [status, path] = info.split('\t')
-          return { status, path } as ChangedSource
-        }
-      )
-      .filter(({ path }) => all.includes(path))
+      ? stdout.split('\n').map(
+          (info) => {
+            const [status, path] = info.split('\t')
+            return { status, path } as ChangedSource
+          }
+        )
+      : []
   } else {
     changed = all.map(
       (path) => {
@@ -556,12 +567,16 @@ const getRoutes = async (context: Context) => {
           const sub: BaseRoute[] = []
           brs.forEach((br) => insert(br, sub))
           if (pi === ROOT) {
-            brs.forEach((br) => (br.path = br.path.replace(new RegExp(`^/${ROOT}`), '')))
+            brs.forEach((br) => (br.path = br.path.replace(new RegExp(`^/${ROOT}/?`), '/')))
           }
           brs.forEach(
             (br) => {
               br.path = br.path.replace(new RegExp(`/${INDEX}$`), '')
-              br.name = br.path.slice(1).replace(/\//g, '-')
+              br.name = br.path.slice(1).replace(/\/:?/g, '-')
+              if (br.path === '') {
+                br.path = '/'
+                br.name = ROOT
+              }
             }
           )
           routes.push(...sub)
@@ -570,6 +585,23 @@ const getRoutes = async (context: Context) => {
   )
 
   return routes
+}
+
+const getCurMeta = async (context: Context) => {
+  const {
+    project: {
+      meta: { pre }
+    },
+    config: { cwd }
+  } = context
+  const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
+  const cur: Meta = {
+    hash: stdout,
+    version: VERSION,
+    modules: clone(pre.modules.filter((m) => !m.externals)),
+    pages: []
+  }
+  return cur
 }
 
 /**
@@ -581,6 +613,10 @@ export interface SetProjectHooks {
    */
   'get-local-packages'(cwd: string): Promisable<PkgNode[]>
   /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.pre}.
+   */
+  'get-previous-meta'(context: Context): Promisable<Meta>
+  /**
    * A `first` type hook. Its first non null return value will be used as {@link Project.alias}.
    */
   'get-alias'(localPkgs: PkgNode[], context: Context): Promisable<AliasOptions>
@@ -589,14 +625,6 @@ export interface SetProjectHooks {
    */
   'get-all-packages'(localPkgs: PkgNode[], cwd: string): Promisable<PkgNode[]>
   /**
-   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.pre}.
-   */
-  'get-previous-meta'(context: Context): Promisable<Meta>
-  /**
-   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.cur}.
-   */
-  'get-current-meta'(context: Context): Promisable<Meta>
-  /**
    * A `first` type hook. Its first non null return value will be used as {@link Project.sources}.
    */
   'get-sources'(context: Context): Promisable<Sources>
@@ -604,13 +632,23 @@ export interface SetProjectHooks {
    * A `first` type hook. Its first non null return value will be used as {@link Project.routes}.
    */
   'get-routes'(context: Context): Promisable<BaseRoute[]>
+  /**
+   * A `first` type hook. Its first non null return value will be used as {@link Project.meta.cur}.
+   */
+  'get-current-meta'(context: Context): Promisable<Meta>
 }
 
 /**
+ * Sets the project related data to `context.project`.
+ *
+ * @remarks
+ * By default, for every hook in this task, we have a preset `hook fn`.
+ * If any `hook fn` doesn't meet your needs, you can use your own `hook fn`s by invoking `task.prepend(name, fn)`.
+ *
  * @public
  */
 export const setProject = series(
-  parallel(setConstants, setConfig, setUtils),
+  parallel(setConstants, setConfig),
   new TaskOptions<SetProjectHooks>(
     async function () {
       const {
@@ -623,31 +661,32 @@ export const setProject = series(
       } = this
       const project = { meta: {} } as Project
       context.project = project
+      context.utils = new Utils(context)
       const localPkgs = await this.call('get-local-packages', 'first', cwd)
+      project.meta.pre = await this.call('get-previous-meta', 'first', context)
       project.alias = await this.call('get-alias', 'first', localPkgs, context)
       project.pkgs = await this.call('get-all-packages', 'first', localPkgs, cwd)
-      project.meta.pre = await this.call('get-previous-meta', 'first', context)
-      project.meta.cur = await this.call('get-current-meta', 'first', context)
       project.sources = await this.call('get-sources', 'first', context)
       project.routes = await this.call('get-routes', 'first', context)
+      project.meta.cur = await this.call('get-current-meta', 'first', context)
     },
     [
       'get-local-packages',
+      'get-previous-meta',
       'get-alias',
       'get-all-packages',
-      'get-previous-meta',
-      'get-current-meta',
       'get-sources',
-      'get-routes'
+      'get-routes',
+      'get-current-meta'
     ],
     {
       'get-local-packages': getLocalPkgs,
+      'get-previous-meta': getPreMeta,
       'get-alias': getAlias,
       'get-all-packages': getAllPkgs,
-      'get-previous-meta': getPreMeta,
-      'get-current-meta': getCurMeta,
       'get-sources': getSources,
-      'get-routes': getRoutes
+      'get-routes': getRoutes,
+      'get-current-meta': getCurMeta
     }
   )
 )

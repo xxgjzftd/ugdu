@@ -6,7 +6,6 @@ import type { Context } from '@ugdu/processor'
  */
 export const routes = function (context: Context): Plugin {
   const {
-    building,
     CONSTANTS: { ROUTES_INPUT, ROUTES },
     project,
     utils: { isRoutesModule, getLocalModuleName, stringify }
@@ -28,7 +27,9 @@ export const routes = function (context: Context): Plugin {
           (key, value) => {
             if (key === 'component') {
               return (
-                '()=>' + (building ? `ur.load` : `import`) + `("${building ? getLocalModuleName(value) : '/' + value}")`
+                '()=>' +
+                (context.building ? `ur.load` : `import`) +
+                `("${context.building ? getLocalModuleName(value) : '/' + value}")`
               )
             }
           }

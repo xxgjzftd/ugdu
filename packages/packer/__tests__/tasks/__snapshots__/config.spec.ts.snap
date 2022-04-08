@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get user's config from get-config hook and normalizes it, then set it to context.config 1`] = `
+Object {
+  "apps": Array [
+    Object {
+      "name": "@xx/container",
+      "packages": [Function],
+      "predicate": [Function],
+      "vite": Object {},
+    },
+  ],
+  "assets": "assets",
+  "base": "/",
+  "cwd": "/path/to/project",
+  "dist": "dist",
+  "extensions": Array [
+    "ts",
+    "tsx",
+  ],
+  "meta": "local",
+  "vite": Object {
+    "base": "/",
+    "build": Object {
+      "assetsDir": "assets",
+      "emptyOutDir": false,
+      "outDir": "dist",
+    },
+  },
+}
+`;

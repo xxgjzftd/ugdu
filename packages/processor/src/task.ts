@@ -56,7 +56,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
    *
    * @internal @readonly
    */
-  children: TaskOptions<any, any>[] = []
+  children: Array<TaskOptions<any, any> | TaskOptions<any, never>> = []
 
   /**
    * Adds child to this `task options`.
@@ -66,7 +66,7 @@ export class TaskOptions<Hooks extends BaseHooks<Hooks> = {}, HookName extends k
    *
    * @internal
    */
-  addChild (child: TaskOptions<any, any>) {
+  addChild (child: TaskOptions<any, any> | TaskOptions<any, never>) {
     this.children.push(child)
     return this
   }
@@ -136,6 +136,7 @@ export class Task<Hooks extends BaseHooks<Hooks>, HookName extends keyof Hooks> 
     super(_to.hns)
     this._to = _to
     this.manager = manager
+    // @ts-ignore
     _to.children.forEach((child) => this.children.push(manager.task(child)))
     ;(Object.entries(_to.hooks) as [keyof Hooks, Hooks[keyof Hooks]][]).forEach(([name, fn]) => this.hook(name, fn))
   }

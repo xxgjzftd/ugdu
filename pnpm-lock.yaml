@@ -11,12 +11,10 @@ importers:
       '@microsoft/api-documenter': ^7.17.0
       '@microsoft/api-extractor': ^7.20.0
       '@types/jest': ^27.4.1
-      '@types/mock-fs': ^4.13.1
       commitizen: ^4.2.4
       esbuild: ^0.14.29
       husky: ^7.0.4
       jest: ^27.5.1
-      mock-fs: ^5.1.2
       npm-run-all: ^4.1.5
       prettier: npm:@xxgjzftd/prettier@^2.4.2
       rimraf: ^3.0.2
@@ -30,12 +28,10 @@ importers:
       '@microsoft/api-documenter': 7.17.0
       '@microsoft/api-extractor': 7.20.0
       '@types/jest': 27.4.1
-      '@types/mock-fs': 4.13.1
       commitizen: 4.2.4
       esbuild: 0.14.29
       husky: 7.0.4
       jest: 27.5.1
-      mock-fs: 5.1.2
       npm-run-all: 4.1.5
       prettier: /@xxgjzftd/prettier/2.4.2
       rimraf: 3.0.2
@@ -51,7 +47,6 @@ importers:
       '@ugdu/runtime': workspace:^0.1.2
       autobind-decorator: ^2.4.0
       axios: ^0.21.4
-      cac: ^6.7.3
       dependencies-hierarchy: ^10.0.13
       es-module-lexer: ^0.7.1
       execa: ^6.0.0
@@ -65,7 +60,6 @@ importers:
       '@pnpm/logger': 4.0.0
       autobind-decorator: 2.4.0
       axios: 0.21.4
-      cac: 6.7.11
       dependencies-hierarchy: 10.0.13_@pnpm+logger@4.0.0
       es-module-lexer: 0.7.1
       execa: 6.0.0
@@ -1550,12 +1544,6 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
-  /@types/mock-fs/4.13.1:
-    resolution: {integrity: sha512-m6nFAJ3lBSnqbvDZioawRvpLXSaPyn52Srf7OfzjubYbYX8MTUdIgDxQl0wEapm4m/pNYSd9TXocpQ0TvZFlYA==}
-    dependencies:
-      '@types/node': 16.11.12
-    dev: true
-
   /@types/node/12.20.24:
     resolution: {integrity: sha512-yxDeaQIAJlMav7fH5AQqPH1u8YIuhYJXYBzxaQ4PifsU0GDO38MSdmEDeRlIxrKbC6NbEaaEHDanWb+y30U8SQ==}
     dev: true
@@ -1973,11 +1961,6 @@ packages:
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
     dev: true
-
-  /cac/6.7.11:
-    resolution: {integrity: sha512-m4xrA2MKfid6uDV2j2+0mXrtPGxlvAW0y+7Gnn2P8WVMSG+4e4tcoYX++94ZPblPfpBccJ5e7HvKdghlX5yiDA==}
-    engines: {node: '>=8'}
-    dev: false
 
   /cachedir/2.2.0:
     resolution: {integrity: sha512-VvxA0xhNqIIfg0V9AmJkDg91DaJwryutH5rVEZAhcNi4iJFj9f+QxmAjgK1LT9I8OgToX27fypX6/MeCXVbBjQ==}
@@ -4396,7 +4379,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
     dev: true
 
   /jsonfile/6.1.0:
@@ -4442,7 +4425,7 @@ packages:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -4686,11 +4669,6 @@ packages:
   /mixme/0.5.4:
     resolution: {integrity: sha512-3KYa4m4Vlqx98GPdOHghxSdNtTvcP8E0kkaJ5Dlh+h2DRzF7zpuVVcA8B0QpKd11YJeP9QQ7ASkKzOeu195Wzw==}
     engines: {node: '>= 8.0.0'}
-    dev: true
-
-  /mock-fs/5.1.2:
-    resolution: {integrity: sha512-YkjQkdLulFrz0vD4BfNQdQRVmgycXTV7ykuHMlyv+C8WCHazpkiQRDthwa02kSyo8wKnY9wRptHfQLgmf0eR+A==}
-    engines: {node: '>=12.0.0'}
     dev: true
 
   /ms/2.1.2:

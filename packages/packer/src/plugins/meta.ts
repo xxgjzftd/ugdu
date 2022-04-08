@@ -4,14 +4,13 @@ import { init, parse } from 'es-module-lexer'
 import type { OutputChunk } from 'rollup'
 import type { Plugin } from 'vite'
 import type { Context } from '@ugdu/processor'
-import type { PkgNode } from '../tasks/project'
 
 /**
  * @internal
  */
 export const meta = function (mn: string, context: Context): Plugin {
   const {
-    CONSTANTS: { BINDING_NAME_SEP },
+    CONSTANTS: { ROUTES, VENDOR, BINDING_NAME_SEP },
     utils: {
       isLocalModule,
       isRoutesModule,
@@ -20,7 +19,9 @@ export const meta = function (mn: string, context: Context): Plugin {
       getPkgFromModuleName,
       getMetaModule,
       getPkgFromPublicPkgName,
-      getPublicPkgNameFromImported
+      getPublicPkgNameFromImported,
+      getNormalizedPath,
+      getLocalModulePath
     }
   } = context
   return {
@@ -53,6 +54,7 @@ export const meta = function (mn: string, context: Context): Plugin {
                     const bindingToNameMap: Record<string, string> = {}
                     const d = content.match(/(?<=^(import|export)).+?(?=\bfrom\b)/)![0].trim()
                     const m = d.match(/^{(.+)}$/)
+                    const isExportStatement = content.startsWith('export')
                     if (m) {
                       m[1]
                         .split(',')
@@ -65,14 +67,14 @@ export const meta = function (mn: string, context: Context): Plugin {
                         )
                         .forEach(([binding, name]) => (bindingToNameMap[binding] = name || binding))
                     } else if (d[0] === '*') {
-                      bindingToNameMap['*'] = d.split(' as ')[1].trim()
+                      return
                     } else {
                       bindingToNameMap.default = d
                     }
 
                     content =
-                      `import { ` +
-                      bindings
+                      `${isExportStatement ? 'export' : 'import'} { ` +
+                      Object.keys(bindingToNameMap)
                         .map(
                           (binding) =>
                             `${imported.replace(ppn, '')}/${binding}`.replace(/\W/g, BINDING_NAME_SEP) +
@@ -96,38 +98,77 @@ export const meta = function (mn: string, context: Context): Plugin {
       }
       return null
     },
-    generateBundle (_, bundle) {
+    writeBundle (_, bundle) {
       const mm = getMetaModule(mn)
       const fileNames = Object.keys(bundle)
-      const js = fileNames.find((fileName) => (bundle[fileName] as OutputChunk).isEntry)!
+      const js = fileNames.find(
+        (fileName) => {
+          const info = bundle[fileName] as OutputChunk
+          if (!info.facadeModuleId) return false
+          if (isLocalModule(mn)) {
+            return getNormalizedPath(info.facadeModuleId) === getLocalModulePath(mn)
+          } else if (isRoutesModule(mn)) {
+            return info.facadeModuleId === ROUTES
+          } else {
+            return info.facadeModuleId === VENDOR
+          }
+        }
+      )!
       const css = fileNames.find((fileName) => fileName.endsWith('.css'))
       mm.js = js
       css && (mm.css = css)
-      const { importedBindings, exports } = bundle[js] as OutputChunk
+      const { exports } = bundle[js] as OutputChunk
       isLocalModule(mn) && (mm.exports = exports.sort())
-      let pkg: PkgNode
-      !isRoutesModule(mn) && (pkg = getPkgFromModuleName(mn))
-      Object.keys(importedBindings).forEach(
-        (imported) => {
-          const rbs = importedBindings[imported]
-          if (isVendorModule(imported)) {
-            // Routes module doesn't import any thing from vendor module, and there is no routes pkg.
-            if (pkg) {
-              const ppn = getPublicPkgNameFromImported(imported)
-              let mmi = mm.imports.find((i) => i.name === ppn)
-              if (!mmi) {
-                mmi = { id: getVersionedPkgName(getPkgFromPublicPkgName(pkg, ppn)), name: ppn, bindings: [] }
-                mm.imports.push(mmi)
+
+      fileNames.forEach(
+        (fileName) => {
+          const info = bundle[fileName]
+          if (info.type === 'chunk') {
+            const { importedBindings } = info
+            Object.keys(importedBindings).forEach(
+              (imported) => {
+                if (!bundle[imported]) {
+                  const rbs = importedBindings[imported]
+                  let id = imported
+                  let name = imported
+                  if (isVendorModule(imported)) {
+                    name = getPublicPkgNameFromImported(imported)
+                    // `routes` module doesn't import any thing from vendor module, so `mn` can't be `routes` here. We can invoke getPkgFromModuleName(mn) safely.
+                    id = getVersionedPkgName(getPkgFromPublicPkgName(getPkgFromModuleName(mn), name))
+                  }
+                  let mmi = mm.imports.find((i) => i.name === name)
+                  if (!mmi) {
+                    mmi = { id, name, bindings: [] }
+                    mm.imports.push(mmi)
+                  }
+                  const bindings = mmi.bindings
+
+                  if (isVendorModule(imported)) {
+                    const prefix = imported.length > name.length || !rbs.length ? imported.replace(name, '') + '/' : ''
+                    rbs.length ? rbs.forEach((rb) => bindings.push(prefix + rb)) : bindings.push(prefix)
+                  } else {
+                    bindings.push(...rbs)
+                  }
+                }
               }
-              const bindings = mmi.bindings
-              const prefix = imported.length > ppn.length || !rbs.length ? imported.replace(ppn, '') + '/' : ''
-              rbs.length ? rbs.forEach((rb) => bindings.push(prefix + rb)) : bindings.push(prefix)
-            }
-          } else {
-            mm.imports.push({ id: imported, name: imported, bindings: rbs })
+            )
           }
         }
       )
+
+      mm.imports.forEach(
+        (i) => {
+          i.bindings = [...new Set(i.bindings)]
+        }
+      )
+
+      if (mm.subs) {
+        mm.subs.forEach(
+          (sub) => {
+            sub.js = this.getFileName(sub.js)
+          }
+        )
+      }
     }
   }
 }

@@ -1,6 +1,8 @@
 import { writeFile } from 'fs/promises'
 
-import { TaskOptions } from '@ugdu/processor'
+import { TaskOptions, series } from '@ugdu/processor'
+
+import { setContext } from './context'
 
 /**
  * Writes the info of this build to disk.
@@ -13,18 +15,21 @@ import { TaskOptions } from '@ugdu/processor'
  *
  * @public
  */
-export const write = new TaskOptions(
-  async function () {
-    const {
-      manager: {
-        context: {
-          CONSTANTS: { META_JSON },
-          config: { dist },
-          project: { meta },
-          utils: { resolve }
+export const write = series(
+  setContext,
+  new TaskOptions(
+    async function () {
+      const {
+        manager: {
+          context: {
+            CONSTANTS: { META_JSON },
+            config: { dist },
+            project: { meta },
+            utils: { resolve }
+          }
         }
-      }
-    } = this
-    await writeFile(resolve(dist, META_JSON), JSON.stringify(meta.cur))
-  }
+      } = this
+      await writeFile(resolve(dist, META_JSON), JSON.stringify(meta.cur))
+    }
+  )
 )

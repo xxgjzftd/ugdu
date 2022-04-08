@@ -7,6 +7,12 @@ import { buildVendorModules } from './vendor'
 import { buildEntry } from './entry'
 import { write } from './write'
 
+const setBuilding = new TaskOptions(
+  function () {
+    this.manager.context.building = true
+  }
+)
+
 /**
  * Builds project for production.
  *
@@ -28,11 +34,7 @@ import { write } from './write'
  * @public
  */
 export const build = series(
-  new TaskOptions(
-    function setBuilding () {
-      this.manager.context.building = true
-    }
-  ),
+  setBuilding,
   setContext,
   parallel(buildLocalModules, buildRoutesModule),
   buildVendorModules,

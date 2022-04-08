@@ -8,5 +8,5 @@
     "lib": ["esnext"],
     "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src", "__tests__"]
 }

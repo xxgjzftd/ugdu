@@ -33,7 +33,7 @@ export const buildEntry: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 // Warning: (ae-internal-missing-underscore) The name "buildLocalModule" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const buildLocalModule: (this: any, lmn: string, context: Context) => Promise<void>;
+export const buildLocalModule: (lmn: string, context: Context) => Promise<void>;
 
 // @public
 export const buildLocalModules: TaskOptions<SetConfigHooks & SetProjectHooks & BuildLocalModulesHooks, never>;
@@ -98,21 +98,6 @@ export const CONSTANTS: {
 // @internal (undocumented)
 export type CONSTANTS = typeof CONSTANTS;
 
-// Warning: (ae-internal-missing-underscore) The name "getAliasKey" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const getAliasKey: (this: any, lpn: string) => string;
-
-// Warning: (ae-internal-missing-underscore) The name "getPkgId" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const getPkgId: (this: any, lpn: string) => string;
-
-// Warning: (ae-internal-missing-underscore) The name "getPkgs" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const getPkgs: (localPkgToDepsMap: LocalPkgToDepsMap, cwd: string) => PkgNode[];
-
 // Warning: (ae-internal-missing-underscore) The name "LocalPkgToDepsMap" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -123,6 +108,7 @@ export interface Meta {
     // (undocumented)
     hash?: string;
     modules: MetaModule[];
+    pages: string[];
     // (undocumented)
     version?: string;
 }
@@ -136,13 +122,20 @@ export interface MetaModule {
     imports: MetaModuleImport[];
     js: string;
     sources?: string[];
+    subs?: MetaModuleSub[];
 }
 
-// @public (undocumented)
+// @public
 export interface MetaModuleImport {
     bindings: string[];
     id: string;
     name: string;
+}
+
+// @public
+export interface MetaModuleSub {
+    js: string;
+    subpath: string;
 }
 
 // @public (undocumented)
@@ -188,7 +181,7 @@ export const setConstants: TaskOptions<{}, never>;
 // @public
 export const setContext: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
-// @public (undocumented)
+// @public
 export const setProject: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // @public (undocumented)
@@ -201,9 +194,6 @@ export interface SetProjectHooks {
     'get-routes'(context: Context): Promisable<BaseRoute[]>;
     'get-sources'(context: Context): Promisable<Sources>;
 }
-
-// @public (undocumented)
-export const setUtils: TaskOptions<SetConfigHooks, never>;
 
 // @public (undocumented)
 export interface Sources {
@@ -231,7 +221,7 @@ export interface UserConfig {
     vite?: InlineConfig;
 }
 
-// @public (undocumented)
+// @public
 export class Utils {
     constructor(context: Context);
     appendSlash(str: string): string;
@@ -248,6 +238,7 @@ export class Utils {
     getLocalPkgs(): PkgNode[];
     getMetaModule(mn: string): MetaModule;
     getNormalizedPath(ap: string): string;
+    getPages(): string[];
     getPkgFromModuleId(mi: string): PkgNode;
     getPkgFromModuleName(mn: string): PkgNode;
     getPkgFromPublicPkgName(parent: PkgNode, ppn: string): PkgNode;
@@ -271,7 +262,7 @@ export class Utils {
 }
 
 // @public
-export const write: TaskOptions<{}, never>;
+export const write: TaskOptions<SetConfigHooks & SetProjectHooks, never>;
 
 // (No @packageDocumentation comment for this package)
 
