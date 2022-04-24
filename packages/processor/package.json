@@ -1,6 +1,6 @@
 {
   "name": "@ugdu/processor",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "type": "module",
   "description": "A task processor which could be hooked in.",
   "main": "dist/index.js",
