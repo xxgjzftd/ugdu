@@ -114,7 +114,6 @@ describe('The preset get-previous-meta hook fn', () => {
     await task.run()
 
     expect(readFile).toBeCalledWith(resolve(cwd, dist, task.manager.context.CONSTANTS.META_JSON), 'utf-8')
-    expect(task.manager.context.project.meta).toMatchSnapshot()
   })
 
   it('should fetch data from `${config.meta}${CONSTANTS.META_JSON}` when the `config.meta` is set to a value other than `local`', async () => {

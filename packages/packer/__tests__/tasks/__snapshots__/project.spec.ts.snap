@@ -3541,21 +3541,6 @@ Array [
 ]
 `;
 
-exports[`The preset get-previous-meta hook fn should read data from \`resolve(config.cwd, config.dist, CONSTANTS.META_JSON)\` when the \`config.meta\` is set to \`local\` 1`] = `
-Object {
-  "cur": Object {
-    "hash": "0123456",
-    "modules": Array [],
-    "pages": Array [],
-    "version": "\\"0.1.14\\"",
-  },
-  "pre": Object {
-    "modules": Array [],
-    "pages": Array [],
-  },
-}
-`;
-
 exports[`The preset get-sources hook fn should return all sources of your project accroding to the local packages 1`] = `
 Array [
   "packages/pkg0/src/index.ts",

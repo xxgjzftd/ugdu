@@ -26,6 +26,12 @@ jobs:
       - name: install dependencies
         run: pnpm install
 
+      - name: build
+        run: pnpm build -r --if-present
+
+      - name: run unit tests
+        run: pnpm test -r --if-present
+
       - name: create and publish versions
         uses: changesets/action@v1
         with:

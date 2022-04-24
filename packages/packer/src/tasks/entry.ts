@@ -20,7 +20,7 @@ export const buildEntry = series(
       const {
         manager: { context }
       } = this
-      build(
+      await build(
         mergeConfig(
           {
             plugins: [entry(context)]
