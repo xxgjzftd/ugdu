@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 1.0.1
+
+### Patch Changes
+
+- f52cd6b: The `write` task should be executed after the `buildEntry` task finished.
+
 ## 1.0.0
 
 ### Major Changes
