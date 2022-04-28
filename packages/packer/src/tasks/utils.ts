@@ -289,17 +289,25 @@ export class Utils {
    */
   @cacheable
   getLocalModuleName (path: string) {
-    const { config } = this.context
-    const lp = this.getLocalPkgFromPath(path)
-    const { main, name } = lp
-
-    if (main) {
-      if (this.getNormalizedPath(this.resolve(lp.path, main)) === path) {
-        return name
+    const {
+      config,
+      project: {
+        sources: { all }
       }
-    } else {
-      if (this.isPage(path) || config.extensions.includes(path.slice(path.lastIndexOf('.') + 1))) {
-        return path.replace(lp.path, name)
+    } = this.context
+
+    if (all.includes(path)) {
+      const lp = this.getLocalPkgFromPath(path)
+      const { main, name } = lp
+
+      if (main) {
+        if (this.getNormalizedPath(this.resolve(lp.path, main)) === path) {
+          return name
+        }
+      } else {
+        if (this.isPage(path) || config.extensions.includes(path.slice(path.lastIndexOf('.') + 1))) {
+          return path.replace(lp.path, name)
+        }
       }
     }
 

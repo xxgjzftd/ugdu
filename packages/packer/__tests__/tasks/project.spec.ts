@@ -185,7 +185,7 @@ describe('The preset get-current-meta hook fn', () => {
     expect(cur.version).toBe(VERSION)
   })
 
-  it("should set modules to the deep cloned of pre meta's local modules", async () => {
+  it('should set modules to an empty array', async () => {
     setMeta(meta)
 
     const processor = new Processor()
@@ -194,9 +194,7 @@ describe('The preset get-current-meta hook fn', () => {
     await task.run()
 
     const cur = task.manager.context.project.meta.cur
-    expect(cur.modules).toEqual([entry])
-    expect(cur.modules[0]).not.toBe(entry)
-    expect(cur.modules[0].sources).not.toBe(entry.sources)
+    expect(cur.modules).toEqual([])
   })
 })
 

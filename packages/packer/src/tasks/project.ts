@@ -9,7 +9,7 @@ import { execa } from 'execa'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { clone, getDefault } from '../shared/utils'
+import { getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 import { Utils } from './utils'
@@ -328,11 +328,17 @@ export interface MetaModuleSub {
  */
 export interface Sources {
   /**
-   * All `path`s of your source files.
+   * All `path`s of your source files should be built.
+   *
+   * @remarks
+   * We will try to generate a corresponding `local module` for each file in this array(if the file does have a corresponding `local module`).
    */
   all: string[]
   /**
    * The `path` and status of your source files which changed since last build.
+   *
+   * @remarks
+   * This array may include the files which are not in `all` array.
    */
   changed: ChangedSource[]
 }
@@ -589,16 +595,13 @@ const getRoutes = async (context: Context) => {
 
 const getCurMeta = async (context: Context) => {
   const {
-    project: {
-      meta: { pre }
-    },
     config: { cwd }
   } = context
   const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
   const cur: Meta = {
     hash: stdout,
     version: VERSION,
-    modules: clone(pre.modules.filter((m) => !m.externals)),
+    modules: [],
     pages: []
   }
   return cur

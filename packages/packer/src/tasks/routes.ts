@@ -6,6 +6,7 @@ import { build, mergeConfig } from 'vite'
 import { setContext } from './context'
 import { routes } from '../plugins/routes'
 import { meta } from '../plugins/meta'
+import { clone } from '../shared/utils'
 
 import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'
@@ -64,8 +65,9 @@ export const buildRoutesModule = series(
         manager: {
           context,
           context: {
+            CONSTANTS: { ROUTES },
             project: {
-              meta: { pre },
+              meta: { pre, cur },
               sources: { changed }
             },
             utils: { isPage }
@@ -73,9 +75,16 @@ export const buildRoutesModule = series(
         }
       } = this
 
-      await (changed.some(
-        (s) => (s.status === 'A' && isPage(s.path)) || (s.status === 'D' && pre.pages.includes(s.path))
-      ) && this.call('build-routes-module', 'parallel', context))
+      if (
+        changed.some((s) => (s.status === 'A' && isPage(s.path)) || (s.status === 'D' && pre.pages.includes(s.path)))
+      ) {
+        await this.call('build-routes-module', 'parallel', context)
+      } else {
+        const pmm = pre.modules.find((m) => m.id === ROUTES)
+        if (pmm) {
+          cur.modules.push(clone(pmm))
+        }
+      }
     },
     ['build-routes-module'],
     {

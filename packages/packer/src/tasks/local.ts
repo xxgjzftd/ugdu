@@ -6,6 +6,7 @@ import { build, mergeConfig } from 'vite'
 import { setContext } from './context'
 import { local } from '../plugins/local'
 import { meta } from '../plugins/meta'
+import { clone } from '../shared/utils'
 
 import type { InlineConfig } from 'vite'
 import type { Promisable } from 'type-fest'
@@ -119,10 +120,10 @@ export const buildLocalModules = series(
           context,
           context: {
             config: { apps },
-            utils: { remove, getLocalPkgs, getLocalModuleName },
+            utils: { getLocalPkgs, getLocalModuleName },
             project: {
-              sources: { changed },
-              meta: { cur }
+              sources: { all, changed },
+              meta: { pre, cur }
             }
           }
         }
@@ -136,17 +137,23 @@ export const buildLocalModules = series(
         }
       )
 
+      all.forEach(
+        (path) => {
+          const lmn = getLocalModuleName(path)
+          const pmm = pre.modules.find((m) => m.id === lmn)
+          if (lmn && pmm) {
+            cur.modules.push(clone(pmm))
+          }
+        }
+      )
+
       const pending = new Set<string>()
 
       changed.forEach(
-        ({ path, status }) => {
+        ({ path }) => {
           const lmn = getLocalModuleName(path)
           if (lmn) {
-            if (status === 'D') {
-              remove(lmn)
-            } else {
-              pending.add(lmn)
-            }
+            pending.add(lmn)
           } else {
             cur.modules.filter((m) => m.exports && m.sources?.includes(path)).forEach((m) => pending.add(m.id))
           }

@@ -364,6 +364,10 @@ describe('The getLocalModuleName method', () => {
     })
   })
 
+  it('should return null if the given path is not included in local packages', () => {
+    expect(utils.getLocalModuleName('package.json')).toBe(null)
+  })
+
   it('should be cachable', () => {
     shouldBeCachable('getLocalModuleName', 'foo/src/pages/xx.vue', resolveSourcePath('foo', 'src/pages/xx.vue'))
   })

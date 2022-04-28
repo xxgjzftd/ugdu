@@ -126,6 +126,27 @@ describe('The buildLocalModules task', () => {
     }
   )
 
+  it('should clone pre local module info to `meta.cur.modules` according to current sources', () => {
+    const {
+      manager: {
+        context: {
+          project: {
+            meta: { pre, cur }
+          }
+        }
+      }
+    } = task
+    const preEntryModule = pre.modules.find((m) => m.id === 'entry')
+    const curEntryModule = cur.modules.find((m) => m.id === 'entry')
+    expect(preEntryModule).toEqual(curEntryModule)
+    expect(preEntryModule).not.toBe(curEntryModule)
+
+    // The 'foo/src/pages/yy.vue' module is not cloned because it is deleted.
+    expect(cur.modules.find((m) => m.id === 'foo/src/pages/yy.vue')).toBeUndefined()
+    // The 'foo/src/pages/zz.vue' module is not cloned because there is no info about it in pre.
+    expect(cur.modules.find((m) => m.id === 'foo/src/pages/zz.vue')).toBeUndefined()
+  })
+
   it('should call `build-local-module` hook with the local module name for a `module` which is modified', () => {
     expect(fn).toBeCalledWith(utils.getLocalModuleName(resolveSourcePath('entry', 'src/index.ts')), expect.anything())
   })
