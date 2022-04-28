@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 1.0.2
+
+### Patch Changes
+
+- 5f0578d: The build process should not be interrupted when there are changes to files that are not in the `project.sources.all`.
+
 ## 1.0.1
 
 ### Patch Changes
