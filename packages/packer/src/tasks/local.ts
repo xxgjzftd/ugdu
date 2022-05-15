@@ -120,7 +120,13 @@ export const buildLocalModules = series(
           context,
           context: {
             config: { apps },
-            utils: { getLocalPkgs, getLocalModuleName },
+            utils: {
+              getLocalPkgs,
+              getLocalModuleName,
+              addMetaModule,
+              getPkgFromModuleName,
+              getModuleNameFromPublicPkgName
+            },
             project: {
               sources: { all, changed },
               meta: { pre, cur }
@@ -142,7 +148,13 @@ export const buildLocalModules = series(
           const lmn = getLocalModuleName(path)
           const pmm = pre.modules.find((m) => m.id === lmn)
           if (lmn && pmm) {
-            cur.modules.push(clone(pmm))
+            const cloned = clone(pmm)
+            cloned.imports.forEach(
+              (mmi) => {
+                mmi.id = getModuleNameFromPublicPkgName(getPkgFromModuleName(lmn), mmi.name)
+              }
+            )
+            addMetaModule(cloned)
           }
         }
       )

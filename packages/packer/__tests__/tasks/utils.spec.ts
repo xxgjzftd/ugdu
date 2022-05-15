@@ -103,8 +103,7 @@ describe('The remove method', () => {
   it('should remove the module whose id is the given mn from project.meta.cur.modules', () => {
     const modules = task.manager.context.project.meta.cur.modules
 
-    const toBeRemoved = { id: 'to-be-removed', js: '', imports: [] }
-    modules.push(toBeRemoved)
+    const toBeRemoved = utils.getMetaModule('foo')
     expect(modules.includes(toBeRemoved)).toBe(true)
 
     utils.remove(toBeRemoved.id)
@@ -448,9 +447,23 @@ describe('The getMetaModule method', () => {
     const mn = utils.getVersionedPkgName(getPkg(plain.name))
     expect(utils.getMetaModule(mn)).toEqual({ id: mn, js: '', imports: [], externals: [] })
   })
+})
 
-  it('should be cachable', () => {
-    shouldBeCachable('getMetaModule', { id: entry.name, js: '', imports: [] }, entry.name)
+describe('The addMetaModule method', () => {
+  it('should push the given module info to `meta.cur.modules`', () => {
+    const modules = task.manager.context.project.meta.cur.modules
+    expect(modules.find((m) => m.id === 'bar')).toBeUndefined()
+    const mm = { id: 'bar', js: '', imports: [] }
+    utils.addMetaModule(mm)
+    expect(modules.find((m) => m.id === 'bar')).toEqual(mm)
+  })
+
+  it('should assign the given module info to the origin module info whose `id` is the same as that of the given module info if there is', () => {
+    const modules = task.manager.context.project.meta.cur.modules
+    const mm = utils.getMetaModule('foo')
+    utils.addMetaModule({ id: 'foo', js: 'assets/foo.js', imports: [] })
+    expect(modules.find((m) => m.id === 'foo')).toEqual(mm)
+    expect(mm.js).toBe('assets/foo.js')
   })
 })
 

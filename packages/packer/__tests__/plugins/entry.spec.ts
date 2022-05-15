@@ -64,7 +64,10 @@ beforeAll(
     task.run().then(
       () => {
         plugin = entry(task.manager.context)
-        const { getMetaModule } = task.manager.context.utils
+        const {
+          project: { meta },
+          utils: { addMetaModule }
+        } = task.manager.context
         const modules = [
           {
             id: 'foo/src/pages/xx.vue',
@@ -104,15 +107,12 @@ beforeAll(
             subs: [{ subpath: '/sub', js: `assets/${multipleVendorsDependOn.name}@1.0.0/sub.js` }]
           }
         ]
-        task.manager.context.project.meta.cur.modules = []
         modules.forEach(
           (m) => {
-            task.manager.context.project.meta.cur.modules.push(Object.assign(getMetaModule(m.id), m))
+            addMetaModule(m)
           }
         )
-        rms = task.manager.context.project.meta.cur.modules.map(
-          (m) => ({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) })
-        )
+        rms = meta.cur.modules.map((m) => ({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) }))
 
         importmap = {
           imports: {

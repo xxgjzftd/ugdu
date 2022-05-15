@@ -6,7 +6,7 @@ import autobind from 'autobind-decorator'
 import { getDefault } from '../shared/utils'
 
 import type { Context } from '@ugdu/processor'
-import type { PkgNode, BaseRoute } from './project'
+import type { PkgNode, BaseRoute, MetaModule } from './project'
 
 const cached = <T extends (this: Utils, string: string) => any>(origin: T) => {
   const u2cm: Map<Utils, Record<string, ReturnType<T>>> = new Map()
@@ -377,7 +377,6 @@ export class Utils {
    * @param mn - The `module` name
    * @returns The {@link MetaModule}
    */
-  @cacheable
   getMetaModule (mn: string) {
     const {
       project: { meta }
@@ -391,6 +390,19 @@ export class Utils {
       meta.cur.modules.push(mm)
     }
     return mm
+  }
+
+  /**
+   * Push the `mm` to the `meta.cur.modules`.
+   *
+   * @remarks
+   * If the `meta.cur.modules` already contains a module whose `id` is the same as that of `mm`, the module will be assigned with the `mm`.
+   *
+   * @param mm - The {@link MetaModule}
+   */
+  addMetaModule (mm: MetaModule) {
+    const origin = this.getMetaModule(mm.id)
+    Object.assign(origin, mm)
   }
 
   /**
@@ -574,6 +586,18 @@ export class Utils {
     return ppn
       .split(PACKAGE_NAME_SEP)
       .reduce((parent, pn) => parent.dependencies.find((pkg) => pkg.name === pn)!, parent)
+  }
+
+  /**
+   * Gets the `module` name from the parent `package` and the `public package name`.
+   *
+   * @param parent - The parent `package`
+   * @param ppn - The `public package name`
+   * @returns The target `module` name
+   */
+  getModuleNameFromPublicPkgName (parent: PkgNode, ppn: string) {
+    const pkg = this.getPkgFromPublicPkgName(parent, ppn)
+    return pkg.local ? pkg.name : this.getVersionedPkgName(pkg)
   }
 
   /**

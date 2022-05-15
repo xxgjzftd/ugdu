@@ -34,6 +34,8 @@ const onlyALocalPkgDependOn = {
 }
 const onlyAVendorPkgDependOn = { name: 'only-a-vendor-pkg-depend-on' }
 const multipleVendorsDependOn = { name: 'multiple-vendors-depend-on' }
+const hasUpdate = { name: 'version-has-update', version: '1.0.1' }
+const willNotBeRebuilt = { name: 'will-not-be-rebuilt', dependencies: [hasUpdate] }
 const hasDeps = { name: 'has-deps', dependencies: [onlyAVendorPkgDependOn, multipleVendorsDependOn] }
 
 const plainCircleA: LooseVirtualPkgNode = { name: 'plain-circle-a', dependencies: [multipleVendorsDependOn] }
@@ -86,6 +88,8 @@ const entry = {
 const foo = {
   name: 'foo',
   dependencies: [
+    hasUpdate,
+    willNotBeRebuilt,
     hasDeps,
     crossedCircleA,
     crossedCircleB,
@@ -118,7 +122,10 @@ describe('The buildVendorModules task', () => {
           id: 'foo/src/pages/xx.vue',
           js: 'assets/foo/xx.js',
           exports: ['default'],
-          imports: []
+          imports: [
+            { id: `${willNotBeRebuilt.name}@1.0.0`, name: willNotBeRebuilt.name, bindings: ['default'] },
+            { id: `${hasUpdate.name}@1.0.0`, name: hasUpdate.name, bindings: ['default'] }
+          ]
         },
         {
           id: 'bar/src/pages/xx.vue',
@@ -141,6 +148,18 @@ describe('The buildVendorModules task', () => {
           js: `assets/${chainedCircleC.name}@1.0.0/index.js`,
           imports: [],
           externals: [chainedCircleA.name, chainedCircleD.name]
+        },
+        {
+          id: `${willNotBeRebuilt.name}@1.0.0`,
+          js: `assets/${willNotBeRebuilt.name}@1.0.0/index.js`,
+          imports: [{ id: `${hasUpdate.name}@1.0.0`, name: hasUpdate.name, bindings: ['default'] }],
+          externals: [hasUpdate.name]
+        },
+        {
+          id: `${hasUpdate.name}@1.0.0`,
+          js: `assets/${hasUpdate.name}@1.0.0/index.js`,
+          imports: [],
+          externals: []
         }
       ],
       pages: [resolveSourcePath('foo', 'src/pages/xx.vue'), resolveSourcePath('bar', 'src/pages/xx.vue')]
@@ -242,15 +261,41 @@ describe('The buildVendorModules task', () => {
 
   it('should not call `build-vendor-module` hook for a vendor module whose bindings and externals are the same as previous build', () => {
     expect(fn).not.toBeCalledWith(utils.getVersionedPkgName(getPkg(chainedCircleC.name)), expect.anything())
-    expect(
-      task.manager.context.project.meta.cur.modules.find(
-        (m) => m.id === utils.getVersionedPkgName(getPkg(chainedCircleC.name))
-      )
-    ).toEqual(
-      task.manager.context.project.meta.pre.modules.find(
-        (m) => m.id === utils.getVersionedPkgName(getPkg(chainedCircleC.name))
-      )
+    expect(fn).not.toBeCalledWith(utils.getVersionedPkgName(getPkg(willNotBeRebuilt.name)), expect.anything())
+  })
+
+  it('should clone pre meta module info to `meta.cur.modules` if the module does not need to be rebuilt', () => {
+    const {
+      manager: {
+        context: {
+          project: {
+            meta: { pre, cur }
+          }
+        }
+      }
+    } = task
+    expect(cur.modules.find((m) => m.id === utils.getVersionedPkgName(getPkg(chainedCircleC.name)))).toEqual(
+      pre.modules.find((m) => m.id === utils.getVersionedPkgName(getPkg(chainedCircleC.name)))
     )
+  })
+
+  it('should update the imported id when clone from pre info', () => {
+    const {
+      manager: {
+        context: {
+          project: {
+            meta: { pre, cur }
+          }
+        }
+      }
+    } = task
+    const pi = pre.modules
+      .find((m) => m.id === utils.getVersionedPkgName(getPkg(willNotBeRebuilt.name)))!!
+      .imports.find((i) => i.name === hasUpdate.name)!!
+    const ci = cur.modules
+      .find((m) => m.id === utils.getVersionedPkgName(getPkg(willNotBeRebuilt.name)))!!
+      .imports.find((i) => i.name === hasUpdate.name)!!
+    expect(pi.id).not.toBe(ci.id)
   })
 
   it('should remove the module info of a vendor module whose bindings are empty', () => {
@@ -263,23 +308,28 @@ describe('The buildVendorModules task', () => {
   })
 
   it('should only call `build-vendor-module` hook for a vendor module when all of its dependents are built or they are in the same circle and all dependents of the circle are built', async () => {
-    ;[
-      [onlyALocalPkgDependOn, hasDeps, plainCircleA, plainCircleB, plainCircleC, chainedCircleA, chainedCircleB],
-      [plainCircleA, plainCircleB, plainCircleC],
+    ;(
       [
-        multipleVendorsDependOn,
-        crossedCircleA,
-        crossedCircleB,
-        crossedCircleC,
-        crossedCircleD,
-        crossedCircleE,
-        crossedCircleF,
-        chainedCircleE,
-        chainedCircleF
-      ]
-    ].forEach(
+        [onlyALocalPkgDependOn, hasDeps, plainCircleA, plainCircleB, plainCircleC, chainedCircleA, chainedCircleB],
+        [plainCircleA, plainCircleB, plainCircleC],
+        [
+          hasUpdate,
+          multipleVendorsDependOn,
+          crossedCircleA,
+          crossedCircleB,
+          crossedCircleC,
+          crossedCircleD,
+          crossedCircleE,
+          crossedCircleF,
+          chainedCircleE,
+          chainedCircleF
+        ]
+      ] as LooseVirtualPkgNode[][]
+    ).forEach(
       (ns, index) => {
-        expect(calls[index]).toEqual(expect.arrayContaining(ns.map((n) => utils.getVersionedPkgName(getPkg(n.name)))))
+        expect(calls[index]).toEqual(
+          expect.arrayContaining(ns.map((n) => utils.getVersionedPkgName(getPkg(n.name, n.version))))
+        )
         expect(calls[index].length).toBe(ns.length)
       }
     )

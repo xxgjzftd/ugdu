@@ -67,10 +67,10 @@ export const buildRoutesModule = series(
           context: {
             CONSTANTS: { ROUTES },
             project: {
-              meta: { pre, cur },
+              meta: { pre },
               sources: { changed }
             },
-            utils: { isPage }
+            utils: { isPage, addMetaModule }
           }
         }
       } = this
@@ -82,7 +82,7 @@ export const buildRoutesModule = series(
       } else {
         const pmm = pre.modules.find((m) => m.id === ROUTES)
         if (pmm) {
-          cur.modules.push(clone(pmm))
+          addMetaModule(clone(pmm))
         }
       }
     },

@@ -43,12 +43,23 @@ const foo = {
     'src/components/input.vue',
     'src/assets/xx.png',
     'src/assets/input.png'
+  ],
+  dependencies: [
+    {
+      name: 'components'
+    }
   ]
 }
 const components = {
   name: 'components',
   main: 'src/index.ts',
-  sources: ['src/index.ts']
+  sources: ['src/index.ts'],
+  dependencies: [
+    {
+      name: 'dep',
+      version: '1.0.1'
+    }
+  ]
 }
 const lps = [entry, foo, components]
 const changed: ChangedSource[] = [
@@ -102,7 +113,13 @@ setMeta(
         sources: [resolveSourcePath('foo', 'src/assets/input.png')],
         exports: ['default']
       },
-      { id: 'components', js: 'assets/components/index.js', imports: [], exports: ['Dialog', 'Select'] }
+      {
+        id: 'components',
+        js: 'assets/components/index.js',
+        imports: [{ id: 'dep@1.0.0', name: 'dep', bindings: ['default'] }],
+        exports: ['Dialog', 'Select']
+      },
+      { id: 'dep@1.0.0', js: 'assets/dep/index.js', imports: [], externals: [] }
     ],
     pages: [resolveSourcePath('foo', 'src/pages/xx.vue'), resolveSourcePath('foo', 'src/pages/yy.vue')]
   }
@@ -147,6 +164,21 @@ describe('The buildLocalModules task', () => {
     expect(cur.modules.find((m) => m.id === 'foo/src/pages/zz.vue')).toBeUndefined()
   })
 
+  it('should update the imported id when clone from pre info', () => {
+    const {
+      manager: {
+        context: {
+          project: {
+            meta: { pre, cur }
+          }
+        }
+      }
+    } = task
+    const pi = pre.modules.find((m) => m.id === 'components')!!.imports.find((i) => i.name === 'dep')!!
+    const ci = cur.modules.find((m) => m.id === 'components')!!.imports.find((i) => i.name === 'dep')!!
+    expect(pi.id).not.toBe(ci.id)
+  })
+
   it('should call `build-local-module` hook with the local module name for a `module` which is modified', () => {
     expect(fn).toBeCalledWith(utils.getLocalModuleName(resolveSourcePath('entry', 'src/index.ts')), expect.anything())
   })
@@ -182,10 +214,12 @@ describe('The buildLocalModules task', () => {
     expect(task.manager.context.project.mn2bm).toEqual(
       {
         pre: {
-          components: ['Dialog', 'Select']
+          components: ['Dialog', 'Select'],
+          'dep@1.0.0': ['default']
         },
         cur: {
-          components: ['Dialog']
+          components: ['Dialog'],
+          'dep@1.0.1': ['default']
         }
       }
     )

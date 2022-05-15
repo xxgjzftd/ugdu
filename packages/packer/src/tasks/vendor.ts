@@ -99,7 +99,16 @@ export const buildVendorModules = series(
           context: {
             project,
             project: { pkgs, mn2bm },
-            utils: { remove, shouldExternal, getVersionedPkgName, getMetaModule, getPkgFromPublicPkgName }
+            utils: {
+              remove,
+              shouldExternal,
+              getVersionedPkgName,
+              getMetaModule,
+              addMetaModule,
+              getPkgFromPublicPkgName,
+              getPkgFromModuleName,
+              getModuleNameFromPublicPkgName
+            }
           }
         }
       } = this
@@ -238,11 +247,13 @@ export const buildVendorModules = series(
                     remove(vv.name)
                   }
                 } else {
-                  Object.entries(pmm).forEach(
-                    ([key, value]) => {
-                      ;(cmm as any)[key] = clone(value)
+                  const cloned = clone(pmm)
+                  cloned.imports.forEach(
+                    (mmi) => {
+                      mmi.id = getModuleNameFromPublicPkgName(getPkgFromModuleName(vv.name), mmi.name)
                     }
                   )
+                  addMetaModule(cloned)
                 }
               }
             }
