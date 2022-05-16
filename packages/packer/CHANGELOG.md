@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 1.0.3
+
+### Patch Changes
+
+- db6a113: Fix the bug that the build process throw an error accidently when there are vendor packages upgrade.
+
 ## 1.0.2
 
 ### Patch Changes
