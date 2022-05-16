@@ -26,7 +26,7 @@ jobs:
         run: pnpm install
 
       - name: build
-        run: pnpm build -r --if-present
+        run: pnpm -r build
 
       - name: run unit tests
-        run: pnpm test -r --if-present
+        run: pnpm -r test

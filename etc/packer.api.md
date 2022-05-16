@@ -224,6 +224,7 @@ export interface UserConfig {
 // @public
 export class Utils {
     constructor(context: Context);
+    addMetaModule(mm: MetaModule): void;
     appendSlash(str: string): string;
     // (undocumented)
     context: Context;
@@ -237,6 +238,7 @@ export class Utils {
     getLocalPkgPaths(): string[];
     getLocalPkgs(): PkgNode[];
     getMetaModule(mn: string): MetaModule;
+    getModuleNameFromPublicPkgName(parent: PkgNode, ppn: string): string;
     getNormalizedPath(ap: string): string;
     getPages(): string[];
     getPkgFromModuleId(mi: string): PkgNode;

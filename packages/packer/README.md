@@ -46,7 +46,7 @@ npm install -g pnpm
 `@ugdu/packer` is powered by [vite](https://vitejs.dev/).
 
 ```
-pnpm add @ugdu/processor @ugdu/packer vite -DW
+pnpm -Dw add @ugdu/processor @ugdu/packer vite
 ```
 
 ### Recommend project structure

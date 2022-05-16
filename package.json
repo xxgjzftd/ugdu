@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build-docs": "api-documenter markdown -i temp -o docs",
-    "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
-    "ci:publish": "pnpm build -r --if-present && pnpm build-docs && changeset publish",
+    "ci:version": "changeset version && pnpm --no-frozen-lockfile install",
+    "ci:publish": "pnpm -r build && pnpm build-docs && changeset publish",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -20,6 +20,7 @@
     "commitizen": "^4.2.4",
     "esbuild": "^0.14.29",
     "husky": "^7.0.4",
+    "inquirer": "^8.2.4",
     "jest": "^27.5.1",
     "npm-run-all": "^4.1.5",
     "prettier": "npm:@xxgjzftd/prettier@^2.4.2",
