@@ -1,10 +1,9 @@
 {
-  "name": "@ugdu/cli",
+  "name": "@ugdu/create-ugdu",
   "version": "1.0.0",
   "main": "src/index.ts",
   "bin": {
-    "create-ugdu": "index.js",
-    "cva": "index.js"
+    "cua": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -43,6 +42,9 @@
     "format": ["cjs"]
   },
   "publishConfig": {
-    "main": "index.js"
+    "main": "index.js",
+    "bin": {
+      "create-ugdu": "index.js"
+    }
   }
 }
