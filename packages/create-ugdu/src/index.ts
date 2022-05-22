@@ -231,7 +231,6 @@ const init = async () => {
   const packagesRootPkg = JSON.parse(readFileSync(join(templateDir, 'packages', 'root', 'package.json'), 'utf-8'))
   packagesContainerPkg.name = `@${packageName || targetDir}/container`
   packagesRootPkg.name = `@${packageName || targetDir}/root`
-  console.log(packagesContainerPkg)
   write('packages/container/package.json', JSON.stringify(packagesContainerPkg, null, 2))
   write('packages/root/package.json', JSON.stringify(packagesRootPkg, null, 2))
 
