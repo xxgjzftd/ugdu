@@ -1,0 +1,8 @@
+{
+  "name": "@ugdu-vue/container",
+  "main": "src/index.ts",
+  "dependencies": {
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.13"
+  }
+}
