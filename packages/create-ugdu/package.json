@@ -1,13 +1,12 @@
 {
   "name": "@ugdu/create-ugdu",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "src/index.ts",
   "bin": {
     "cua": "./dist/index.js"
   },
   "files": [
-    "dist",
-    "src/template-*"
+    "dist"
   ],
   "engines": {
     "node": ">=14.17.0"
@@ -28,6 +27,7 @@
   "author": "pung <fp94214@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "copy": "^0.3.2",
     "kolorist": "^1.5.1",
     "minimist": "^1.2.6",
     "prompts": "^2.4.2",
@@ -38,8 +38,13 @@
     "@types/prompts": "^2.0.14"
   },
   "tsup": {
-    "entry": ["src/index.ts"],
-    "format": ["cjs"]
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "cjs"
+    ],
+    "onSuccess": "copy ./src/template-*/**/* ./dist"
   },
   "publishConfig": {
     "main": "index.js",
