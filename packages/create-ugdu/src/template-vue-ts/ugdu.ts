@@ -18,7 +18,7 @@ const config: UserConfig = {
       packages: (lps) => lps.map((lp) => lp.name)
     }
   ],
-  meta: '/dist/',
+  meta: '/dist/', // It's wrong, there should be startswith `http://xxxxx` or `https://xxxxx`
   vite: {
     build: {
       commonjsOptions: {
