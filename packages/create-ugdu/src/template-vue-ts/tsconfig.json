@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@container/*": ["packages/container/src/*"],
-      "@root/*": ["packages/root/src/*"]
-    },
     "sourceMap": true,
   },
   "exclude": ["node_modules"],
