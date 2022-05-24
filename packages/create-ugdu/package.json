@@ -1,0 +1,55 @@
+{
+  "name": "@ugdu/create-ugdu",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "bin": {
+    "cua": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxgjzftd/ugdu.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/xxgjzftd/ugdu/issues"
+  },
+  "homepage": "https://github.com/xxgjzftd/ugdu/tree/main/packages/cli#readme",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [],
+  "author": "pung <fp94214@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "copy": "^0.3.2",
+    "kolorist": "^1.5.1",
+    "minimist": "^1.2.6",
+    "prompts": "^2.4.2",
+    "tsup": "^5.12.8"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.2",
+    "@types/prompts": "^2.0.14"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "cjs"
+    ],
+    "onSuccess": "copy ./src/template-*/**/* ./dist"
+  },
+  "publishConfig": {
+    "main": "index.js",
+    "bin": {
+      "create-ugdu": "index.js"
+    }
+  }
+}
