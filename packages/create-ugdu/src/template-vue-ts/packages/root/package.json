@@ -1,0 +1,9 @@
+{
+  "name": "@ugdu-vue/root",
+  "main": "src/index.ts",
+  "version": "1.0.0",
+  "dependencies": {
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.13"
+  }
+}

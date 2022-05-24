@@ -1,0 +1,20 @@
+{
+  "name": "ugdu-vue-typescript-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node ugdu.js serve",
+    "build": "node ugdu.js prod",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@ugdu/packer": "^1.0.2",
+    "@ugdu/processor": "^1.0.0",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "vite": "^2.9.9"
+  }
+}
