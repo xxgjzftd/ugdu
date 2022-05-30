@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 1.0.4
+
+### Patch Changes
+
+- 15a252c: Fix update id error when copy build info.
+
 ## 1.0.3
 
 ### Patch Changes
