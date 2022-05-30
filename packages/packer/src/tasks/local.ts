@@ -121,11 +121,13 @@ export const buildLocalModules = series(
           context: {
             config: { apps },
             utils: {
+              isVendorModule,
               getLocalPkgs,
               getLocalModuleName,
               addMetaModule,
               getPkgFromModuleName,
-              getModuleNameFromPublicPkgName
+              getPkgFromPublicPkgName,
+              getVersionedPkgName
             },
             project: {
               sources: { all, changed },
@@ -151,7 +153,9 @@ export const buildLocalModules = series(
             const cloned = clone(pmm)
             cloned.imports.forEach(
               (mmi) => {
-                mmi.id = getModuleNameFromPublicPkgName(getPkgFromModuleName(lmn), mmi.name)
+                if (isVendorModule(mmi.id)) {
+                  mmi.id = getVersionedPkgName(getPkgFromPublicPkgName(getPkgFromModuleName(lmn), mmi.name))
+                }
               }
             )
             addMetaModule(cloned)

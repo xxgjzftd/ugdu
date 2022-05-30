@@ -89,7 +89,10 @@ setMeta(
       {
         id: 'foo/src/pages/xx.vue',
         js: 'assets/foo/xx.js',
-        imports: [{ id: 'components', bindings: ['Dialog'], name: 'components' }],
+        imports: [
+          { id: 'components', bindings: ['Dialog'], name: 'components' },
+          { id: 'foo/src/components/button.vue', bindings: ['default'], name: 'foo/src/components/button.vue' }
+        ],
         sources: [resolveSourcePath('foo', 'src/assets/xx.png')],
         exports: ['default']
       },
@@ -215,10 +218,12 @@ describe('The buildLocalModules task', () => {
       {
         pre: {
           components: ['Dialog', 'Select'],
+          'foo/src/components/button.vue': ['default'],
           'dep@1.0.0': ['default']
         },
         cur: {
           components: ['Dialog'],
+          'foo/src/components/button.vue': ['default'],
           'dep@1.0.1': ['default']
         }
       }

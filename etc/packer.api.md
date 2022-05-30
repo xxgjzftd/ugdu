@@ -238,7 +238,6 @@ export class Utils {
     getLocalPkgPaths(): string[];
     getLocalPkgs(): PkgNode[];
     getMetaModule(mn: string): MetaModule;
-    getModuleNameFromPublicPkgName(parent: PkgNode, ppn: string): string;
     getNormalizedPath(ap: string): string;
     getPages(): string[];
     getPkgFromModuleId(mi: string): PkgNode;

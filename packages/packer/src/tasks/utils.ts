@@ -589,18 +589,6 @@ export class Utils {
   }
 
   /**
-   * Gets the `module` name from the parent `package` and the `public package name`.
-   *
-   * @param parent - The parent `package`
-   * @param ppn - The `public package name`
-   * @returns The target `module` name
-   */
-  getModuleNameFromPublicPkgName (parent: PkgNode, ppn: string) {
-    const pkg = this.getPkgFromPublicPkgName(parent, ppn)
-    return pkg.local ? pkg.name : this.getVersionedPkgName(pkg)
-  }
-
-  /**
    * Convert the `payload` to a string.
    *
    * @example

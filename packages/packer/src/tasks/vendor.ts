@@ -106,8 +106,7 @@ export const buildVendorModules = series(
               getMetaModule,
               addMetaModule,
               getPkgFromPublicPkgName,
-              getPkgFromModuleName,
-              getModuleNameFromPublicPkgName
+              getPkgFromModuleName
             }
           }
         }
@@ -250,7 +249,7 @@ export const buildVendorModules = series(
                   const cloned = clone(pmm)
                   cloned.imports.forEach(
                     (mmi) => {
-                      mmi.id = getModuleNameFromPublicPkgName(getPkgFromModuleName(vv.name), mmi.name)
+                      mmi.id = getVersionedPkgName(getPkgFromPublicPkgName(getPkgFromModuleName(vv.name), mmi.name))
                     }
                   )
                   addMetaModule(cloned)
