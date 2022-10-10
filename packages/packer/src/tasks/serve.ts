@@ -41,59 +41,71 @@ export const serve = series(
       await Promise.all(
         config.apps.map(
           async (app) => {
-            const vds = await createServer(
-              mergeConfig(
-                {
-                  resolve: {
-                    alias
-                  },
-                  plugins: [
-                    routes(context),
-                    entry(context),
-                    {
-                      name: 'ugdu:serve',
-                      configureServer (server) {
-                        server.middlewares.use(
-                          (req, res, next) => {
-                            if (req.headers.accept?.includes('text/html')) {
-                              const pathname = new URL(req.url!, `http://${req.headers.host}`).pathname
-                              const target = context.config.apps.find((app) => app.predicate!(pathname))
-                              if (!target) {
-                                throw new Error(`There is no corresponding app of '${pathname}'.`)
-                              }
-                              if (target.name === app.name) {
-                                next()
+            try {
+              const vds = await createServer(
+                mergeConfig(
+                  {
+                    resolve: {
+                      alias
+                    },
+                    plugins: [
+                      routes(context),
+                      entry(context),
+                      {
+                        name: 'ugdu:serve',
+                        configureServer (server) {
+                          server.middlewares.use(
+                            (req, res, next) => {
+                              if (req.headers.accept?.includes('text/html')) {
+                                const pathname = new URL(req.url!, `http://${req.headers.host}`).pathname
+                                const target = context.config.apps.find((app) => app.predicate!(pathname))
+                                if (!target) {
+                                  throw new Error(`There is no corresponding app of '${pathname}'.`)
+                                }
+                                if (target.name === app.name) {
+                                  next()
+                                } else {
+                                  res.writeHead(301, { Location: an2om[target.name] + pathname })
+                                  res.end()
+                                }
                               } else {
-                                res.writeHead(301, { Location: an2om[target.name] + pathname })
-                                res.end()
+                                next()
                               }
-                            } else {
-                              next()
                             }
-                          }
-                        )
-                      }
-                    } as Plugin
-                  ]
-                },
-                mergeConfig(config.vite, app.vite)
+                          )
+                        }
+                      } as Plugin
+                    ]
+                  },
+                  mergeConfig(config.vite, app.vite)
+                )
               )
-            )
 
-            if (!TEST) {
-              const { ws, watcher, moduleGraph, listen } = vds
+              if (!TEST) {
+                const { ws, watcher, moduleGraph, listen, httpServer } = vds
 
-              const refresh = (ap: string) =>
-                isPage(getNormalizedPath(ap)) &&
-                (moduleGraph.invalidateModule(moduleGraph.getModuleById(ROUTES)!), ws.send({ type: 'full-reload' }))
+                if (!httpServer) {
+                  throw new Error('HTTP server not available')
+                }
 
-              watcher.on('add', refresh)
-              watcher.on('unlink', refresh)
+                const refresh = (ap: string) =>
+                  isPage(getNormalizedPath(ap)) &&
+                  (moduleGraph.invalidateModule(moduleGraph.getModuleById(ROUTES)!), ws.send({ type: 'full-reload' }))
 
-              const server = await listen()
-              const { address, port } = server.httpServer!.address() as AddressInfo
-              const protocol = server.config.server.https ? 'https' : 'http'
-              an2om[app.name] = `${protocol}://${address}:${port}`
+                watcher.on('add', refresh)
+                watcher.on('unlink', refresh)
+
+                const server = await listen()
+                const info = server.config.logger.info
+                info(`\n 🚀 ${app.name} is ready`)
+                server.printUrls()
+
+                const { address, port } = server.httpServer!.address() as AddressInfo
+                const protocol = server.config.server.https ? 'https' : 'http'
+                an2om[app.name] = `${protocol}://${address}:${port}`
+              }
+            } catch (e) {
+              process.exit(1)
             }
           }
         )
