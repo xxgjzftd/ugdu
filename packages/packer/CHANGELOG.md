@@ -1,5 +1,11 @@
 # @ugdu/packer
 
+## 1.0.5
+
+### Patch Changes
+
+- c815ad1: print dev server info
+
 ## 1.0.4
 
 ### Patch Changes
