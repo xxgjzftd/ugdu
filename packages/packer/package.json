@@ -1,6 +1,6 @@
 {
   "name": "@ugdu/packer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "description": "A packer to help develop and build micro frontends projects",
   "main": "dist/index.js",
