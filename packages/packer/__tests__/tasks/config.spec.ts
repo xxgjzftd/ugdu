@@ -1,8 +1,9 @@
+import { expect, it } from 'vitest'
 import { Processor } from '@ugdu/processor'
 
-import { setConfig } from '../../src/tasks/config'
+import { setConfig } from 'src/tasks/config'
 
-import type { UserConfig } from '../../src/tasks/config'
+import type { UserConfig } from 'src'
 
 it('should throw an error if there is not a hook function which hooks into the get-config hook and returns a config', async () => {
   const task = new Processor().task(setConfig)

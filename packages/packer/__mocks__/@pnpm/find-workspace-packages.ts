@@ -1,8 +1,10 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
+
+import { vi } from 'vitest'
 
 import { cwd, lps, resolveLocalPkgAbsolutePath } from '../utils'
 
-export default jest.fn(
+export const findWorkspacePackages = vi.fn(
   () =>
     Promise.resolve(
       [

@@ -1,27 +1,27 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`should get user's config from get-config hook and normalizes it, then set it to context.config 1`] = `
-Object {
-  "apps": Array [
-    Object {
+{
+  "apps": [
+    {
       "name": "@xx/container",
       "packages": [Function],
       "predicate": [Function],
-      "vite": Object {},
+      "vite": {},
     },
   ],
   "assets": "assets",
   "base": "/",
   "cwd": "/path/to/project",
   "dist": "dist",
-  "extensions": Array [
+  "extensions": [
     "ts",
     "tsx",
   ],
   "meta": "local",
-  "vite": Object {
+  "vite": {
     "base": "/",
-    "build": Object {
+    "build": {
       "assetsDir": "assets",
       "emptyOutDir": false,
       "outDir": "dist",

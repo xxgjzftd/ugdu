@@ -7,26 +7,28 @@
     "build-docs": "api-documenter markdown -i temp -o docs",
     "ci:version": "changeset version && pnpm --no-frozen-lockfile install",
     "ci:publish": "pnpm -r build && pnpm build-docs && changeset publish",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "vitest"
   },
   "devDependencies": {
     "@changesets/cli": "^2.22.0",
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@commitlint/cz-commitlint": "^16.2.3",
-    "@microsoft/api-documenter": "^7.17.0",
-    "@microsoft/api-extractor": "^7.20.0",
-    "@types/jest": "^27.4.1",
+    "@microsoft/api-documenter": "^7.23.15",
+    "@microsoft/api-extractor": "^7.39.0",
+    "@vitest/ui": "^1.1.0",
     "commitizen": "^4.2.4",
-    "esbuild": "^0.14.29",
+    "esbuild": "^0.19.10",
     "husky": "^7.0.4",
     "inquirer": "^8.2.4",
-    "jest": "^27.5.1",
+    "jsdom": "^23.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "npm:@xxgjzftd/prettier@^2.4.2",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^27.1.4",
-    "typescript": "^4.5.2"
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^4.2.3",
+    "vitest": "^1.1.0"
   },
   "config": {
     "commitizen": {

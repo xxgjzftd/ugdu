@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest'
+
 import { HookDriver } from '../src/hook-driver'
 
 import type { Promisable } from 'type-fest'
@@ -19,10 +21,10 @@ describe('The hfs method', () => {
   const parent = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4'])
   const child = new HookDriver<{ hn5(arg0: number, arg1: string): Promisable<Result> }>(['hn5'])
   parent.children.push(child)
-  const fn00 = jest.fn()
-  const fn01 = jest.fn()
-  const fn50 = jest.fn()
-  const fn51 = jest.fn()
+  const fn00 = vi.fn()
+  const fn01 = vi.fn()
+  const fn50 = vi.fn()
+  const fn51 = vi.fn()
   parent.hook('hn0', fn00)
   parent.hook('hn0', fn01)
   parent.hook('hn5', fn50)
@@ -49,8 +51,8 @@ describe('The hfs method', () => {
 
 describe('The hook method', () => {
   const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-  const fn00 = jest.fn()
-  const fn01 = jest.fn()
+  const fn00 = vi.fn()
+  const fn01 = vi.fn()
   hd.hook('hn0', fn00)
   hd.hook('hn0', fn01)
 
@@ -70,8 +72,8 @@ describe('The hook method', () => {
 
 describe('The prepend method', () => {
   const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-  const fn00 = jest.fn()
-  const fn01 = jest.fn()
+  const fn00 = vi.fn()
+  const fn01 = vi.fn()
   hd.prepend('hn0', fn00)
   hd.prepend('hn0', fn01)
 
@@ -91,8 +93,8 @@ describe('The prepend method', () => {
 
 describe('The unhook method', () => {
   const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-  const fn00 = jest.fn()
-  const fn01 = jest.fn()
+  const fn00 = vi.fn()
+  const fn01 = vi.fn()
   hd.hook('hn0', fn00)
   hd.hook('hn0', fn01)
 
@@ -109,9 +111,9 @@ describe('The unhook method', () => {
 describe('The call method', () => {
   it('should call the hook fns sequentially until a hook fn returns a value other than `null` or `undefined`', async () => {
     const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-    const fn30 = jest.fn()
-    const fn31 = jest.fn(() => ({ prop: 'fn01' }))
-    const fn32 = jest.fn(() => ({ prop: 'fn02' }))
+    const fn30 = vi.fn()
+    const fn31 = vi.fn(() => ({ prop: 'fn01' }))
+    const fn32 = vi.fn(() => ({ prop: 'fn02' }))
     hd.hook('hn3', fn30)
     hd.hook('hn3', fn31)
     hd.hook('hn3', fn32)
@@ -123,13 +125,13 @@ describe('The call method', () => {
 
   it('should call the hook fns sequentially', async () => {
     const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-    const fn00 = jest.fn(
+    const fn00 = vi.fn(
       async () => {
         await Promise.resolve()
         expect(fn01).not.toHaveBeenCalled()
       }
     )
-    const fn01 = jest.fn()
+    const fn01 = vi.fn()
     hd.hook('hn0', fn00)
     hd.hook('hn0', fn01)
     await hd.call('hn0', 'sequential')
@@ -139,13 +141,13 @@ describe('The call method', () => {
 
   it('should call the hook fns in parallel', async () => {
     const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-    const fn00 = jest.fn(
+    const fn00 = vi.fn(
       async () => {
         await Promise.resolve()
         expect(fn01).toHaveBeenCalled()
       }
     )
-    const fn01 = jest.fn()
+    const fn01 = vi.fn()
     hd.hook('hn0', fn00)
     hd.hook('hn0', fn01)
     await hd.call('hn0', 'parallel')
@@ -155,8 +157,8 @@ describe('The call method', () => {
 
   it('should call the hook fns with the args which are passed to the call method', async () => {
     const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-    const fn20 = jest.fn()
-    const fn21 = jest.fn()
+    const fn20 = vi.fn()
+    const fn21 = vi.fn()
     hd.hook('hn2', fn20)
     hd.hook('hn2', fn21)
     await hd.call('hn2', 'parallel', 0, 'foo')
@@ -166,8 +168,8 @@ describe('The call method', () => {
 
   it('should throw error if the hook type is illegal', async () => {
     const hd = new HookDriver<Hooks>(['hn0', 'hn1', 'hn2', 'hn3', 'hn4', 'hn5'])
-    const fn00 = jest.fn()
-    const fn01 = jest.fn()
+    const fn00 = vi.fn()
+    const fn01 = vi.fn()
     hd.hook('hn0', fn00)
     hd.hook('hn0', fn01)
     // @ts-expect-error

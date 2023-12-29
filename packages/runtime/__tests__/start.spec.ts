@@ -1,11 +1,13 @@
-import '../src/runtime'
+import { expect, it, vi } from 'vitest'
 
-const mountV2 = jest.fn()
-const unmountV2 = jest.fn()
-const mountV3 = jest.fn()
-const unmountV3 = jest.fn()
+import 'src/runtime'
+
+const mountV2 = vi.fn()
+const unmountV2 = vi.fn()
+const mountV3 = vi.fn()
+const unmountV3 = vi.fn()
 // @ts-ignore
-window.importShim = jest.fn(
+window.importShim = vi.fn(
   async (mn: string) => {
     switch (mn) {
       case '@v2/container':
@@ -69,8 +71,8 @@ ur.register(
   (pathname) => pathname === '/' || pathname.startsWith('/v3'),
   () => ur.load('@v3/container')
 )
-const load = jest.spyOn(ur, 'load')
-const unload = jest.spyOn(ur, 'unload')
+const load = vi.spyOn(ur, 'load')
+const unload = vi.spyOn(ur, 'unload')
 
 it('should load and mount the apps which should be active according to the initial pathname', async () => {
   await ur.start(rms, base)

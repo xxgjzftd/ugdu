@@ -1,11 +1,13 @@
+import { beforeAll, describe, expect, it, vi } from 'vitest'
+
 import { resolve } from 'path'
 
 import { Processor } from '@ugdu/processor'
 
-import { buildVendorModules } from '../../src/tasks/vendor'
-import { meta } from '../../src/plugins/meta'
+import { buildVendorModules } from 'src/tasks/vendor'
+import { meta } from 'src/plugins/meta'
 
-import { resolveSourceAbsolutePath, setVirtualProject } from '../../__mocks__/utils'
+import { resolveSourceAbsolutePath, setVirtualProject } from '__mocks__/utils'
 
 import type { Plugin } from 'vite'
 import type {
@@ -17,16 +19,7 @@ import type {
   RenderedChunk
 } from 'rollup'
 
-import type { MetaModule } from '../../src/tasks/project'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
-jest.mock('fs/promises')
+import type { UserConfig, MetaModule } from 'src'
 
 const cwd = '/path/to/project'
 
@@ -64,17 +57,15 @@ setVirtualProject(lps)
 
 const processor = new Processor()
 const task = processor.task(buildVendorModules)
-task.hook(
-  'get-config',
-  () => ({
-    cwd,
-    apps: [{ name: 'entry', packages: (lps) => lps.map((lp) => lp.name) }],
-    extensions: ['vue', 'ts'],
-    meta: 'local'
-  })
-)
+const config: UserConfig = {
+  cwd,
+  apps: [{ name: 'entry', packages: (lps) => lps.map((lp) => lp.name) }],
+  extensions: ['vue', 'ts'],
+  meta: 'local'
+}
+task.hook('get-config', () => config)
 
-const pc = { getFileName: jest.fn((ref) => `assets/${ref}`) } as unknown as PluginContext
+const pc = { getFileName: vi.fn((ref) => `assets/${ref}`) } as unknown as PluginContext
 
 let plugin: Plugin
 let ROUTES: string
@@ -100,7 +91,7 @@ describe('The renderChunk hook', () => {
     const code = `import { a } from "${multipleVendorsDependOn.name}";`
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a']
-    const chunk = { code, importedBindings } as RenderedChunk
+    const chunk = { code, importedBindings }
     // @ts-ignore
     await expect(plugin.renderChunk!.call(pc, code, chunk, options)).resolves.toBeNull()
   })
@@ -110,9 +101,10 @@ describe('The renderChunk hook', () => {
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a']
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = ['x']
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
+
     // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     expect(res.code).toBe(
       `import { a } from "${multipleVendorsDependOn.name}";` +
         `import { ${'/sub/x'.replace(/\W/g, BINDING_NAME_SEP)} as x } from "${multipleVendorsDependOn.name}";`
@@ -124,8 +116,9 @@ describe('The renderChunk hook', () => {
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a']
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = ['*']
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
+    // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     // @ts-ignore
     expect(res.code).toBe(
       `import { a } from "${multipleVendorsDependOn.name}";` +
@@ -138,8 +131,9 @@ describe('The renderChunk hook', () => {
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a']
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = ['default']
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
+    // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     // @ts-ignore
     expect(res.code).toBe(
       `import { a } from "${multipleVendorsDependOn.name}";` +
@@ -154,8 +148,9 @@ describe('The renderChunk hook', () => {
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a']
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = []
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
+    // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     // @ts-ignore
     expect(res.code).toBe(
       `import { a } from "${multipleVendorsDependOn.name}";` + `import "${multipleVendorsDependOn.name}";`
@@ -171,9 +166,9 @@ describe('The renderChunk hook', () => {
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[multipleVendorsDependOn.name] = ['a', 'b']
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = ['c', '*', 'default']
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
     // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     expect(res.code).toBe(
       `import { a } from "${multipleVendorsDependOn.name}";` +
         `export { b } from "${multipleVendorsDependOn.name}";` +
@@ -187,9 +182,9 @@ describe('The renderChunk hook', () => {
     const code = `import { importasexport as exportasimport } from "${multipleVendorsDependOn.name}/sub";`
     const importedBindings: RenderedChunk['importedBindings'] = {}
     importedBindings[`${multipleVendorsDependOn.name}/sub`] = ['importasexport']
-    const chunk = { code, importedBindings } as RenderedChunk
-    const res = await plugin.renderChunk!.call(pc, code, chunk, options)
+    const chunk = { code, importedBindings }
     // @ts-ignore
+    const res = await plugin.renderChunk.call(pc, code, chunk, options)
     expect(res.code).toBe(
       `import { ${'/sub/importasexport'.replace(/\W/g, BINDING_NAME_SEP)} as exportasimport } from "${
         multipleVendorsDependOn.name
@@ -238,6 +233,7 @@ describe('The writeBundle hook', () => {
 
         mm = task.manager.context.utils.getMetaModule(mn)
         mm.subs = [{ subpath: '/sub', js: 'ref' }]
+        //@ts-ignore
         meta(mn, task.manager.context).writeBundle!.call(pc, {} as NormalizedOutputOptions, bundle)
       }
     )
@@ -282,7 +278,8 @@ describe('The writeBundle hook', () => {
         } as OutputAsset
 
         mm = task.manager.context.utils.getMetaModule(mn)
-        meta(mn, task.manager.context).writeBundle!.call(pc, {} as NormalizedOutputOptions, bundle)
+        //@ts-ignore
+        meta(mn, task.manager.context).writeBundle.call(pc, {} as NormalizedOutputOptions, bundle)
       }
     )
 
@@ -323,7 +320,8 @@ describe('The writeBundle hook', () => {
         } as OutputChunk
 
         mm = task.manager.context.utils.getMetaModule(mn)
-        meta(mn, task.manager.context).writeBundle!.call(pc, {} as NormalizedOutputOptions, bundle)
+        //@ts-ignore
+        meta(mn, task.manager.context).writeBundle.call(pc, {} as NormalizedOutputOptions, bundle)
       }
     )
 
