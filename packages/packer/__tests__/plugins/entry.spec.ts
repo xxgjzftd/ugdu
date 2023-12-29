@@ -1,20 +1,12 @@
+import { beforeAll, describe, expect, it } from 'vitest'
 import { Processor } from '@ugdu/processor'
 
-import { buildVendorModules } from '../../src/tasks/vendor'
-import { entry } from '../../src/plugins/entry'
-
-import { setVirtualProject } from '../../__mocks__/utils'
+import { buildVendorModules } from 'src'
+import { entry } from 'src/plugins/entry'
+import { setVirtualProject } from '__mocks__/utils'
 
 import type { Plugin } from 'vite'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
-jest.mock('fs/promises')
+import type { UserConfig } from 'src'
 
 const cwd = '/path/to/project'
 
@@ -44,98 +36,89 @@ setVirtualProject(lps)
 
 const processor = new Processor()
 const task = processor.task(buildVendorModules)
-task.hook(
-  'get-config',
-  () => ({
-    cwd,
-    apps: [{ name: 'main', packages: (lps) => lps.map((lp) => lp.name) }],
-    extensions: ['vue', 'ts'],
-    meta: 'local'
-  })
-)
+const config: UserConfig = {
+  cwd,
+  apps: [{ name: 'main', packages: (lps) => lps.map((lp) => lp.name) }],
+  extensions: ['vue', 'ts'],
+  meta: 'local'
+}
+task.hook('get-config', () => config)
 
 let plugin: Plugin
-
 let rms: any
 let importmap: any
 
 beforeAll(
-  () =>
-    task.run().then(
-      () => {
-        plugin = entry(task.manager.context)
-        const {
-          project: { meta },
-          utils: { addMetaModule }
-        } = task.manager.context
-        const modules = [
-          {
-            id: 'foo/src/pages/xx.vue',
-            js: 'assets/foo/xx.js',
-            css: 'assets/foo/xx.css',
-            imports: [
-              { id: `${localPkgDependOnA.name}@1.0.0`, name: localPkgDependOnA.name, bindings: ['a'] },
-              { id: `${localPkgDependOnB.name}@1.0.0`, name: localPkgDependOnB.name, bindings: ['b'] }
-            ]
-          },
-          {
-            id: `${localPkgDependOnA.name}@1.0.0`,
-            js: `assets/${localPkgDependOnA.name}@1.0.0/index.js`,
-            imports: [
-              {
-                id: `${multipleVendorsDependOn.name}@1.0.0`,
-                name: multipleVendorsDependOn.name,
-                bindings: ['xx', '/sub/a']
-              }
-            ]
-          },
-          {
-            id: `${localPkgDependOnB.name}@1.0.0`,
-            js: `assets/${localPkgDependOnB.name}@1.0.0/index.js`,
-            imports: [
-              {
-                id: `${multipleVendorsDependOn.name}@1.0.0`,
-                name: multipleVendorsDependOn.name,
-                bindings: ['yy', '/sub/*']
-              }
-            ]
-          },
+  async () => {
+    await task.run()
+    plugin = entry(task.manager.context)
+    const {
+      project: { meta },
+      utils: { addMetaModule }
+    } = task.manager.context
+    const modules = [
+      {
+        id: 'foo/src/pages/xx.vue',
+        js: 'assets/foo/xx.js',
+        css: 'assets/foo/xx.css',
+        imports: [
+          { id: `${localPkgDependOnA.name}@1.0.0`, name: localPkgDependOnA.name, bindings: ['a'] },
+          { id: `${localPkgDependOnB.name}@1.0.0`, name: localPkgDependOnB.name, bindings: ['b'] }
+        ]
+      },
+      {
+        id: `${localPkgDependOnA.name}@1.0.0`,
+        js: `assets/${localPkgDependOnA.name}@1.0.0/index.js`,
+        imports: [
           {
             id: `${multipleVendorsDependOn.name}@1.0.0`,
-            js: `assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
-            imports: [],
-            subs: [{ subpath: '/sub', js: `assets/${multipleVendorsDependOn.name}@1.0.0/sub.js` }]
+            name: multipleVendorsDependOn.name,
+            bindings: ['xx', '/sub/a']
           }
         ]
-        modules.forEach(
-          (m) => {
-            addMetaModule(m)
+      },
+      {
+        id: `${localPkgDependOnB.name}@1.0.0`,
+        js: `assets/${localPkgDependOnB.name}@1.0.0/index.js`,
+        imports: [
+          {
+            id: `${multipleVendorsDependOn.name}@1.0.0`,
+            name: multipleVendorsDependOn.name,
+            bindings: ['yy', '/sub/*']
           }
-        )
-        rms = meta.cur.modules.map((m) => ({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) }))
-
-        importmap = {
-          imports: {
-            [`foo/src/pages/xx.vue`]: '/assets/foo/xx.js'
-          },
-          scopes: {
-            ['/assets/foo/']: {
-              [localPkgDependOnA.name]: `/assets/${localPkgDependOnA.name}@1.0.0/index.js`,
-              [localPkgDependOnB.name]: `/assets/${localPkgDependOnB.name}@1.0.0/index.js`
-            },
-            [`/assets/${localPkgDependOnA.name}@1.0.0/`]: {
-              [multipleVendorsDependOn.name]: `/assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
-              [`${multipleVendorsDependOn.name}/sub`]: `/assets/${multipleVendorsDependOn.name}@1.0.0/sub.js`
-            },
-            [`/assets/${localPkgDependOnB.name}@1.0.0/`]: {
-              [multipleVendorsDependOn.name]: `/assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
-              [`${multipleVendorsDependOn.name}/sub`]: `/assets/${multipleVendorsDependOn.name}@1.0.0/sub.js`
-            },
-            [`/assets/${multipleVendorsDependOn.name}@1.0.0/`]: {}
-          }
-        }
+        ]
+      },
+      {
+        id: `${multipleVendorsDependOn.name}@1.0.0`,
+        js: `assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
+        imports: [],
+        subs: [{ subpath: '/sub', js: `assets/${multipleVendorsDependOn.name}@1.0.0/sub.js` }]
       }
-    )
+    ]
+    modules.forEach(addMetaModule)
+    rms = meta.cur.modules.map((m) => ({ id: m.id, js: m.js, css: m.css, imports: m.imports.map((i) => i.id) }))
+
+    importmap = {
+      imports: {
+        [`foo/src/pages/xx.vue`]: '/assets/foo/xx.js'
+      },
+      scopes: {
+        ['/assets/foo/']: {
+          [localPkgDependOnA.name]: `/assets/${localPkgDependOnA.name}@1.0.0/index.js`,
+          [localPkgDependOnB.name]: `/assets/${localPkgDependOnB.name}@1.0.0/index.js`
+        },
+        [`/assets/${localPkgDependOnA.name}@1.0.0/`]: {
+          [multipleVendorsDependOn.name]: `/assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
+          [`${multipleVendorsDependOn.name}/sub`]: `/assets/${multipleVendorsDependOn.name}@1.0.0/sub.js`
+        },
+        [`/assets/${localPkgDependOnB.name}@1.0.0/`]: {
+          [multipleVendorsDependOn.name]: `/assets/${multipleVendorsDependOn.name}@1.0.0/index.js`,
+          [`${multipleVendorsDependOn.name}/sub`]: `/assets/${multipleVendorsDependOn.name}@1.0.0/sub.js`
+        },
+        [`/assets/${multipleVendorsDependOn.name}@1.0.0/`]: {}
+      }
+    }
+  }
 )
 
 describe('The transformIndexHtml hook', () => {
@@ -145,11 +128,11 @@ describe('The transformIndexHtml hook', () => {
         task.manager.context.building = true
       }
     )
-
     it('should change the script\'s type from "module" to "module-shim"', () => {
       const html = `<script other attrs type="module" src="/assets/a.js"></script><script type='module' src="/assets/b.js"></script>`
-      // @ts-ignore
-      const result = plugin.transformIndexHtml!(html)
+
+      //@ts-ignore
+      const result = plugin.transformIndexHtml(html)
       expect(result.html).toBe(
         `<script other attrs type="module-shim" src="/assets/a.js"></script><script type="module-shim" src="/assets/b.js"></script>`
       )
@@ -157,13 +140,13 @@ describe('The transformIndexHtml hook', () => {
 
     it('should add an importmap to the html', () => {
       // @ts-ignore
-      const result = plugin.transformIndexHtml!('')
+      const result = plugin.transformIndexHtml('')
       expect(result.tags[0].children).toBe(JSON.stringify(importmap))
     })
 
     it('should add an startup script to the html with correct params', () => {
       // @ts-ignore
-      const result = plugin.transformIndexHtml!('')
+      const result = plugin.transformIndexHtml('')
       expect(result.tags[1].children).toMatch(JSON.stringify(rms))
     })
   })
@@ -176,7 +159,7 @@ describe('The transformIndexHtml hook', () => {
     )
     it('should add the startup script to the html', () => {
       // @ts-ignore
-      const result = plugin.transformIndexHtml!('')
+      const result = plugin.transformIndexHtml('')
       expect(result[0].children).toMatch('ur.start();')
     })
   })

@@ -1,6 +1,6 @@
 import { join, resolve } from 'path'
 
-import type { ChangedSource, Meta } from '../src/tasks/project'
+import type { ChangedSource, Meta } from 'src'
 
 export interface VirtualPkgNode {
   name: string

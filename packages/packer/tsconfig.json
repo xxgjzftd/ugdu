@@ -3,11 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "__mocks__/*": ["__mocks__/*"]
     },
-    "lib": ["esnext"],
-    "allowJs": true,
-    "isolatedModules": true
+    "lib": ["esnext", "DOM"]
   },
   "include": ["global.d.ts", "src", "__tests__"]
 }

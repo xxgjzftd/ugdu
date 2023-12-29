@@ -1,20 +1,14 @@
+import { beforeAll, describe, expect, it } from 'vitest'
 import { Processor } from '@ugdu/processor'
 
-import { setContext } from '../../src/tasks/context'
-import { routes } from '../../src/plugins/routes'
+import { setContext } from 'src'
+import { routes } from 'src/plugins/routes'
 
-import { setVirtualProject } from '../../__mocks__/utils'
+import { setVirtualProject } from '__mocks__/utils'
 
 import type { Plugin } from 'vite'
 import type { PluginContext } from 'rollup'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
+import type { UserConfig } from 'src'
 
 const cwd = '/path/to/project'
 
@@ -40,27 +34,23 @@ setVirtualProject(lps, cwd)
 
 const processor = new Processor()
 const task = processor.task(setContext)
-task.hook(
-  'get-config',
-  () => ({
-    cwd,
-    apps: [{ name: 'entry', packages: (lps) => lps.map((lp) => lp.name) }],
-    extensions: ['vue', 'ts'],
-    meta: 'local'
-  })
-)
+const config: UserConfig = {
+  cwd,
+  apps: [{ name: 'entry', packages: (lps) => lps.map((lp) => lp.name) }],
+  extensions: ['vue', 'ts'],
+  meta: 'local'
+}
+task.hook('get-config', () => config)
 
 const pc = {} as unknown as PluginContext
 
 let plugin: Plugin
 
 beforeAll(
-  () =>
-    task.run().then(
-      () => {
-        plugin = routes(task.manager.context)
-      }
-    )
+  async () => {
+    await task.run()
+    plugin = routes(task.manager.context)
+  }
 )
 
 describe('The resolveId', () => {
@@ -72,7 +62,8 @@ describe('The resolveId', () => {
         }
       }
     } = task
-    expect(plugin.resolveId!.call(pc, ROUTES_INPUT, undefined, {})).toBe(ROUTES)
+    //@ts-ignore
+    expect(plugin.resolveId.call(pc, ROUTES_INPUT, undefined, {})).toBe(ROUTES)
   })
 
   it('should return the source itself if the source is routes module(i.e. CONSTANTS.ROUTES)', () => {
@@ -83,7 +74,8 @@ describe('The resolveId', () => {
         }
       }
     } = task
-    expect(plugin.resolveId!.call(pc, ROUTES, ROUTES_INPUT, {})).toBe(ROUTES)
+    //@ts-ignore
+    expect(plugin.resolveId.call(pc, ROUTES, ROUTES_INPUT, {})).toBe(ROUTES)
   })
 })
 
@@ -100,7 +92,8 @@ describe('The load hook', () => {
       }
     } = task
     context.building = true
-    await expect(plugin.load!.call(pc, ROUTES)).resolves.toBe(
+    //@ts-ignore
+    await expect(plugin.load.call(pc, ROUTES)).resolves.toBe(
       `export default ${stringify(
         project.routes,
         (key, value) => {
@@ -111,7 +104,8 @@ describe('The load hook', () => {
       )}`
     )
     context.building = false
-    await expect(plugin.load!.call(pc, ROUTES)).resolves.toBe(
+    //@ts-ignore
+    await expect(plugin.load.call(pc, ROUTES)).resolves.toBe(
       `export default ${stringify(
         project.routes,
         (key, value) => {

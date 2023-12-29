@@ -1,23 +1,14 @@
 import { join } from 'path'
 
+import { describe, expect, it, vi } from 'vitest'
 import { build, mergeConfig } from 'vite'
 import { Processor } from '@ugdu/processor'
 
-import { buildRoutesModule } from '../../src/tasks/routes'
+import { buildRoutesModule } from 'src/tasks/routes'
 
-import { setHash, setMeta, setChanged, setVirtualProject, resolveSourcePath } from '../../__mocks__/utils'
+import { setHash, setMeta, setChanged, setVirtualProject, resolveSourcePath } from '__mocks__/utils'
 
-import type { UserConfig } from '../../src/tasks/config'
-import type { ChangedSource } from '../../src/tasks/project'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
-jest.mock('fs/promises')
+import type { ChangedSource, UserConfig } from 'src'
 
 const cwd = '/path/to/project'
 const config: UserConfig = {
@@ -78,7 +69,7 @@ describe('The buildRoutesModule task', () => {
   })
 
   it('should call the `build-routes-module` if a page is added', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [{ path: resolveSourcePath('foo', 'src/pages/zz.vue'), status: 'A' }]
     setChanged(changed)
@@ -93,7 +84,7 @@ describe('The buildRoutesModule task', () => {
   })
 
   it('should call the `build-routes-module` if a page is deleted', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [{ path: resolveSourcePath('foo', 'src/pages/yy.vue'), status: 'D' }]
     setMeta(
@@ -116,7 +107,7 @@ describe('The buildRoutesModule task', () => {
   })
 
   it('should not call the `build-routes-module` if a page is modified', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [{ path: resolveSourcePath('foo', 'src/pages/xx.vue'), status: 'M' }]
     setChanged(changed)
@@ -131,7 +122,7 @@ describe('The buildRoutesModule task', () => {
   })
 
   it('should not call the `build-routes-module` if any other modules are changed', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [{ path: resolveSourcePath('foo', 'src/components/button.vue'), status: 'A' }]
     setChanged(changed)
@@ -146,7 +137,7 @@ describe('The buildRoutesModule task', () => {
   })
 
   it('should call `build-local-module` hook only once', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [
       { path: resolveSourcePath('foo', 'src/pages/zz.vue'), status: 'A' },
@@ -174,7 +165,7 @@ describe('The buildRoutesModule task', () => {
 
 describe('The preset `build-routes-module` hook fn', () => {
   it('should invoke vite.build with `mergeConfig(defaultConfig, config.vite)`', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const changed: ChangedSource[] = [{ path: resolveSourcePath('foo', 'src/pages/zz.vue'), status: 'A' }]
     setChanged(changed)

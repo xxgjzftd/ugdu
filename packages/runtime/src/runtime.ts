@@ -139,9 +139,7 @@ ur.load = function (mn) {
         }
       }
     )
-  ).then(
-    () => window.importShim(mn)
-  )
+  ).then(() => window.importShim(mn))
 }
 
 ur.unload = function (mn) {

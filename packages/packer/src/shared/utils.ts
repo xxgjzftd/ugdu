@@ -45,7 +45,7 @@ export const clone = <T>(target: T) => {
       } else {
         result = {}
       }
-      Object.entries(target).forEach(([key, value]) => (result[key] = clone(value)))
+      Object.entries(target as object).forEach(([key, value]) => (result[key] = clone(value)))
       break
     default:
       result = target

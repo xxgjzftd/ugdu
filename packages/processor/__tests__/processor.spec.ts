@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { TaskOptions } from '../src/task'
 import { Processor } from '../src/processor'
 

@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { resolve } from 'path'
 import { readFile } from 'fs/promises'
 
@@ -6,7 +8,7 @@ import fg from 'fast-glob'
 import { execa } from 'execa'
 import { Processor } from '@ugdu/processor'
 
-import { setContext } from '../../src/tasks/context'
+import { setContext } from 'src/tasks/context'
 
 import {
   setHash,
@@ -15,10 +17,9 @@ import {
   setVirtualProject,
   resolveSourcePath,
   resolveLocalPkgPath
-} from '../../__mocks__/utils'
+} from '__mocks__/utils'
 
-import type { UserConfig } from '../../src/tasks/config'
-import type { ChangedSource } from '../../src/tasks/project'
+import type { ChangedSource, UserConfig } from 'src'
 
 const cwd = '/path/to/project'
 const config: UserConfig = {
@@ -28,15 +29,13 @@ const config: UserConfig = {
   meta: 'local'
 }
 
-jest.mock('fs/promises')
-
 beforeEach(
   () => {
     setHash()
     setMeta()
     setChanged()
     setVirtualProject()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   }
 )
 

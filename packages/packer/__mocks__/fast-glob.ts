@@ -1,6 +1,7 @@
+import { vi } from 'vitest'
 import { lps, resolveLocalPkgPath, resolveSourcePath } from './utils'
 
-export default jest.fn(
+export default vi.fn(
   (pattern: string | string[]) => {
     const fixed = '/src/pages/**/*'
     if (typeof pattern === 'string' && pattern.endsWith(fixed)) {

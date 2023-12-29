@@ -1,7 +1,9 @@
-import '../src/runtime'
+import { expect, it, vi } from 'vitest'
+
+import 'src/runtime'
 
 // @ts-ignore
-window.importShim = jest.fn()
+window.importShim = vi.fn()
 
 const ur = window.ur
 const base = '/'

@@ -4,7 +4,7 @@ import type { Promisable } from 'type-fest'
 import type { BaseHooks } from './hook-driver'
 
 /**
- * `task options` can be seen as a definition of a `task`. It is used to create `task` by calling {@link TaskManager.task}.
+ * `task options` can be seen as a definition of a `task`. It is used to create `task` by calling {@link TaskManager['task']}.
  *
  * @remarks
  * The reason why we use the `task`'s definition instead of directly using the `task` itself is that usually we want share our `task`'s definition not the `task` itself.
@@ -127,7 +127,7 @@ export interface Context {}
  * A subclass of {@link HookDriver}.
  *
  * @remarks
- * Task class can only be instantiated by {@link TaskManager.task} with {@link TaskOptions}.
+ * Task class can only be instantiated by {@link TaskManager['task']} with {@link TaskOptions}.
  *
  * @public
  */

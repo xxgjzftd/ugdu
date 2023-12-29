@@ -8,7 +8,7 @@ import type { AliasOptions } from 'vite';
 import type { Context } from '@ugdu/processor';
 import type { InlineConfig } from 'vite';
 import type { Merge } from 'type-fest';
-import type { PackageNode } from 'dependencies-hierarchy';
+import type { PackageNode } from '@pnpm/reviewing.dependencies-hierarchy';
 import type { Promisable } from 'type-fest';
 import { TaskOptions } from '@ugdu/processor';
 
