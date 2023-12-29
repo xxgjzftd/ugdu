@@ -1,5 +1,18 @@
 # @ugdu/packer
 
+## 2.0.0
+
+### Major Changes
+
+- 618358e: Update the major package version to the latest
+  Replace jest with vitest for a better test experience
+  Fix some bugs
+
+### Patch Changes
+
+- Updated dependencies [618358e]
+  - @ugdu/processor@2.0.0
+
 ## 1.0.6
 
 ### Patch Changes

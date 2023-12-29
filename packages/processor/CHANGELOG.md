@@ -1,5 +1,13 @@
 # @ugdu/processor
 
+## 2.0.0
+
+### Major Changes
+
+- 618358e: Update the major package version to the latest
+  Replace jest with vitest for a better test experience
+  Fix some bugs
+
 ## 1.0.0
 
 ### Major Changes
