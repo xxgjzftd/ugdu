@@ -1,6 +1,7 @@
+import { vi } from 'vitest'
 import { hash, changed } from './utils'
 
-export const execa = jest.fn(
+export const execa = vi.fn(
   (command: string, args: string[]) => {
     if (command === 'git') {
       if (args[0] === 'rev-parse') {

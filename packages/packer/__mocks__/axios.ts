@@ -1,7 +1,8 @@
+import { vi } from 'vitest'
 import { meta } from './utils'
 
 export default {
-  get: jest.fn(
+  get: vi.fn(
     () => {
       if (meta) {
         return Promise.resolve({ data: meta })

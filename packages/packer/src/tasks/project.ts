@@ -2,20 +2,19 @@ import { readFile } from 'fs/promises'
 import { resolve } from 'path'
 
 import fg from 'fast-glob'
-import dh from 'dependencies-hierarchy'
-import fwp from '@pnpm/find-workspace-packages'
+import { buildDependenciesHierarchy } from '@pnpm/reviewing.dependencies-hierarchy'
+import { findWorkspacePackages } from '@pnpm/find-workspace-packages'
 import axios from 'axios'
 import { execa } from 'execa'
 import { normalizePath } from 'vite'
 import { parallel, series, TaskOptions } from '@ugdu/processor'
 
-import { getDefault } from '../shared/utils'
 import { setConstants } from './constants'
 import { setConfig } from './config'
 import { Utils } from './utils'
 
 import type { Promisable } from 'type-fest'
-import type { PackageNode } from 'dependencies-hierarchy'
+import type { PackageNode } from '@pnpm/reviewing.dependencies-hierarchy'
 import type { AliasOptions } from 'vite'
 import type { Context } from '@ugdu/processor'
 
@@ -378,8 +377,9 @@ export interface BaseRoute {
   children?: BaseRoute[]
 }
 
-const getLocalPkgs = async (cwd: string) =>
-  (await getDefault(fwp)(cwd)).slice(1).map(
+const getLocalPkgs = async (cwd: string) => {
+  const fwps = await findWorkspacePackages(cwd)
+  return fwps.slice(1).map(
     (pkg) => {
       const {
         manifest: { name, main, version },
@@ -400,6 +400,7 @@ const getLocalPkgs = async (cwd: string) =>
       } as PkgNode
     }
   )
+}
 
 const getPreMeta = async (context: Context) => {
   let meta: Meta
@@ -435,23 +436,21 @@ const getAlias = (localPkgs: PkgNode[], context: Context) => {
   return alias
 }
 
-const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) =>
-  getDefault(dh)(
+const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) => {
+  const pd2dhm = await buildDependenciesHierarchy(
     localPkgs.map((lp) => lp.ap),
     {
       depth: Infinity,
       include: { dependencies: true, devDependencies: false, optionalDependencies: false },
       lockfileDir: cwd
     }
-  ).then(
-    (pd2dhm) => {
-      const lp2dm: LocalPkgToDepsMap = new Map()
-      for (const pd of Object.keys(pd2dhm)) {
-        lp2dm.set(localPkgs.find((lp) => lp.ap === pd)!, pd2dhm[pd].dependencies!)
-      }
-      return lp2dm
-    }
   )
+  const lp2dm: LocalPkgToDepsMap = new Map()
+  for (const pd of Object.keys(pd2dhm)) {
+    lp2dm.set(localPkgs.find((lp) => lp.ap === pd)!, pd2dhm[pd].dependencies ?? [])
+  }
+  return lp2dm
+}
 
 const getAllPkgs = async (localPkgs: PkgNode[], cwd: string) => {
   const localPkgToDepsMap = await getLocalPkgToDepsMap(localPkgs, cwd)
@@ -597,14 +596,18 @@ const getCurMeta = async (context: Context) => {
   const {
     config: { cwd }
   } = context
-  const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
-  const cur: Meta = {
-    hash: stdout,
-    version: VERSION,
-    modules: [],
-    pages: []
+  try {
+    const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
+    const cur: Meta = {
+      hash: stdout,
+      version: VERSION,
+      modules: [],
+      pages: []
+    }
+    return cur
+  } catch (e) {
+    throw Error('no .git')
   }
-  return cur
 }
 
 /**

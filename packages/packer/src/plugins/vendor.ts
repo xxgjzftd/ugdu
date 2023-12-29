@@ -28,11 +28,7 @@ export const vendor = function (vvn: string, context: Context): Plugin {
         return VENDOR
       } else if (importer === VENDOR) {
         const dependent = pkg.dependents[0]
-        return this.resolve(
-          source,
-          `${dependent.ap}${dependent.local ? '' : '/node_modules/' + dependent.name}/package.json`,
-          Object.assign({ skipSelf: true }, options)
-        )
+        return this.resolve(source, `${dependent.ap}/package.json`, Object.assign({ skipSelf: true }, options))
       } else if (isAbsolute(importer!)) {
         const dep = getPkgFromSourceAndImporter(source, importer!)
         if (dep && shouldExternal(dep)) {

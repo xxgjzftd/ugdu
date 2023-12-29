@@ -7,7 +7,7 @@
     "strict": true,
 
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
 

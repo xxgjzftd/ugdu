@@ -1,25 +1,15 @@
 import { join } from 'path'
 
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { build, mergeConfig } from 'vite'
 import { Processor } from '@ugdu/processor'
 
-import { buildVendorModules } from '../../src/tasks/vendor'
+import { buildVendorModules } from 'src'
 
-import { resolveSourcePath, setChanged, setMeta, setVirtualProject } from '../../__mocks__/utils'
+import { resolveSourcePath, setChanged, setMeta, setVirtualProject } from '__mocks__/utils'
 
-import type { UserConfig } from '../../src/tasks/config'
-import type { Utils } from '../../src/tasks/utils'
-
-import type { LooseVirtualPkgNode } from '../../__mocks__/utils'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
-jest.mock('fs/promises')
+import type { UserConfig, Utils } from 'src'
+import type { LooseVirtualPkgNode } from '__mocks__/utils'
 
 const cwd = '/path/to/project'
 const config: UserConfig = {
@@ -109,7 +99,7 @@ const lps = [entry, foo, bar]
 setVirtualProject(lps, cwd)
 
 describe('The buildVendorModules task', () => {
-  const fn = jest.fn()
+  const fn = vi.fn()
 
   let utils: Utils
 
@@ -230,7 +220,12 @@ describe('The buildVendorModules task', () => {
     }
   )
 
-  beforeAll(() => task.run().then(() => (utils = task.manager.context.utils)))
+  beforeAll(
+    async () => {
+      await task.run()
+      utils = task.manager.context.utils
+    }
+  )
   afterAll(() => setMeta())
 
   const getPkg = (name: string, version = '1.0.0') =>
@@ -344,7 +339,7 @@ describe('The buildVendorModules task', () => {
 
 describe('The preset `build-vendor-module` hook fn', () => {
   it('should invoke vite.build with mergeConfig(defaultConfig, config.vite)', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const processor = new Processor()
     const task = processor.task(buildVendorModules)

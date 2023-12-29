@@ -1,8 +1,10 @@
-import { cached, clone } from '../../src/shared/utils'
+import { describe, expect, it, vi } from 'vitest'
+
+import { cached, clone } from 'src/shared/utils'
 
 describe('cached', () => {
   it('should return a cached version function which will only be called once and return the same value for the same argument', () => {
-    const fn = jest.fn((key: string) => ({ key }))
+    const fn = vi.fn((key: string) => ({ key }))
     const cachedFn = cached(fn)
 
     const foo = 'foo'

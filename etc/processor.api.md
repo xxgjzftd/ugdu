@@ -8,7 +8,7 @@ import type { Promisable } from 'type-fest';
 import type { UnionToIntersection } from 'type-fest';
 
 // @public
-export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>;
+export type BaseHooks<T> = Record<keyof T, HookFn>;
 
 // @public
 export interface Context {

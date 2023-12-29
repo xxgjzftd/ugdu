@@ -1,15 +1,8 @@
+import { beforeAll, expect, it } from 'vitest'
 import { build, mergeConfig } from 'vite'
 import { Processor } from '@ugdu/processor'
 
-import { buildEntry } from '../../src/tasks/entry'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
+import { buildEntry } from 'src/tasks/entry'
 
 const processor = new Processor()
 const task = processor.task(buildEntry)

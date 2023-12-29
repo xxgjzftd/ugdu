@@ -1,8 +1,9 @@
 import { resolve } from 'path'
 
-import { cwd, lps, resolveLocalPkgAbsolutePath } from './utils'
+import { vi } from 'vitest'
+import { cwd, lps, resolveLocalPkgAbsolutePath } from '../utils'
 
-import type { VirtualPkgNode } from './utils'
+import type { VirtualPkgNode } from '../utils'
 
 interface MockedPkgNode {
   name: string
@@ -22,7 +23,7 @@ const getMockedDeps = (deps: VirtualPkgNode[] = []): MockedPkgNode[] => {
   )
 }
 
-export default jest.fn(
+export const buildDependenciesHierarchy = vi.fn(
   () =>
     Promise.resolve(
       lps.reduce(

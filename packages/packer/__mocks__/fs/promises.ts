@@ -1,6 +1,8 @@
+import { vi } from 'vitest'
+
 import { meta } from '../utils'
 
-export const readFile = jest.fn(
+export const readFile = vi.fn(
   () => {
     if (meta) {
       return Promise.resolve(JSON.stringify(meta))
@@ -10,4 +12,4 @@ export const readFile = jest.fn(
   }
 )
 
-export const writeFile = jest.fn()
+export const writeFile = vi.fn()

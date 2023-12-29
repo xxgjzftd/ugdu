@@ -1,13 +1,13 @@
 import { resolve } from 'path'
 
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { Processor } from '@ugdu/processor'
 
-import { setContext } from '../../src/tasks/context'
+import { setContext } from 'src'
 
-import { resolveSourceAbsolutePath, resolveSourcePath, setVirtualProject } from '../../__mocks__/utils'
+import { resolveSourceAbsolutePath, resolveSourcePath, setVirtualProject } from '__mocks__/utils'
 
-import type { UserConfig } from '../../src/tasks/config'
-import type { Utils } from '../../src/tasks/utils'
+import type { UserConfig, Utils } from 'src'
 
 const cwd = '/path/to/project'
 const config: UserConfig = {
@@ -78,14 +78,19 @@ task.hook('get-config', () => config)
 
 let utils: Utils
 
-beforeAll(() => task.run().then(() => (utils = task.manager.context.utils)))
+beforeAll(
+  async () => {
+    await task.run()
+    utils = task.manager.context.utils
+  }
+)
 
 const getPkg = (name: string, version = '1.0.0') =>
   task.manager.context.project.pkgs.find((pkg) => pkg.name === name && pkg.version === version)!
 
 const shouldBeCachable = (methodName: keyof Utils, expected: any, key?: string) => {
   // @ts-ignore
-  const fn = jest.spyOn(Reflect.getPrototypeOf(utils)[methodName], 'origin')
+  const fn = vi.spyOn(Reflect.getPrototypeOf(utils)[methodName], 'origin')
   for (let i = 0; i < 2; i++) {
     // @ts-ignore
     expect(utils[methodName](key)).toEqual(expected)
@@ -228,7 +233,7 @@ describe('The getLocalPkgs method', () => {
   it('should be cachable', () => {
     const localPkgs = task.manager.context.project.pkgs.filter((pkg) => pkg.local)
     // @ts-ignore
-    const fn = jest.spyOn(Reflect.getPrototypeOf(utils).getLocalPkgs, 'origin')
+    const fn = vi.spyOn(Reflect.getPrototypeOf(utils).getLocalPkgs, 'origin')
     expect(utils.getLocalPkgs()).toEqual(localPkgs)
     expect(utils.getLocalPkgs()).toEqual(localPkgs)
     expect(utils.getLocalPkgs()).toEqual(localPkgs)
@@ -382,7 +387,7 @@ describe('The getLocalModulePath method', () => {
 
   it('should be cachable', () => {
     // @ts-ignore
-    const fn = jest.spyOn(Reflect.getPrototypeOf(utils).getLocalModulePath, 'origin')
+    const fn = vi.spyOn(Reflect.getPrototypeOf(utils).getLocalModulePath, 'origin')
     expect(utils.getLocalModulePath('entry')).toBe(resolveSourcePath('entry', 'src/index.ts'))
     expect(utils.getLocalModulePath('entry')).toBe(resolveSourcePath('entry', 'src/index.ts'))
     expect(utils.getLocalModulePath('entry')).toBe(resolveSourcePath('entry', 'src/index.ts'))

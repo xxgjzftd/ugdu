@@ -30,7 +30,7 @@ jobs:
         run: pnpm -r build
 
       - name: run unit tests
-        run: pnpm -r test
+        run: pnpm test
 
       - name: create and publish versions
         uses: changesets/action@v1
