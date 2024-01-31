@@ -117,6 +117,7 @@ export const meta = function (mn: string, context: Context): Plugin {
       const css = fileNames.find((fileName) => fileName.endsWith('.css'))
       mm.js = js
       css && (mm.css = css)
+      mm.imports = []
       const { exports } = bundle[js] as OutputChunk
       isLocalModule(mn) && (mm.exports = exports.sort())
 

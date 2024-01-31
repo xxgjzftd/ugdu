@@ -1,0 +1,15 @@
+{
+    "name": "ugdu-example",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+    "postCreateCommand": "SHELL=bash pnpm setup && pnpm config set store-dir /home/node/.local/share/pnpm/store",
+    "customizations": {
+      "vscode": {
+        "extensions": ["esbenp.prettier-vscode"],
+        "settings": {
+          "editor.formatOnSave": true,
+          "terminal.integrated.defaultProfile.linux": "zsh",
+          "typescript.tsdk": "node_modules/typescript/lib"
+        }
+      }
+    }
+  }

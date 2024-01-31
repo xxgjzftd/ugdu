@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest'
+
 import { TaskOptions } from '../src/task'
 import { series, parallel } from '../src/compose'
 import { Processor } from '../src/processor'
@@ -12,18 +14,18 @@ describe('series', () => {
   })
 
   it('should return a task options instance whose corresponding task will execute its children task sequentially', async () => {
-    const fn0 = jest.fn(
+    const fn0 = vi.fn(
       async () => {
         await Promise.resolve()
         expect(fn1).not.toBeCalled()
       }
     )
-    const fn1 = jest.fn(
+    const fn1 = vi.fn(
       () => {
         expect(fn2).not.toBeCalled()
       }
     )
-    const fn2 = jest.fn()
+    const fn2 = vi.fn()
     const child0 = new TaskOptions(fn0)
     const child1 = new TaskOptions(fn1)
     const child2 = new TaskOptions(fn2)
@@ -46,15 +48,15 @@ describe('parallel', () => {
   })
 
   it('should return a task options instance whose corresponding task will execute its children task concurrently', async () => {
-    const fn0 = jest.fn(
+    const fn0 = vi.fn(
       async () => {
         await Promise.resolve()
         expect(fn1).toHaveBeenCalled()
         expect(fn2).toHaveBeenCalled()
       }
     )
-    const fn1 = jest.fn()
-    const fn2 = jest.fn()
+    const fn1 = vi.fn()
+    const fn2 = vi.fn()
     const child0 = new TaskOptions(fn0)
     const child1 = new TaskOptions(fn1)
     const child2 = new TaskOptions(fn2)

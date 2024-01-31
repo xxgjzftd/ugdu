@@ -1,6 +1,6 @@
 import { URL } from 'url'
 
-import { mergeConfig, createServer } from 'vite'
+import { mergeConfig, createServer, createLogger } from 'vite'
 import { series, TaskOptions } from '@ugdu/processor'
 
 import { setContext } from './context'
@@ -45,9 +45,7 @@ export const serve = series(
               const vds = await createServer(
                 mergeConfig(
                   {
-                    resolve: {
-                      alias
-                    },
+                    resolve: { alias },
                     plugins: [
                       routes(context),
                       entry(context),
@@ -105,6 +103,8 @@ export const serve = series(
                 an2om[app.name] = `${protocol}://${address}:${port}`
               }
             } catch (e) {
+              const logger = createLogger()
+              logger.error(`error when starting dev server:\n${app.name}`)
               process.exit(1)
             }
           }

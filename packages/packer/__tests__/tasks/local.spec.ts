@@ -1,24 +1,14 @@
 import { join } from 'path'
 
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { build, mergeConfig } from 'vite'
 import { Processor } from '@ugdu/processor'
 
-import { buildLocalModules } from '../../src/tasks/local'
+import { buildLocalModules } from 'src/tasks/local'
 
-import { setHash, setMeta, setChanged, setVirtualProject, resolveSourcePath } from '../../__mocks__/utils'
+import { setHash, setMeta, setChanged, setVirtualProject, resolveSourcePath } from '__mocks__/utils'
 
-import type { UserConfig } from '../../src/tasks/config'
-import type { Utils } from '../../src/tasks/utils'
-import type { ChangedSource } from '../../src/tasks/project'
-
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    build: jest.fn()
-  })
-)
-jest.mock('fs/promises')
+import type { ChangedSource, Utils, UserConfig } from 'src'
 
 const cwd = '/path/to/project'
 const config: UserConfig = {
@@ -132,7 +122,7 @@ setHash('curhash')
 setChanged(changed)
 
 describe('The buildLocalModules task', () => {
-  const fn = jest.fn()
+  const fn = vi.fn()
 
   let utils: Utils
 
@@ -141,8 +131,9 @@ describe('The buildLocalModules task', () => {
   task.hook('get-config', () => config)
   task.hook('build-local-module', fn)
   beforeAll(
-    () => {
-      return task.run().then(() => (utils = task.manager.context.utils))
+    async () => {
+      await task.run()
+      utils = task.manager.context.utils
     }
   )
 
@@ -265,7 +256,7 @@ describe('The buildLocalModules task', () => {
 
 describe('The preset `build-local-module` hook fn', () => {
   it('should invoke vite.build with mergeConfig(defaultConfig, mergeConfig(config.vite, app.vite))', async () => {
-    const fn = jest.fn()
+    const fn = vi.fn()
 
     const processor = new Processor()
     const task = processor.task(buildLocalModules)

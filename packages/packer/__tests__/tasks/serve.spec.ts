@@ -1,31 +1,23 @@
+import { beforeAll, expect, it } from 'vitest'
 import { Processor } from '@ugdu/processor'
-
 import { createServer, mergeConfig } from 'vite'
 
-import { serve } from '../../src/tasks/serve'
+import { serve } from 'src'
 
-jest.mock(
-  'vite',
-  () => ({
-    ...jest.requireActual('vite'),
-    createServer: jest.fn()
-  })
-)
+import type { UserConfig } from 'src'
 
 const processor = new Processor()
 const task = processor.task(serve)
-task.hook(
-  'get-config',
-  () => ({
-    apps: [
-      { name: 'foo', packages: ['foo'], vite: { define: { foo: '"foo"' } } },
-      { name: 'bar', packages: ['bar'], vite: { define: { bar: '"bar"' } } }
-    ],
-    extensions: [],
-    meta: 'local',
-    vite: { define: { xx: '"xx"' } }
-  })
-)
+const config: UserConfig = {
+  apps: [
+    { name: 'foo', packages: ['foo'], vite: { define: { foo: '"foo"' } } },
+    { name: 'bar', packages: ['bar'], vite: { define: { bar: '"bar"' } } }
+  ],
+  extensions: [],
+  meta: 'local',
+  vite: { define: { xx: '"xx"' } }
+}
+task.hook('get-config', () => config)
 
 beforeAll(() => task.run())
 

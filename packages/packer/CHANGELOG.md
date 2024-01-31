@@ -1,5 +1,30 @@
 # @ugdu/packer
 
+## 2.0.0
+
+### Major Changes
+
+- 618358e: Update the major package version to the latest
+  Replace jest with vitest for a better test experience
+  Fix some bugs
+
+### Patch Changes
+
+- Updated dependencies [618358e]
+  - @ugdu/processor@2.0.0
+
+## 1.0.6
+
+### Patch Changes
+
+- 14b1ed6: Fix the bug that the build process throw an error accidently when a module `a` import `something` from a module `b` in previous build and in current build `b` no longer export `something` and `a` doesn't import it too.
+
+## 1.0.5
+
+### Patch Changes
+
+- c815ad1: print dev server info
+
 ## 1.0.4
 
 ### Patch Changes

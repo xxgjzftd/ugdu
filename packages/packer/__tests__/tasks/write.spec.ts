@@ -1,10 +1,9 @@
 import { writeFile } from 'fs/promises'
 
+import { expect, it } from 'vitest'
 import { Processor } from '@ugdu/processor'
 
-import { write } from '../../src/tasks/write'
-
-jest.mock('fs/promises')
+import { write } from 'src'
 
 it('should write the info of this build to disk', async () => {
   const processor = new Processor()

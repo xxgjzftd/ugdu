@@ -21,7 +21,7 @@ export type HookFn = (...args: any[]) => any
  *
  * @public
  */
-export type BaseHooks<T extends {} = {}> = Record<keyof T, HookFn>
+export type BaseHooks<T> = Record<keyof T, HookFn>
 
 /**
  * Provides features like invoking corresponding `hook fn`s according to `hook name` in {@link HookType} mode, hooking into children `hookd driver`, etc.
@@ -93,7 +93,7 @@ export class HookDriver<Hooks extends BaseHooks<Hooks>, HookName extends keyof H
   hfs <Name extends keyof Hooks>(name: Name): Hooks[Name][] {
     const target = this._getTarget(name)
     if (!target) {
-      throw new Error(`Hook name '${name}' doesn't exist in this hook driver.`)
+      throw new Error(`Hook name '${name.toString()}' doesn't exist in this hook driver.`)
     }
     return target._hfs(name)
   }
