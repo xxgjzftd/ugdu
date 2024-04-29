@@ -1,7 +1,7 @@
 {
-    "name": "ugdu-example",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
-    "postCreateCommand": "SHELL=bash pnpm setup && pnpm config set store-dir /home/node/.local/share/pnpm/store",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node",
+  "postCreateCommand": "pnpm install",
+  "mounts": ["source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,type=bind,consistency=cached"],
     "customizations": {
       "vscode": {
         "extensions": ["esbenp.prettier-vscode"],
