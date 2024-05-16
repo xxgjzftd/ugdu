@@ -584,7 +584,7 @@ const getRoutes = async (context: Context) => {
 
 const getCurMeta = async (context: Context) => {
   const {
-    config: { cwd, meta }
+    config: { cwd }
   } = context
   try {
     const { stdout } = await execa('git', ['rev-parse', '--short', 'HEAD'], { cwd })
