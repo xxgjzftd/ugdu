@@ -1,5 +1,11 @@
 # @ugdu/runtime
 
+## 2.0.1
+
+### Patch Changes
+
+- 45b976d: @ugdu/packer: Fix the bug in the serve task during development where the routing module does not have hot reloading.
+
 ## 2.0.0
 
 ### Major Changes
