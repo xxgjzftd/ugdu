@@ -30,6 +30,6 @@
   "author": "xxgjzftd <xxgjzftd@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "es-module-shims": "^1.8.2"
+    "es-module-shims": "^1.10.0"
   }
 }

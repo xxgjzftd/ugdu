@@ -442,7 +442,8 @@ const getLocalPkgToDepsMap = async (localPkgs: PkgNode[], cwd: string) => {
     {
       depth: Infinity,
       include: { dependencies: true, devDependencies: false, optionalDependencies: false },
-      lockfileDir: cwd
+      lockfileDir: cwd,
+      virtualStoreDirMaxLength: Infinity
     }
   )
   const lp2dm: LocalPkgToDepsMap = new Map()
@@ -497,28 +498,17 @@ const getSources = async (context: Context) => {
   } = context
   const all = await fg(
     getLocalPkgPaths().map((lpp) => lpp + '/**'),
-    {
-      cwd,
-      ignore: ['**/node_modules/**']
-    }
+    { cwd, ignore: ['**/node_modules/**'] }
   )
   let changed: ChangedSource[] = []
   if (pre.hash && pre.version === VERSION) {
-    const { stdout } = await execa('git', ['diff', pre.hash, 'HEAD', '--name-status'], { cwd })
-    changed = stdout
-      ? stdout.split('\n').map(
-          (info) => {
-            const [status, path] = info.split('\t')
-            return { status, path } as ChangedSource
-          }
-        )
-      : []
+    const { stdout = '' } = await execa('git', ['diff', pre.hash, 'HEAD', '--name-status'], { cwd })
+    for (const info of stdout.split('\n')) {
+      const [status, path] = info.split('\t')
+      changed.push({ status, path } as ChangedSource)
+    }
   } else {
-    changed = all.map(
-      (path) => {
-        return { status: 'A', path }
-      }
-    )
+    changed = all.map((path) => ({ status: 'A', path }))
   }
   return { all, changed }
 }
