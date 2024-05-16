@@ -35,23 +35,23 @@
   "author": "xxgjzftd <xxgjzftd@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.12.12",
     "@ugdu/processor": "workspace:*",
     "@ugdu/runtime": "workspace:*",
-    "rollup": "^4.9.1",
-    "type-fest": "^4.9.0"
+    "rollup": "^4.17.2",
+    "type-fest": "^4.18.2"
   },
   "dependencies": {
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@pnpm/logger": "^5.0.0",
-    "@pnpm/reviewing.dependencies-hierarchy": "^2.1.7",
+    "@pnpm/reviewing.dependencies-hierarchy": "^3.1.2",
     "autobind-decorator": "^2.4.0",
-    "axios": "^1.6.3",
-    "es-module-lexer": "^1.4.1",
-    "execa": "^8.0.1",
+    "axios": "^1.6.8",
+    "es-module-lexer": "^1.5.2",
+    "execa": "^9.1.0",
     "fast-glob": "^3.3.2",
-    "magic-string": "^0.30.5",
-    "vite": "^5.0.10"
+    "magic-string": "^0.30.10",
+    "vite": "^5.2.11"
   },
   "peerDependencies": {
     "@ugdu/processor": "workspace:*"
